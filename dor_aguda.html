@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fluxo de Triagem Fisioterapêutica</title>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --success: #16a34a;
+            --warning: #ca8a04;
+            --danger: #dc2626;
+            --bg: #f8fafc;
+            --card: #ffffff;
+            --text: #1e293b;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container { max-width: 850px; margin: 0 auto; }
+
+        header { text-align: center; margin-bottom: 30px; border-bottom: 3px solid var(--primary); padding-bottom: 10px; }
+
+        .card {
+            background: var(--card);
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+            margin-bottom: 20px;
+        }
+
+        h2 { color: var(--primary); margin-top: 0; border-left: 5px solid var(--primary); padding-left: 10px; font-size: 1.4em; }
+        h3 { font-size: 1.05em; margin-bottom: 10px; color: #475569; border-bottom: 1px solid #e2e8f0; padding-bottom: 5px; }
+
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+
+        label { font-weight: 600; display: block; margin-bottom: 5px; margin-top: 15px; color: #334155; font-size: 0.95em; }
+
+        select, input, textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            box-sizing: border-box;
+            background: #fff;
+            font-size: 0.95em;
+        }
+
+        .checkbox-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            background: #f1f5f9;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+
+        .checkbox-item { display: flex; align-items: center; gap: 6px; font-size: 0.9em; font-weight: 500; }
+
+        .section-divider {
+            margin: 20px 0;
+            padding: 18px;
+            background: #f8fafc;
+            border-radius: 10px;
+            border: 1px solid #e2e8f0;
+        }
+
+        button {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 18px 30px;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            width: 100%;
+            font-size: 1.1em;
+            transition: all 0.2s;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+            margin-top: 10px;
+        }
+
+        button:hover { background: #1d4ed8; }
+        button:active { transform: scale(0.98); }
+
+        #resultArea { display: none; border-top: 6px solid var(--primary); animation: fadeIn 0.4s ease-out; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        .badge { display: inline-block; padding: 6px 16px; border-radius: 20px; color: white; font-weight: bold; margin-bottom: 15px; text-transform: uppercase; font-size: 0.85em; }
+
+        .copy-box { background: #f1f5f9; border: 1px dashed var(--primary); padding: 15px; border-radius: 6px; font-style: italic; white-space: pre-line; color: #334155; }
+
+        .btn-copy { background: #64748b; padding: 8px 15px; font-size: 0.85em; width: auto; margin-top: 10px; }
+
+        @media (max-width: 600px) { .grid { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>Padronização de Fluxo</h1>
+        <p>Protocolo de Dor Aguda - Fisioterapia</p>
+    </header>
+
+    <section class="card">
+        <h2>Fase 1: Triagem Inicial</h2>
+        
+        <p style="font-size: 0.9em; color: #64748b;"><strong>Sugestão de mensagem inicial:</strong> "Olá, {{nome}}! Vi que você relatou uma piora no seu quadro e quero entender melhor para poder te orientar com mais precisão. Me conta, por gentileza:"</p>
+        
+        <label>Nome do Paciente</label>
+        <input type="text" id="pacienteNome" placeholder="Ex: João Silva">
+
+        <div class="grid">
+            <div>
+                <label>Início da Dor — Quando começou essa piora?</label>
+                <select id="inicioDor">
+                    <option value="progressivo">Progressivo</option>
+                    <option value="subito">Súbito</option>
+                </select>
+            </div>
+            <div>
+                <label>Gatilho — Queda, pancada ou esforço diferente?</label>
+                <select id="gatilho">
+                    <option value="nenhum">Sem gatilho definido</option>
+                    <option value="trauma">Trauma (Queda/Pancada)</option>
+                    <option value="sobrecarga">Exercício / Sobrecarga</option>
+                    <option value="movimento">Movimento Específico</option>
+                </select>
+            </div>
+        </div>
+
+        <label>Intensidade da Dor — De 0 a 10, quanto você classifica sua dor?</label>
+        <div style="display: flex; align-items: center; gap: 15px; background: #f1f5f9; padding: 10px; border-radius: 8px;">
+            <input type="range" id="intensidade" min="0" max="10" value="5" oninput="this.nextElementSibling.value = this.value">
+            <output style="font-weight: bold; font-size: 1.4em; color: var(--primary); min-width: 30px;">5</output>
+        </div>
+
+        <label>Sinais Flogísticos — Inchaço, vermelhidão, calor ou dor ao repouso?</label>
+        <div class="checkbox-group">
+            <div class="checkbox-item"><input type="checkbox" class="flogistico" value="Edema"> Edema</div>
+            <div class="checkbox-item"><input type="checkbox" class="flogistico" value="Calor"> Calor</div>
+            <div class="checkbox-item"><input type="checkbox" class="flogistico" value="Rubor"> Rubor</div>
+            <div class="checkbox-item"><input type="checkbox" class="flogistico" value="Repouso"> Dor ao Repouso</div>
+        </div>
+
+        <div class="section-divider">
+            <h3>Uso de Medicamento</h3>
+            <div class="grid">
+                <div>
+                    <label>Uso atual?</label>
+                    <select id="medTipo">
+                        <option value="nenhum">Não está usando</option>
+                        <option value="prescrita">Prescrita</option>
+                        <option value="automedicacao">Automedicação</option>
+                    </select>
+                </div>
+                <div>
+                    <label>Qual medicação?</label>
+                    <input type="text" id="medQual" placeholder="Nome do remédio">
+                </div>
+            </div>
+            <label>Resposta percebida:</label>
+            <div class="checkbox-group" style="background: white; border: 1px solid #cbd5e1;">
+                <label style="margin:0; font-weight: normal;"><input type="radio" name="medResp" value="Boa"> Boa</label>
+                <label style="margin:0; font-weight: normal;"><input type="radio" name="medResp" value="Parcial"> Parcial</label>
+                <label style="margin:0; font-weight: normal;"><input type="radio" name="medResp" value="Nenhuma" checked> Nenhuma / Não avaliado</label>
+            </div>
+        </div>
+
+        <div class="section-divider">
+            <h3>Atendimento Médico Prévio</h3>
+            <label>Procurou pronto atendimento ou consulta de urgência recentemente?</label>
+            <select id="atendimentoMedico" onchange="toggleMedInfo()">
+                <option value="nao">Não</option>
+                <option value="sim">Sim</option>
+            </select>
+            <div id="medInfoExtra" style="display:none; margin-top:10px;">
+                <textarea id="medOrientacao" rows="2" placeholder="O que foi orientado? (Diagnóstico/Restrições)"></textarea>
+            </div>
+        </div>
+
+        <div class="section-divider">
+            <h3>Exames Complementares</h3>
+            <label>Já fez ou tem pedido de exame para essa dor?</label>
+            <select id="examesStatus">
+                <option value="nao">Não realizados</option>
+                <option value="realizados">Já foi realizado o exame (Solicitar envio)</option>
+                <option value="solicitados">Foi solicitado, porém não realizado (Lembrar paciente de enviar)</option>
+            </select>
+        </div>
+
+        <label>Impacto Funcional — Dificulta caminhar, subir escadas, vestir-se ou dormir?</label>
+        <select id="impacto">
+            <option value="leve">Leve (Impacto mínimo)</option>
+            <option value="moderado">Moderado (Dificulta ações diárias)</option>
+            <option value="grave">Grave (Incapaz / Marcha prejudicada)</option>
+        </select>
+
+        <button onclick="processarConduta()">GERAR CLASSIFICAÇÃO E CONDUTA</button>
+    </section>
+
+    <section id="resultArea" class="card">
+        <div id="statusBadge" class="badge"></div>
+        <h2 id="condutaTitulo">Classificação</h2>
+        
+        <div id="condutaTexto" style="margin-bottom: 20px;"></div>
+
+        <div id="alertaExame" style="display:none; background: #fff3cd; padding: 12px; border-radius: 8px; border-left: 5px solid #ffc107; margin-bottom: 15px; font-size: 0.9em; color: #856404;">
+            <strong>Conduta de Exames:</strong> <span id="txtAlertaExame"></span>
+        </div>
+
+        <label>Sugestão de Mensagem para o Paciente:</label>
+        <div class="copy-box" id="msgPaciente"></div>
+        <button class="btn-copy" onclick="copiarTexto()">Copiar Mensagem</button>
+    </section>
+</div>
+
+<script>
+    function toggleMedInfo() {
+        const val = document.getElementById('atendimentoMedico').value;
+        document.getElementById('medInfoExtra').style.display = (val === 'sim') ? 'block' : 'none';
+    }
+
+    function processarConduta() {
+        const nome = document.getElementById('pacienteNome').value || "Paciente";
+        const intensidade = parseInt(document.getElementById('intensidade').value);
+        const gatilho = document.getElementById('gatilho').value;
+        const flogisticos = document.querySelectorAll('.flogistico:checked').length;
+        const exames = document.getElementById('examesStatus').value;
+        
+        const resultArea = document.getElementById('resultArea');
+        const alertaExame = document.getElementById('alertaExame');
+        const txtAlerta = document.getElementById('txtAlertaExame');
+
+        resultArea.style.display = 'block';
+        
+        // 1. Tratamento de Exames
+        alertaExame.style.display = (exames === 'nao') ? 'none' : 'block';
+        if(exames === 'realizados') txtAlerta.textContent = "SOLICITAR O ENVIO DOS EXAMES JÁ REALIZADOS.";
+        if(exames === 'solicitados') txtAlerta.textContent = "LEMBRAR PACIENTE DE ENVIAR QUANDO TIVER REALIZADO.";
+
+        // 2. Lógica de Decisão
+        
+        // CASO A: PÓS-TRAUMA
+        if (gatilho === 'trauma' && (intensidade >= 5 || flogisticos > 2)) {
+            const msgPadrao = `Como houve um trauma recente, o mais seguro agora é suspender os exercícios até que um médico avalie. Se ainda não fez exames e houver suspeita de lesão, o ideal é realizar uma imagem. Você consegue ir até uma emergência?`;
+            const html = `
+                <div style="margin-bottom:15px; padding:10px; background:#fef2f2; border-radius:8px;">
+                    <strong style="color:var(--danger)">Critérios Fisioterapêuticos:</strong>
+                    <ul style="margin-top:5px; font-size:0.9em;">
+                        <li>Trauma recente claro</li>
+                        <li>Dor moderada a intensa</li>
+                        <li>Limitação funcional relevante</li>
+                        <li>Suspeita de lesão estrutural</li>
+                    </ul>
+                </div>
+                <strong style="color:var(--danger)">Conduta Fisioterapêutica:</strong>
+                <ul>
+                    <li>🚫 Não iniciar protocolo ativo.</li>
+                    <li>Suspender exercícios resistidos ou de impacto.</li>
+                    <li>Encaminhar para Emergência (se necessário).</li>
+                    <li>Atuação da Fisioterapia: Apenas medidas analgésicas e orientação até liberação médica.</li>
+                </ul>
+                <div style="margin-top:20px; padding:12px; border:1px solid #fecaca; border-radius:8px; background-color:#fffafb;">
+                    <strong style="color:var(--danger)">Caso já tenha ido na emergência:</strong>
+                    <ul style="margin-top:5px; font-size:0.9em;">
+                        <li>Solicitar exames de imagem e orientações recomendadas pelo médico.</li>
+                        <li><strong>Sugestão de mensagem:</strong> Entendido! Como você passou por atendimento médico recente, vamos respeitar as orientações que recebeu. Vamos suspender/ajustar os exercícios temporariamente e reavaliar sua evolução em 72h. Combinado?</li>
+                    </ul>
+                </div>`;
+            setResult("danger", "DOR AGUDA PÓS-TRAUMA", html, msgPadrao);
+
+        } else if (flogisticos > 1 || intensidade > 7) {
+            // CASO B: DOR AGUDA COM SINAIS FLOGÍSTICOS (CONDUTA PROTETORA)
+            const msgB = `Olá, ${nome}! Esses sinais indicam que o corpo está reagindo ao que pode ser uma inflamação. Recomendo repouso leve, aplicação de gelo 3x/dia por 20 minutos, manter o local elevado e observar se há febre. Se em 48h não houver melhora, oriento buscar atendimento médico para avaliar mais de perto.`;
+
+            const htmlB = `
+                <div style="margin-bottom:15px; padding:10px; background:#fffbeb; border-radius:8px;">
+                    <strong style="color:var(--warning)">Critérios Fisioterapêuticos:</strong>
+                    <ul style="margin-top:5px; font-size:0.9em;">
+                        <li>Presença clara de edema, calor ou rubor</li>
+                        <li>Dor em repouso ou desproporcional ao movimento</li>
+                        <li>Piora com exercício ativo</li>
+                    </ul>
+                </div>
+
+                <strong style="color:var(--warning)">Decisão e Conduta:</strong>
+                <ul>
+                    <li><strong>Se sinais de infecção:</strong> Encaminhar para avaliação médica.</li>
+                    <li><strong>Reduzir estímulo mecânico:</strong> Repouso relativo e suspender exercícios que aumentem a dor.</li>
+                    <li><strong>Priorizar:</strong> Mobilidade suave e isométricos indolores (se tolerados).</li>
+                    <li><strong>Recursos:</strong> Gelo 3x/dia (avaliar contraindicações) e elevação do membro.</li>
+                    <li><strong>Contraindicações da Crioterapia::</strong> Doença de Raynaud, Insuficiência Circulatória Periférica, Trombose Venosa Profunda (TVP), Urticária ao Frio, Crioglobulinemia, Déficit Sensorial, Rigidez Articular Crônica (melhor usar Calor)..</li>
+                </ul>
+
+                <div style="margin-top:15px; padding:10px; background:#f8fafc; border-left:4px solid var(--danger); border-radius:4px; font-size:0.85em;">
+                    <strong>⚠ ALERTAS DE MONITORAMENTO:</strong><br>
+                    • Paciente com febre <strong>não deve</strong> realizar Fisioterapia Motora.<br>
+                    • Se não houver melhora ou houver piora funcional, indicar atendimento médico.
+                </div>`;
+
+            setResult("warning", "DOR AGUDA COM SINAIS FLOGÍSTICOS", htmlB, msgB);
+
+        } else {
+            // CASO C: SIMPLES
+            const msgC = `Olá, ${nome}! Vi seu relato. Como sua dor é previsível e controlável, vamos manter o corpo em movimento com ajustes. Vamos focar em mobilidade hoje e reduzir a intensidade. Como você se sente para iniciarmos exercícios leves?`;
+            const htmlC = `
+                <div style="margin-bottom:15px; padding:10px; background:#f0fdf4; border-radius:8px;">
+                    <strong style="color:var(--success)">Critérios Fisioterapêuticos:</strong>
+                    <ul style="margin-top:5px; font-size:0.9em;">
+                        <li>Dor ≤ 6/10</li>
+                        <li>Sem sinais flogísticos importantes</li>
+                        <li>Sem traumas recentes</li>
+                        <li>Função relativamente preservada</li>
+                        <li>Dor mecânica previsível e controlável</li>
+                    </ul>
+                </div>
+                <strong style="color:var(--success)">Conduta Fisioterapêutica:</strong>
+                <ul>
+                    <li>Manter ou Introduzir Exercícios leves e controlados. Ajustar carga e amplitude.</li>
+                    <li>Priorizar Mobilidade indolor e Educação sobre dor.</li>
+                    <li>Termoterapia conforme resposta individual.</li>
+                </ul>
+                <div style="font-size:0.85em; background:#f8fafc; padding:10px; border:1px solid #e2e8f0; border-radius:6px; margin-bottom:15px;">
+                    <strong>OBS:  Crioterapia (Contraindicações): </strong> <br> Doença de Raynaud, Insuficiência Circulatória Periférica, Trombose Venosa Profunda (TVP), Urticária ao Frio, Crioglobulinemia, Déficit Sensorial, Rigidez Articular Crônica (melhor usar Calor).
+                </div>
+                <strong style="color:var(--warning)">Reavaliar em Até 72h:</strong>
+                <ul style="font-size:0.9em;">
+                    <li>Se piorar: Condição B. <br> Se persistir: Considerar Teleconsulta ou Interconsulta.</li>
+                </ul>`;
+            setResult("success", "DOR AGUDA SIMPLES (APTA PARA ATIVIDADE)", htmlC, msgC);
+        }
+
+        // Rolar para o resultado
+        window.scrollTo({ top: resultArea.offsetTop - 20, behavior: 'smooth' });
+    } // <-- A CHAVE QUE FALTAVA AQUI!
+
+    function setResult(type, title, html, msg) {
+        const badge = document.getElementById('statusBadge');
+        badge.textContent = title;
+        badge.style.backgroundColor = `var(--${type})`;
+        document.getElementById('condutaTitulo').style.color = `var(--${type})`;
+        document.getElementById('condutaTexto').innerHTML = html;
+        document.getElementById('msgPaciente').textContent = msg;
+    }
+
+    function copiarTexto() {
+        const texto = document.getElementById('msgPaciente').textContent;
+        navigator.clipboard.writeText(texto).then(() => {
+            alert("Mensagem copiada para o WhatsApp!");
+        });
+    }
+</script>
+
+</body>
+</html>
