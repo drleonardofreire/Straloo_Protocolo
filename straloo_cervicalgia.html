@@ -1,0 +1,830 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Straloo — Protocolo Cervicalgia</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #F2EFE9;
+    --surface: #FFFFFF;
+    --surface2: #F8F6F2;
+    --primary: #0E4D5C;
+    --primary-light: #1A7A8C;
+    --accent: #E8A84C;
+    --accent-dark: #C8882C;
+    --danger: #C0392B;
+    --danger-light: #FDECEB;
+    --warning: #D68910;
+    --warning-light: #FEF9EC;
+    --warning-mid: #F39C12;
+    --success: #1A7A5C;
+    --success-light: #E8F5F0;
+    --success-mid: #27AE60;
+    --g1: #1A7A8C;
+    --g1-bg: rgba(26,122,140,0.08);
+    --g2: #6C3A8C;
+    --g2-bg: rgba(108,58,140,0.08);
+    --phase1: #C0392B; --phase1-bg: #FDECEB;
+    --phase2: #D68910; --phase2-bg: #FEF9EC;
+    --phase3: #1A7A5C; --phase3-bg: #E8F5F0;
+    --text: #1A2530;
+    --text-muted: #6B7A85;
+    --border: #DDD8CF;
+    --shadow: 0 4px 24px rgba(14,77,92,0.10);
+    --radius: 16px;
+    --radius-sm: 8px;
+    --transition: all 0.32s cubic-bezier(0.4,0,0.2,1);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; overflow-x: hidden; }
+
+  /* ─── HEADER ─── */
+  .header { background: var(--primary); padding: 18px 32px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 16px rgba(0,0,0,0.18); }
+  .header-left { display: flex; align-items: center; gap: 18px; }
+  .btn-home { display: inline-flex; align-items: center; gap: 6px; font-family: 'DM Sans', sans-serif; font-size: 0.78rem; font-weight: 600; color: rgba(255,255,255,0.6); background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); border-radius: 50px; padding: 5px 14px; text-decoration: none; transition: var(--transition); letter-spacing: 0.03em; }
+  .btn-home:hover { color: white; background: rgba(255,255,255,0.14); border-color: rgba(255,255,255,0.3); }
+  .logo { font-family: 'DM Serif Display', serif; font-size: 1.6rem; color: #FFF; letter-spacing: 0.02em; }
+  .logo span { color: var(--accent); }
+  .header-badge { font-size: 0.72rem; font-weight: 600; color: var(--accent); background: rgba(232,168,76,0.15); border: 1px solid rgba(232,168,76,0.35); border-radius: 50px; padding: 4px 12px; letter-spacing: 0.08em; text-transform: uppercase; }
+
+  /* ─── MAIN ─── */
+  .main { max-width: 820px; margin: 0 auto; padding: 40px 20px 80px; }
+
+  /* ─── CARDS ─── */
+  .section-card { background: var(--surface); border-radius: var(--radius); padding: 40px 44px; box-shadow: var(--shadow); margin-bottom: 24px; animation: fadeUp 0.4s ease both; }
+  @keyframes fadeUp { from { opacity:0; transform:translateY(16px); } to { opacity:1; transform:translateY(0); } }
+  .section-tag { display: inline-flex; align-items: center; gap: 6px; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--primary); background: rgba(14,77,92,0.08); border-radius: 50px; padding: 4px 12px; margin-bottom: 12px; }
+  .section-tag.danger-tag { color: var(--danger); background: var(--danger-light); }
+  .section-title { font-family: 'DM Serif Display', serif; font-size: 1.7rem; color: var(--primary); line-height: 1.25; margin-bottom: 6px; }
+  .section-subtitle { font-size: 0.88rem; color: var(--text-muted); line-height: 1.65; margin-bottom: 28px; }
+
+  .intro-msg { background: rgba(14,77,92,0.04); border-left: 3px solid var(--primary-light); border-radius: 0 var(--radius-sm) var(--radius-sm) 0; padding: 12px 16px; font-size: 0.85rem; color: #34505A; line-height: 1.65; margin-bottom: 24px; font-style: italic; }
+  .intro-msg strong { font-style: normal; font-size: 0.72rem; letter-spacing: 0.07em; text-transform: uppercase; display: block; margin-bottom: 4px; color: var(--primary-light); }
+
+  /* ─── GROUP DIVIDER ─── */
+  .group-divider { background: var(--surface2); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 20px 22px; margin: 24px 0; }
+  .group-title { font-size: 0.75rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 16px; padding-bottom: 8px; border-bottom: 1px solid var(--border); }
+
+  /* ─── FORM ─── */
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px; }
+  .form-group { margin-bottom: 20px; }
+  .form-label { display: block; font-size: 0.88rem; font-weight: 600; color: var(--text); margin-bottom: 7px; line-height: 1.45; }
+  .form-label small { display: block; font-weight: 400; color: var(--text-muted); font-size: 0.8rem; margin-top: 2px; }
+  .form-select { width: 100%; padding: 11px 14px; border: 2px solid var(--border); border-radius: var(--radius-sm); background: var(--surface); color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 0.9rem; outline: none; transition: var(--transition); appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%236B7A85' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 14px center; padding-right: 36px; }
+  .form-select:focus { border-color: var(--primary-light); box-shadow: 0 0 0 3px rgba(26,122,140,0.12); }
+
+  /* ─── YES/NO ─── */
+  .yn-group { display: flex; gap: 10px; }
+  .yn-btn { flex: 1; padding: 11px; border-radius: var(--radius-sm); border: 2px solid var(--border); background: transparent; font-family: 'DM Sans', sans-serif; font-size: 0.88rem; font-weight: 600; cursor: pointer; transition: var(--transition); color: var(--text-muted); }
+  .yn-btn:hover { border-color: var(--primary-light); color: var(--primary); }
+  .yn-btn.sel-sim { border-color: var(--danger); background: var(--danger-light); color: var(--danger); }
+  .yn-btn.sel-nao { border-color: var(--success); background: var(--success-light); color: var(--success); }
+
+  /* ─── RADIO OPTIONS (large) ─── */
+  .radio-group { display: flex; flex-direction: column; gap: 10px; }
+  .radio-opt { display: flex; align-items: flex-start; gap: 12px; padding: 14px 18px; border-radius: var(--radius-sm); border: 2px solid var(--border); cursor: pointer; transition: var(--transition); background: transparent; }
+  .radio-opt:hover { border-color: var(--primary-light); background: rgba(26,122,140,0.03); }
+  .radio-opt.selected { border-color: var(--primary); background: rgba(14,77,92,0.05); }
+  .radio-dot { width: 18px; height: 18px; border-radius: 50%; border: 2px solid var(--border); flex-shrink: 0; margin-top: 2px; transition: var(--transition); background: white; }
+  .radio-opt.selected .radio-dot { border-color: var(--primary); background: var(--primary); box-shadow: inset 0 0 0 3px white; }
+  .radio-text { font-size: 0.88rem; line-height: 1.55; color: var(--text); }
+  .radio-text strong { display: block; font-weight: 600; margin-bottom: 3px; font-size: 0.9rem; }
+
+  /* ─── SLIDER ─── */
+  .slider-wrap { background: var(--surface2); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 16px 18px; }
+  .slider-track { display: flex; align-items: center; gap: 16px; margin-bottom: 10px; }
+  .slider-track input[type="range"] { flex: 1; -webkit-appearance: none; appearance: none; height: 6px; border-radius: 3px; outline: none; cursor: pointer; }
+  .slider-track input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 22px; height: 22px; border-radius: 50%; background: var(--primary); border: 3px solid white; box-shadow: 0 2px 8px rgba(14,77,92,0.3); cursor: pointer; transition: var(--transition); }
+  .slider-track input[type="range"]::-webkit-slider-thumb:hover { background: var(--primary-light); transform: scale(1.15); }
+  .slider-value { font-family: 'DM Serif Display', serif; font-size: 2rem; color: var(--primary); min-width: 40px; text-align: center; line-height: 1; }
+  .slider-labels { display: flex; justify-content: space-between; font-size: 0.72rem; color: var(--text-muted); }
+
+  /* ─── NOTA TÉCNICA ─── */
+  .nota-btn { display: inline-flex; align-items: center; gap: 5px; font-size: 0.74rem; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; color: var(--primary-light); background: rgba(26,122,140,0.08); border: 1px solid rgba(26,122,140,0.2); border-radius: 50px; padding: 3px 10px; cursor: pointer; transition: var(--transition); margin-bottom: 10px; }
+  .nota-btn:hover { background: rgba(26,122,140,0.15); }
+  .nota-box { background: rgba(14,77,92,0.04); border-left: 3px solid var(--primary-light); border-radius: 0 var(--radius-sm) var(--radius-sm) 0; padding: 12px 16px; font-size: 0.82rem; color: #34505A; line-height: 1.65; margin-bottom: 12px; display: none; }
+  .nota-box.open { display: block; animation: fadeUp 0.25s ease; }
+
+  /* ─── GENERATE BTN ─── */
+  .btn-generate { width: 100%; padding: 17px 32px; margin-top: 8px; background: var(--primary); color: white; border: none; font-family: 'DM Serif Display', serif; font-size: 1.15rem; border-radius: var(--radius-sm); cursor: pointer; transition: var(--transition); letter-spacing: 0.02em; box-shadow: 0 4px 20px rgba(14,77,92,0.3); display: flex; align-items: center; justify-content: center; gap: 10px; }
+  .btn-generate:hover { background: var(--primary-light); transform: translateY(-2px); box-shadow: 0 8px 28px rgba(14,77,92,0.35); }
+  .btn-generate:active { transform: scale(0.99); }
+
+  /* ─── EMERGENCY CARD ─── */
+  .emergency-card { background: var(--surface); border-radius: var(--radius); padding: 40px 44px; box-shadow: var(--shadow); border-top: 5px solid var(--danger); animation: fadeUp 0.4s ease both; }
+  .em-icon { font-size: 2.8rem; margin-bottom: 14px; }
+  .em-title { font-family: 'DM Serif Display', serif; font-size: 1.9rem; color: var(--danger); margin-bottom: 8px; }
+  .em-sub { font-size: 0.9rem; color: var(--text-muted); line-height: 1.65; margin-bottom: 24px; }
+  .em-flags { display: flex; flex-direction: column; gap: 10px; margin-bottom: 24px; }
+  .em-flag { display: flex; align-items: flex-start; gap: 10px; padding: 12px 16px; background: var(--danger-light); border-left: 4px solid var(--danger); border-radius: var(--radius-sm); font-size: 0.87rem; line-height: 1.55; color: #7A1A1A; }
+  .em-flag strong { display: block; font-weight: 700; margin-bottom: 2px; }
+  .em-actions { display: flex; gap: 12px; flex-wrap: wrap; }
+  .btn-danger { background: var(--danger); color: white; border: none; font-family: 'DM Sans', sans-serif; font-size: 0.9rem; font-weight: 700; padding: 13px 24px; border-radius: var(--radius-sm); cursor: pointer; transition: var(--transition); }
+  .btn-danger:hover { background: #a03020; }
+
+  /* ─── RESULT ─── */
+  .result-section-title { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 12px; }
+  .divider { height: 1px; background: var(--border); margin: 24px 0; }
+  .result-badge { display: inline-flex; align-items: center; gap: 8px; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; border-radius: 50px; padding: 5px 16px; margin-bottom: 12px; }
+  .result-title { font-family: 'DM Serif Display', serif; font-size: 2rem; line-height: 1.15; margin-bottom: 8px; }
+  .result-subtitle { font-size: 0.9rem; color: var(--text-muted); line-height: 1.65; }
+
+  .rg1 .result-badge { background: var(--g1-bg); color: var(--g1); }
+  .rg1 .result-title  { color: var(--g1); }
+  .rg2 .result-badge { background: var(--g2-bg); color: var(--g2); }
+  .rg2 .result-title  { color: var(--g2); }
+
+  /* phase strip */
+  .phase-strip { display: flex; gap: 0; border-radius: var(--radius-sm); overflow: hidden; margin-bottom: 20px; border: 1px solid var(--border); }
+  .ph-item { flex: 1; padding: 10px 8px; text-align: center; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; opacity: 0.3; transition: var(--transition); }
+  .ph-item.active { opacity: 1; }
+  .ph1 { background: var(--phase1-bg); color: var(--phase1); border-right: 1px solid rgba(192,57,43,0.2); }
+  .ph2 { background: var(--phase2-bg); color: var(--phase2); border-right: 1px solid rgba(214,137,16,0.2); }
+  .ph3 { background: var(--phase3-bg); color: var(--phase3); }
+
+  /* protocol box */
+  .protocol-box { border-radius: var(--radius-sm); padding: 18px 22px; margin-bottom: 20px; border-left: 4px solid; }
+  .protocol-box.g1 { border-color: var(--g1); background: var(--g1-bg); }
+  .protocol-box.g2 { border-color: var(--g2); background: var(--g2-bg); }
+  .protocol-box-title { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 6px; }
+  .g1 .protocol-box-title { color: var(--g1); }
+  .g2 .protocol-box-title { color: var(--g2); }
+  .protocol-box p { font-size: 0.87rem; color: var(--text); line-height: 1.65; }
+
+  /* conduct list */
+  .conduct-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
+  .conduct-item { display: flex; align-items: flex-start; gap: 12px; padding: 13px 16px; border-radius: var(--radius-sm); background: var(--surface2); border: 1px solid var(--border); }
+  .conduct-icon { font-size: 1rem; flex-shrink: 0; margin-top: 1px; }
+  .conduct-text { font-size: 0.88rem; line-height: 1.55; color: var(--text); }
+  .conduct-text strong { font-weight: 600; display: block; margin-bottom: 2px; }
+
+  /* exercise cards */
+  .exercise-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
+  .exercise-item { display: flex; align-items: flex-start; gap: 12px; padding: 14px 18px; border-radius: var(--radius-sm); background: var(--surface2); border: 1px solid var(--border); }
+  .ex-num { width: 28px; height: 28px; border-radius: 50%; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; font-weight: 700; color: white; }
+  .ex-num.g1c { background: var(--g1); }
+  .ex-num.g2c { background: var(--g2); }
+  .exercise-item p { font-size: 0.87rem; line-height: 1.6; color: var(--text); }
+  .exercise-item p strong { font-weight: 600; display: block; margin-bottom: 2px; }
+  .ex-tag { display: inline-block; font-size: 0.68rem; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; padding: 2px 8px; border-radius: 50px; margin-bottom: 4px; }
+  .ex-tag.g1t { background: var(--g1-bg); color: var(--g1); }
+  .ex-tag.g2t { background: var(--g2-bg); color: var(--g2); }
+  .ex-tag.both { background: rgba(14,77,92,0.08); color: var(--primary); }
+
+  /* alert */
+  .alert-box { border-radius: var(--radius-sm); padding: 14px 18px; margin-bottom: 14px; border-left: 4px solid; font-size: 0.84rem; line-height: 1.65; }
+  .alert-box.warning { border-color: var(--warning-mid); background: var(--warning-light); color: #7A5010; }
+  .alert-box.danger  { border-color: var(--danger);       background: var(--danger-light);  color: #8C2020; }
+  .alert-box.info    { border-color: var(--primary-light); background: rgba(14,77,92,0.05); color: #1A3D4A; }
+  .alert-box.success { border-color: var(--success-mid);  background: var(--success-light); color: #1A5040; }
+  .alert-box strong  { font-weight: 700; }
+
+  /* pill list */
+  .pill-list { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
+  .pill { font-size: 0.8rem; font-weight: 500; padding: 5px 13px; border-radius: 50px; background: rgba(14,77,92,0.07); color: var(--primary); }
+  .pill.warn { background: rgba(214,137,16,0.1); color: #8C5A10; }
+  .pill.ok   { background: var(--success-light); color: var(--success); }
+
+  /* ─── FUNCTIONAL LIMITATION ─── */
+  .func-block { border-radius: var(--radius-sm); overflow: hidden; border: 1px solid var(--border); margin-bottom: 20px; }
+  .func-header { padding: 16px 22px; display: flex; align-items: center; gap: 14px; }
+  .func-header.fl-leve     { background: #E8F5F0; border-bottom: 1px solid rgba(26,122,92,0.18); }
+  .func-header.fl-moderada { background: #FEF9EC; border-bottom: 1px solid rgba(214,137,16,0.2); }
+  .func-header.fl-severa   { background: var(--danger-light); border-bottom: 1px solid rgba(192,57,43,0.18); }
+  .func-icon { font-size: 1.6rem; flex-shrink: 0; }
+  .func-label { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 2px; }
+  .fl-leve     .func-label { color: var(--success); }
+  .fl-moderada .func-label { color: var(--warning); }
+  .fl-severa   .func-label { color: var(--danger); }
+  .func-title { font-family: 'DM Serif Display', serif; font-size: 1.15rem; line-height: 1.2; }
+  .fl-leve     .func-title { color: var(--success); }
+  .fl-moderada .func-title { color: var(--warning); }
+  .fl-severa   .func-title { color: var(--danger); }
+  .func-body { padding: 16px 20px; display: flex; flex-direction: column; gap: 10px; }
+  .func-item { display: flex; align-items: flex-start; gap: 10px; }
+  .func-item-icon { flex-shrink: 0; font-size: 1rem; margin-top: 2px; }
+  .func-item-text { font-size: 0.87rem; line-height: 1.6; color: var(--text); }
+  .func-item-text strong { display: block; font-weight: 600; font-size: 0.84rem; margin-bottom: 1px; }
+  .func-reeval { margin-top: 4px; padding: 12px 20px; border-top: 1px dashed var(--border); font-size: 0.82rem; color: var(--text-muted); display: flex; align-items: flex-start; gap: 8px; line-height: 1.55; }
+
+  /* message */
+  .msg-tabs { display: flex; gap: 8px; margin-bottom: 12px; flex-wrap: wrap; }
+  .msg-tab { font-size: 0.78rem; font-weight: 600; padding: 6px 14px; border-radius: 50px; border: 2px solid var(--border); background: transparent; cursor: pointer; transition: var(--transition); color: var(--text-muted); }
+  .msg-tab:hover { border-color: var(--primary-light); color: var(--text); }
+  .msg-tab.active { border-color: var(--primary); background: rgba(14,77,92,0.07); color: var(--primary); }
+  .msg-box { background: var(--surface2); border: 1px dashed var(--primary-light); border-radius: var(--radius-sm); padding: 18px 20px; font-size: 0.88rem; color: var(--text); line-height: 1.7; white-space: pre-line; margin-bottom: 12px; }
+  .btn-copy { display: inline-flex; align-items: center; gap: 7px; background: transparent; border: 2px solid var(--primary-light); color: var(--primary); font-family: 'DM Sans', sans-serif; font-size: 0.83rem; font-weight: 600; padding: 9px 20px; border-radius: var(--radius-sm); cursor: pointer; transition: var(--transition); }
+  .btn-copy:hover { background: var(--primary); color: white; border-color: var(--primary); }
+  .btn-copy.copied { background: var(--success-light); border-color: var(--success); color: var(--success); }
+
+  /* result actions */
+  .result-actions { display: flex; gap: 12px; margin-top: 32px; padding-top: 24px; border-top: 1px solid var(--border); }
+  .btn-restart { background: transparent; border: 2px solid var(--border); color: var(--text-muted); font-family: 'DM Sans', sans-serif; font-size: 0.88rem; font-weight: 600; padding: 12px 24px; border-radius: var(--radius-sm); cursor: pointer; transition: var(--transition); }
+  .btn-restart:hover { border-color: var(--text-muted); color: var(--text); }
+  .btn-print { background: var(--primary); color: white; border: none; font-family: 'DM Sans', sans-serif; font-size: 0.88rem; font-weight: 600; padding: 12px 24px; border-radius: var(--radius-sm); cursor: pointer; transition: var(--transition); }
+  .btn-print:hover { background: var(--primary-light); }
+
+  @media (max-width: 600px) {
+    .section-card, .emergency-card { padding: 28px 20px; }
+    .form-row { grid-template-columns: 1fr; }
+    .section-title { font-size: 1.4rem; }
+    .main { padding: 24px 12px 60px; }
+    .result-title { font-size: 1.5rem; }
+  }
+  @media print {
+    .header, .btn-generate, .result-actions, .btn-copy, .msg-tabs, #formCard { display: none !important; }
+    body { background: white; }
+    #resultCard, .emergency-card { box-shadow: none; border: 1px solid #ddd; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-left">
+    <a class="btn-home" href="index.html">← Protocolos</a>
+    <div class="logo">Straloo<span>.</span></div>
+  </div>
+  <div class="header-badge">Protocolo · Cervicalgia</div>
+</div>
+
+<div class="main">
+
+<!-- ═══════════════ FORM ═══════════════ -->
+<div class="section-card" id="formCard">
+  <div class="section-tag">🦴 Coluna Cervical · Fisioterapia do Trabalho</div>
+  <h2 class="section-title">Triagem e Classificação da Cervicalgia</h2>
+  <p class="section-subtitle">Protocolo de teleatendimento para dor cervical, cervicobraquialgia e síndromes posturais relacionadas ao trabalho. Preencha todas as etapas para gerar a conduta por fases.</p>
+
+  <div class="intro-msg">
+    <strong>Mensagem inicial via WhatsApp</strong>
+    "Olá! Para iniciarmos seu atendimento com toda a segurança, preciso te fazer algumas perguntas importantes de rotina. Pode me responder 'Sim' ou 'Não' para cada uma?"
+  </div>
+
+  <!-- ETAPA 1: RED FLAGS -->
+  <div class="group-divider" style="border-left: 4px solid var(--danger);">
+    <div class="group-title" style="color:var(--danger);">⚠ Etapa 1 — Triagem de Segurança (Red Flags)</div>
+    <p style="font-size:0.84rem; color:var(--text-muted); margin-bottom:16px; line-height:1.6">O pescoço é via de proteção da medula espinhal e artérias importantes. Qualquer SIM abaixo contraindicada a fisioterapia remota.</p>
+
+    <div class="form-group">
+      <div class="form-label">A dor começou após acidente, batida forte ou movimento brusco tipo "chicote" no pescoço?<small>Risco de fratura cervical ou lesão por hiperflexão-hiperextensão</small></div>
+      <button class="nota-btn" onclick="toggleNota('n_rf1')">📋 Nota Técnica</button>
+      <div class="nota-box" id="n_rf1">Trauma em hiperflexão-hiperextensão (chicote / whiplash) pode causar fratura de Hangman (C2), luxação atlantoaxial ou lesões ligamentares instáveis. Sem radiografia, TC ou RM, qualquer mobilização pode causar lesão medular irreversível. Contraindicação absoluta a qualquer exercício ou mobilização cervical antes de imagem.</div>
+      <div class="yn-group"><button class="yn-btn" onclick="setRF('rf1','sim',this,'Trauma / Mecanismo de chicote — risco de fratura cervical')">SIM</button><button class="yn-btn" onclick="setRF('rf1','nao',this)">NÃO</button></div>
+    </div>
+
+    <div class="form-group">
+      <div class="form-label">A dor é constante, piora muito à noite ao deitar, ou vem acompanhada de febre e perda de peso sem motivo?<small>Risco de tumor, infecção vertebral ou patologia não-mecânica</small></div>
+      <button class="nota-btn" onclick="toggleNota('n_rf2')">📋 Nota Técnica</button>
+      <div class="nota-box" id="n_rf2">Dor cervical constante com piora noturna que não melhora com repouso é padrão não-mecânico — característico de processos tumorais (metástase vertebral, tumor primário ósseo) ou infecciosos (discite, espondilodiscite, tuberculose vertebral). Febre + dor cervical = suspeita de meningite ou abscesso epidural. Encaminhar para avaliação médica urgente com RM.</div>
+      <div class="yn-group"><button class="yn-btn" onclick="setRF('rf2','sim',this,'Dor noturna constante / febre / perda de peso — suspeita de tumor ou infecção')">SIM</button><button class="yn-btn" onclick="setRF('rf2','nao',this)">NÃO</button></div>
+    </div>
+
+    <div class="form-group">
+      <div class="form-label">Fraqueza progressiva nos braços, dormência forte nas mãos, ou sensação de "mãos desajeitadas" (deixando cair objetos)?<small>Risco de mielopatia cervical ou radiculopatia severa</small></div>
+      <button class="nota-btn" onclick="toggleNota('n_rf3')">📋 Nota Técnica</button>
+      <div class="nota-box" id="n_rf3">Fraqueza progressiva de membros superiores + dificuldade de preensão (deixar cair objetos, dificuldade em abotoar roupa) são sinais clássicos de mielopatia cervical — compressão da medula espinhal. Diferente de radiculopatia (compressão de raiz nervosa única), a mielopatia afeta múltiplos dermátomos e miótomos. É progressiva e pode causar paraplegia se não tratada. Urgência neurológica.</div>
+      <div class="yn-group"><button class="yn-btn" onclick="setRF('rf3','sim',this,'Fraqueza progressiva / mãos desajeitadas — suspeita de mielopatia cervical')">SIM</button><button class="yn-btn" onclick="setRF('rf3','nao',this)">NÃO</button></div>
+    </div>
+
+    <div class="form-group" style="margin-bottom:0">
+      <div class="form-label">Dificuldade recente para caminhar (desequilíbrio), ou perda de controle de urina/fezes?<small>Sinal de mielopatia cervical avançada — urgência neurológica</small></div>
+      <button class="nota-btn" onclick="toggleNota('n_rf4')">📋 Nota Técnica</button>
+      <div class="nota-box" id="n_rf4">Alteração de marcha com desequilíbrio e disfunção esfincteriana em paciente com dor cervical indicam comprometimento medular extenso (tratos espinotalâmico e corticoespinal). Sinal de Lhermitte positivo (choque elétrico ao flexionar o pescoço) reforça a suspeita. É uma emergência neurocirúrgica. Qualquer fisioterapia remota está absolutamente contraindicada.</div>
+      <div class="yn-group"><button class="yn-btn" onclick="setRF('rf4','sim',this,'Desequilíbrio na marcha / perda de controle urinário — mielopatia avançada')">SIM</button><button class="yn-btn" onclick="setRF('rf4','nao',this)">NÃO</button></div>
+    </div>
+  </div>
+
+  <!-- ETAPA 2: CLASSIFICAÇÃO DA DOR -->
+  <div class="group-divider">
+    <div class="group-title">🔍 Etapa 2 — Mapeamento e Classificação da Dor</div>
+    <p style="font-size:0.84rem; color:var(--text-muted); margin-bottom:16px; line-height:1.6">Descartados os riscos, identificamos o padrão da dor para estratificar o grupo clínico.</p>
+
+    <div class="form-group">
+      <label class="form-label">Qual opção descreve melhor o que você sente?<small>Selecione a que mais se aproxima do seu caso</small></label>
+      <div class="radio-group" id="painPattern">
+        <div class="radio-opt" onclick="setRadio('padrao','mecanica',this)">
+          <div class="radio-dot"></div>
+          <div class="radio-text">
+            <strong>A — Dor localizada no pescoço, nuca e ombros</strong>
+            Sensação de peso, cansaço ou tensão que piora no fim do dia de trabalho. Piora com uso prolongado de telas ou celular. Não desce para o braço.
+          </div>
+        </div>
+        <div class="radio-opt" onclick="setRadio('padrao','braquialgia',this)">
+          <div class="radio-dot"></div>
+          <div class="radio-text">
+            <strong>B — Dor que desce pelo braço até o cotovelo, antebraço ou dedos</strong>
+            Sensação de choque elétrico, queimação ou formigamento que irradia do pescoço para o membro superior. Piora com movimentos do pescoço ou pressão no ombro.
+          </div>
+        </div>
+        <div class="radio-opt" onclick="setRadio('padrao','mista',this)">
+          <div class="radio-dot"></div>
+          <div class="radio-text">
+            <strong>C — Ambas: dor local no pescoço e irradiação para o braço</strong>
+            Componente local de tensão muscular com episódios de irradiação para o braço. Pode variar conforme a postura.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group" style="margin-bottom:0">
+      <label class="form-label">Alguma postura do trabalho piora a dor?<small>Síndrome do Text Neck e postura de telas</small></label>
+      <button class="nota-btn" onclick="toggleNota('n_postura')">📋 Nota Técnica</button>
+      <div class="nota-box" id="n_postura">A flexão cervical de 60° (olhar para o celular) equivale a ~27 kg de força sobre a coluna cervical. Em posição neutra, a carga é de apenas ~5 kg. Trabalhadores que passam mais de 6h/dia com telas têm prevalência de cervicalgia 3x maior. A síndrome do Text Neck é a principal causa de cervicalgia ocupacional atualmente — simples ajuste ergonômico tem impacto terapêutico imediato.</div>
+      <select class="form-select" id="posturaTrabalho">
+        <option value="tela_baixa">Sim — tela do computador abaixo da altura dos olhos</option>
+        <option value="celular">Sim — uso frequente de celular com cabeça inclinada para baixo</option>
+        <option value="posicao_fixa">Sim — posição fixa por longos períodos (mais de 45 min)</option>
+        <option value="multiplas">Sim — várias das situações acima</option>
+        <option value="nao">Não — sem relação clara com postura de trabalho</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- ETAPA 3: FASE CLÍNICA -->
+  <div class="group-divider">
+    <div class="group-title">📅 Etapa 3 — Fase Clínica e Sintomas Atuais</div>
+
+    <div class="form-row">
+      <div class="form-group" style="margin-bottom:0">
+        <label class="form-label">Fase da dor atual<small>Quando começou este episódio?</small></label>
+        <select class="form-select" id="faseClinica">
+          <option value="aguda">Aguda — começou há menos de 7 dias</option>
+          <option value="subaguda">Subaguda — entre 1 e 4 semanas</option>
+          <option value="cronica">Crônica / Recorrente — há mais de 1 mês ou episódios repetidos</option>
+        </select>
+      </div>
+      <div class="form-group" style="margin-bottom:0">
+        <label class="form-label">Intensidade da dor atual<small>Escala de 0 a 10</small></label>
+        <div class="slider-wrap" style="padding:12px 14px">
+          <div class="slider-track">
+            <input type="range" id="dorAtual" min="0" max="10" value="5" oninput="updateSlider(this,'sliderDor')">
+            <span class="slider-value" id="sliderDor">5</span>
+          </div>
+          <div class="slider-labels"><span>0 — Sem dor</span><span>10 — Pior dor</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Sintomas associados<small>Selecione todos que se aplicam</small></label>
+      <div style="display:flex; flex-wrap:wrap; gap:9px; background:var(--surface2); border:1px solid var(--border); border-radius:var(--radius-sm); padding:14px 16px;" id="checkSintomas">
+        <label class="check-item" onclick="toggleCheck(this)"><input type="checkbox" value="cefaleia"> <span>🤕 Cefaleia (dor de cabeça)</span></label>
+        <label class="check-item" onclick="toggleCheck(this)"><input type="checkbox" value="tontura"> <span>🌀 Tontura / vertigem</span></label>
+        <label class="check-item" onclick="toggleCheck(this)"><input type="checkbox" value="formigamento"> <span>⚡ Formigamento nos dedos</span></label>
+        <label class="check-item" onclick="toggleCheck(this)"><input type="checkbox" value="espasmo"> <span>💪 Espasmo muscular visível</span></label>
+        <label class="check-item" onclick="toggleCheck(this)"><input type="checkbox" value="limitacao_adm"> <span>🔄 Limitação de movimento do pescoço</span></label>
+        <label class="check-item" onclick="toggleCheck(this)"><input type="checkbox" value="dor_escapula"> <span>🫱 Dor na escápula / ombro</span></label>
+      </div>
+    </div>
+
+    <div class="form-group" style="margin-bottom:0">
+      <label class="form-label">Impacto no trabalho e nas AVDs</label>
+      <select class="form-select" id="impactoTrab">
+        <option value="sem_impacto">Sem impacto — trabalha normalmente</option>
+        <option value="com_dor">Com dor — trabalha mas com desconforto constante</option>
+        <option value="adaptado">Adaptado — precisa de pausas frequentes ou adaptações</option>
+        <option value="afastado">Afastado — dor impede o trabalho</option>
+      </select>
+    </div>
+  </div>
+
+  <button class="btn-generate" onclick="estratificar()">
+    <span>🎯</span> Estratificar e Gerar Conduta por Fase
+  </button>
+</div>
+
+<!-- ═══════════════ EMERGENCY ═══════════════ -->
+<div class="emergency-card" id="emergencyCard" style="display:none">
+  <div class="em-icon">🚨</div>
+  <h2 class="em-title">Red Flag Cervical Detectada</h2>
+  <p class="em-sub">O paciente apresentou sinal de alerta cervical. A fisioterapia por teleatendimento está <strong>contraindicada</strong> neste momento. Encaminhar para avaliação médica presencial.</p>
+  <div class="em-flags" id="emFlagsList"></div>
+  <div class="alert-box danger">⚠ <strong>Contraindicação absoluta:</strong> Nenhum exercício, mobilização ou técnica fisioterapêutica cervical deve ser realizada até avaliação médica com exame de imagem (RX, TC ou RM cervical).</div>
+  <div class="em-actions">
+    <button class="btn-danger">📞 Registrar Encaminhamento Médico</button>
+    <button class="btn-restart" onclick="reiniciar()">↺ Nova Avaliação</button>
+  </div>
+</div>
+
+<!-- ═══════════════ RESULT ═══════════════ -->
+<div class="section-card" id="resultCard" style="display:none">
+
+  <!-- Phase strip -->
+  <div class="phase-strip">
+    <div class="ph-item ph1" id="ph1">🔴 Fase 1 · Dor Aguda</div>
+    <div class="ph-item ph2" id="ph2">🟡 Fase 2 · Subaguda</div>
+    <div class="ph-item ph3" id="ph3">🟢 Fase 3 · Prevenção</div>
+  </div>
+
+  <div id="resultHeader">
+    <div class="result-badge" id="rBadge"></div>
+    <h2 class="result-title" id="rTitle"></h2>
+    <p class="result-subtitle" id="rSubtitle"></p>
+    <div class="pill-list" id="rContextPills" style="margin-top:12px"></div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- Protocol box -->
+  <div class="protocol-box" id="rProtocolBox">
+    <div class="protocol-box-title" id="rProtocolTitle"></div>
+    <p id="rProtocolText"></p>
+  </div>
+
+  <!-- Conduct -->
+  <div class="result-section-title">Condutas para a Fase Atual</div>
+  <div class="conduct-list" id="rConductList"></div>
+
+  <!-- Ergonomia alert -->
+  <div id="rErgoArea"></div>
+
+  <!-- Exercises -->
+  <div class="result-section-title" id="rExTitle">Exercícios Indicados</div>
+  <div class="exercise-list" id="rExList"></div>
+
+  <!-- Alerts -->
+  <div id="rAlertsArea"></div>
+
+  <div class="divider"></div>
+
+  <!-- FUNCTIONAL LIMITATION -->
+  <div class="result-section-title">📍 Limitação Funcional e Cuidados no Trabalho</div>
+  <div class="func-block" id="rFuncBlock">
+    <div class="func-header" id="rFuncHeader">
+      <span class="func-icon" id="rFuncIcon"></span>
+      <div>
+        <div class="func-label" id="rFuncLabel"></div>
+        <div class="func-title" id="rFuncTitle"></div>
+      </div>
+    </div>
+    <div class="func-body" id="rFuncBody"></div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- WhatsApp messages -->
+  <div class="result-section-title">💬 Mensagens para o Paciente (WhatsApp)</div>
+  <div class="msg-tabs">
+    <button class="msg-tab active" onclick="showMsg(0,this)">Triagem inicial</button>
+    <button class="msg-tab" onclick="showMsg(1,this)">Orientação ergonômica</button>
+    <button class="msg-tab" onclick="showMsg(2,this)">Monitoramento</button>
+    <button class="msg-tab" onclick="showMsg(3,this)">Envio de exercícios</button>
+  </div>
+  <div class="msg-box" id="rMsg"></div>
+  <button class="btn-copy" id="btnCopy" onclick="copiarMsg()">📋 Copiar para WhatsApp</button>
+
+  <div class="result-actions">
+    <button class="btn-print" onclick="window.print()">🖨 Imprimir</button>
+    <button class="btn-restart" onclick="reiniciar()">↺ Nova Avaliação</button>
+  </div>
+
+</div>
+</div>
+
+<script>
+// ══════════════════════════════════════════
+// STATE
+// ══════════════════════════════════════════
+const rfState = {};
+let currentMsgs = [];
+
+// ══════════════════════════════════════════
+// UTILS
+// ══════════════════════════════════════════
+function toggleNota(id) { document.getElementById(id).classList.toggle('open'); }
+
+function updateSlider(input, valId) {
+  const val = input.value;
+  document.getElementById(valId).textContent = val;
+  const pct = (val / 10) * 100;
+  input.style.background = `linear-gradient(to right,#1A7A8C 0%,#1A7A8C ${pct}%,#DDD8CF ${pct}%,#DDD8CF 100%)`;
+}
+
+document.addEventListener('DOMContentLoaded', () => updateSlider(document.getElementById('dorAtual'), 'sliderDor'));
+
+function toggleCheck(label) {
+  setTimeout(() => label.classList.toggle('checked', label.querySelector('input').checked), 10);
+}
+
+function setRF(key, val, btn, reason) {
+  rfState[key] = { val, reason };
+  btn.parentElement.querySelectorAll('.yn-btn').forEach(b => b.classList.remove('sel-sim','sel-nao'));
+  btn.classList.add(val === 'sim' ? 'sel-sim' : 'sel-nao');
+}
+
+function setRadio(key, val, el) {
+  window._radioState = window._radioState || {};
+  window._radioState[key] = val;
+  document.querySelectorAll('#painPattern .radio-opt').forEach(o => o.classList.remove('selected'));
+  el.classList.add('selected');
+}
+
+// ══════════════════════════════════════════
+// FUNCTIONAL LIMITATION DATABASE
+// ══════════════════════════════════════════
+const FUNC_DATA = {
+  sem_impacto: {
+    css: 'fl-leve', icon: '🟢',
+    label: 'Sem Limitação Funcional',
+    title: 'Trabalha normalmente — foco em prevenção e ergonomia',
+    items: [
+      { icon: '🖥️', title: 'Ajuste ergonômico imediato', text: 'Elevar monitor para altura dos olhos. Posicionar teclado na altura dos cotovelos. Trazer celular para a altura do rosto ao usar. Impacto terapêutico imediato.' },
+      { icon: '⏰', title: 'Pausas ativas a cada 45 minutos', text: 'Configurar alarme a cada 45 min para pausas de 2-3 min. Girar ombros para trás 10x, levantar, beber água. Previne progressão da dor.' },
+      { icon: '🧘', title: 'Exercícios preventivos no trabalho', text: 'Retração de queixo (queixo duplo) 10x a cada 2h. Alongamento axial sentado ("crescer" em direção ao teto) por 5s.' },
+    ],
+    reeval: 'Monitoramento quinzenal. Se surgir irradiação para o braço ou piora da dor, reavalie imediatamente.'
+  },
+  com_dor: {
+    css: 'fl-leve', icon: '🟡',
+    label: 'Trabalha com Dor',
+    title: 'Desconforto constante — adaptações urgentes necessárias',
+    items: [
+      { icon: '🖥️', title: 'Ajuste ergonômico urgente', text: 'Elevar tela com livros ou suporte. Usar teclado e mouse externos se notebook. Cada centímetro de elevação da tela reduz a carga na cervical.' },
+      { icon: '🌡️', title: 'Termoterapia no fim do dia', text: 'Compressa quente e úmida na região do trapézio e nuca por 20-30 min após o trabalho. Reduz espasmo e tensão acumulada.' },
+      { icon: '💼', title: 'Comunicar supervisor sobre adaptações', text: 'Orientar o paciente a solicitar ajustes ergonômicos formalmente. Pausas programadas são direito do trabalhador. Documentar o histórico de dor.' },
+    ],
+    reeval: 'Reavaliar em 1 semana. Se dor persistir acima de 6/10, considerar avaliação presencial e exame de imagem.'
+  },
+  adaptado: {
+    css: 'fl-moderada', icon: '🟠',
+    label: 'Limitação Moderada',
+    title: 'Trabalha com adaptações — risco de progressão',
+    items: [
+      { icon: '⚖️', title: 'Avaliação de afastamento parcial', text: 'Discutir com médico do trabalho necessidade de redução de jornada ou adaptação de função. Manter trabalho com dor severa agrava o quadro e prolonga recuperação.' },
+      { icon: '🤝', title: 'Suporte emocional e validação', text: 'Dor crônica cervical gera ansiedade e catastrofização. Validar o impacto, informar sobre o processo de melhora e reforçar que o tratamento está funcionando.' },
+      { icon: '🌡️', title: 'Controle da dor como prioridade', text: 'Focar em termoterapia, automassagem e exercícios de fase 1 antes de progredir. Dor controlada é pré-requisito para ergonomia eficaz.' },
+      { icon: '📋', title: 'Documentação para RH', text: 'Emitir declaração de acompanhamento fisioterapêutico. Registrar limitações e orientações para o setor de saúde ocupacional.' },
+    ],
+    reeval: 'Reavaliar semanalmente. Monitorar progressão para irradiação ou déficit motor.'
+  },
+  afastado: {
+    css: 'fl-severa', icon: '🔴',
+    label: 'Afastado do Trabalho',
+    title: 'Incapacidade laboral — conduta intensiva necessária',
+    items: [
+      { icon: '🏥', title: 'Avaliação médica presencial indicada', text: 'Afastamento por cervicalgia exige avaliação com RX ou RM cervical para descartar hérnia discal compressiva, estenose ou outras causas estruturais.' },
+      { icon: '💊', title: 'Manejo farmacológico adjuvante', text: 'Comunicar médico sobre necessidade de analgesia adequada. Relaxante muscular por curto prazo pode ser necessário. Fisioterapia e farmacologia são complementares.' },
+      { icon: '📋', title: 'Documentação para INSS', text: 'Orientar sobre documentação necessária para afastamento formal. Comunicar prazo esperado de retorno. Manter contato regular durante o afastamento.' },
+      { icon: '🧠', title: 'Saúde mental durante o afastamento', text: 'Afastamento prolongado por dor aumenta risco de depressão e síndrome de desuso. Manter atividade física geral permitida. Considerar encaminhamento para psicologia.' },
+    ],
+    reeval: 'Contato a cada 3 dias. Monitorar evolução e ajustar conduta conforme resultado de exames.'
+  }
+};
+
+// ══════════════════════════════════════════
+// EXERCISE DATABASE
+// ══════════════════════════════════════════
+function getExercises(grupo, fase) {
+  const all = {
+    fase1_ambos: [
+      { tag:'both', tagLabel:'Ambos os grupos', name:'Automassagem (liberação miofascial leve)', desc:'Deslizamento suave com as polpas dos dedos na região posterior do pescoço e trapézio durante o banho quente. 2-3 min. Reduz tensão e espasmo.' },
+      { tag:'both', tagLabel:'Ambos os grupos', name:'Mobilidade ativa suave de ombros', desc:'Girar os ombros para trás 10 vezes lentamente. Soltar a tensão torácica. 3 séries ao longo do dia.' },
+    ],
+    fase2_ambos: [
+      { tag:'both', tagLabel:'Ambos os grupos', name:'Mobilidade ativa de rotação', desc:'Girar a cabeça lentamente como se dissesse "NÃO". 10 repetições para cada lado, dentro do limite da dor. Sem forçar.' },
+      { tag:'both', tagLabel:'Ambos os grupos', name:'Mobilidade ativa de inclinação lateral', desc:'Encostar a orelha no ombro (sem levantar o ombro). 10 repetições para cada lado. Lento e controlado.' },
+    ],
+    fase2_g1: [
+      { tag:'g1t', tagLabel:'Grupo 1 — Mecânica', name:'Alongamento de trapézio e elevador da escápula', desc:'Puxar levemente a cabeça para o lado com a mão (orelha em direção ao ombro). Segurar 15-30 segundos. 3 repetições para cada lado. Deve gerar "puxão" leve, nunca dor aguda.' },
+    ],
+    fase2_g2: [
+      { tag:'g2t', tagLabel:'Grupo 2 — Cervicobraquialgia', name:'Retração de queixo ("queixo duplo")', desc:'Retrair o queixo para trás (fazer queixo duplo) sem inclinar a cabeça para baixo. 10 repetições. Alinha a cervical e descomprime o forame neural. NÃO puxar a cabeça para o lado oposto da dor.' },
+    ],
+    fase3_ambos: [
+      { tag:'both', tagLabel:'Ambos os grupos', name:'Isometria de flexão', desc:'Colocar a palma da mão na testa e empurrar a cabeça contra a mão SEM gerar movimento. Manter 5 segundos. 10 repetições. Fortalece flexores profundos.' },
+      { tag:'both', tagLabel:'Ambos os grupos', name:'Isometria de extensão', desc:'Colocar a palma da mão na nuca e empurrar contra ela sem gerar movimento. 5 segundos, 10 repetições. Fortalece extensores.' },
+      { tag:'both', tagLabel:'Ambos os grupos', name:'Isometria lateral', desc:'Mão na lateral da cabeça, empurrar contra ela sem gerar movimento. 5 segundos, 10 repetições para cada lado.' },
+      { tag:'both', tagLabel:'Ambos os grupos', name:'Alongamento axial sentado (postural)', desc:'Sentado, "crescer" a coluna em direção ao teto por 5 segundos. Ativa musculatura profunda cervical e torácica. 10 repetições, 3x ao dia.' },
+    ],
+  };
+
+  let exercises = [];
+  if (fase === 'aguda') { exercises = [...all.fase1_ambos]; }
+  else if (fase === 'subaguda') {
+    exercises = [...all.fase2_ambos];
+    if (grupo === 'mecanica' || grupo === 'mista') exercises = [...exercises, ...all.fase2_g1];
+    if (grupo === 'braquialgia' || grupo === 'mista') exercises = [...exercises, ...all.fase2_g2];
+  } else {
+    exercises = [...all.fase3_ambos];
+    if (grupo === 'mecanica' || grupo === 'mista') exercises = [all.fase2_g1[0], ...exercises];
+    if (grupo === 'braquialgia' || grupo === 'mista') exercises = [all.fase2_g2[0], ...exercises];
+  }
+  return exercises;
+}
+
+// ══════════════════════════════════════════
+// STRATIFICATION ENGINE
+// ══════════════════════════════════════════
+function estratificar() {
+  const flags = Object.entries(rfState).filter(([k,v]) => v.val === 'sim');
+  if (flags.length > 0) { showEmergency(flags); return; }
+
+  const padrao = window._radioState?.padrao || 'mecanica';
+  const fase = document.getElementById('faseClinica').value;
+  const dor = parseInt(document.getElementById('dorAtual').value);
+  const postura = document.getElementById('posturaTrabalho').value;
+  const impacto = document.getElementById('impactoTrab').value;
+  const sintomas = [...document.querySelectorAll('#checkSintomas input:checked')].map(i => i.value);
+
+  renderResult({ padrao, fase, dor, postura, impacto, sintomas });
+}
+
+// ══════════════════════════════════════════
+// SHOW EMERGENCY
+// ══════════════════════════════════════════
+function showEmergency(flags) {
+  document.getElementById('formCard').style.display = 'none';
+  const ec = document.getElementById('emergencyCard');
+  ec.style.display = 'block';
+  document.getElementById('emFlagsList').innerHTML = flags.map(([k,v]) => `
+    <div class="em-flag"><span>⚠</span><div><strong>Red Flag:</strong> ${v.reason}</div></div>`).join('');
+  window.scrollTo({ top:0, behavior:'smooth' });
+}
+
+// ══════════════════════════════════════════
+// RENDER RESULT
+// ══════════════════════════════════════════
+function renderResult({ padrao, fase, dor, postura, impacto, sintomas }) {
+  const rc = document.getElementById('resultCard');
+  rc.style.display = 'block';
+
+  // Phase strip
+  document.querySelectorAll('.ph-item').forEach(e => e.classList.remove('active'));
+  const phaseMap = { aguda:'ph1', subaguda:'ph2', cronica:'ph3' };
+  document.getElementById(phaseMap[fase] || 'ph1').classList.add('active');
+
+  // Group config
+  const isG2 = padrao === 'braquialgia';
+  const isMista = padrao === 'mista';
+  const groupLabel = isG2 ? 'g2' : 'g1';
+  const groupClass = isG2 ? 'rg2' : 'rg1';
+
+  const rh = document.getElementById('resultHeader');
+  rh.className = groupClass;
+  rc.className = 'section-card';
+
+  const badges = {
+    mecanica:   '🟦 Grupo 1 — Cervicalgia Mecânica / Postural',
+    braquialgia:'🟣 Grupo 2 — Cervicobraquialgia (Radiculopatia)',
+    mista:      '🔀 Componente Misto — Mecânico + Radicular',
+  };
+  const titles = {
+    mecanica:    'Hiperatividade Muscular e Síndrome do Text Neck',
+    braquialgia: 'Irritação Radicular — Forame Neural Comprometido',
+    mista:       'Padrão Misto — Espasmo Muscular com Componente Radicular',
+  };
+  const subs = {
+    mecanica:    'Tensão, espasmo e pontos-gatilho dos músculos cervicais, trapézio e elevador da escápula. Padrão postural por uso de telas. Excelente resposta a termoterapia, ergonomia e exercícios de controle motor.',
+    braquialgia: 'Irritação ou compressão de raiz nervosa cervical (radiculopatia). Exige cuidado com extremos de movimento. Foco na abertura do forame neural. Evitar tração e rotações forçadas.',
+    mista:       'Componente de espasmo muscular associado a episódios de irradiação radicular. Protocolo híbrido com atenção especial na fase de exercícios para não provocar periferização dos sintomas.',
+  };
+
+  document.getElementById('rBadge').textContent    = badges[padrao];
+  document.getElementById('rTitle').textContent    = titles[padrao];
+  document.getElementById('rSubtitle').textContent = subs[padrao];
+
+  // Context pills
+  const faseLabel = { aguda:'Fase aguda', subaguda:'Fase subaguda', cronica:'Fase crônica' };
+  const posturaLabel = postura === 'nao' ? null : 'Postura de trabalho envolvida';
+  const pills = [faseLabel[fase], `Dor ${dor}/10`, ...sintomas.map(s => s)].filter(Boolean);
+  if (posturaLabel) pills.push(posturaLabel);
+  document.getElementById('rContextPills').innerHTML = pills.map(p => `<span class="pill">${p}</span>`).join('');
+
+  // Protocol box
+  const pb = document.getElementById('rProtocolBox');
+  pb.className = 'protocol-box ' + groupLabel;
+  const phaseProtocols = {
+    aguda: { title:'Fase 1 — Controle da Dor e Relaxamento', text: isG2 ? 'Objetivo: reduzir a irritação radicular e o espasmo muscular compensatório. EVITAR tração, rotações forçadas e alongamentos que causem periferização (dor desce para o braço). Focar em calor local, repouso relativo e retração de queixo suave.' : 'Objetivo: reduzir o espasmo muscular, aliviar a dor aguda e introduzir ergonomia básica. Compressa quente, automassagem leve e ajuste imediato da estação de trabalho. Repouso relativo com pausas ativas.' },
+    subaguda: { title:'Fase 2 — Recuperação de Mobilidade', text: isG2 ? 'Objetivo: restaurar amplitude de movimento sem provocar irradiação para o braço. Retração de queixo é o exercício central. EVITAR alongamentos que tracionem a raiz nervosa (puxar cabeça para o lado oposto da dor). Progressão gradual.' : 'Objetivo: restaurar a amplitude de movimento sem dor e alongar a musculatura encurtada. Exercícios de mobilidade ativa (rotação, inclinação) e alongamento do trapézio e elevador da escápula.' },
+    cronica: { title:'Fase 3 — Fortalecimento e Prevenção de Recidivas', text:'Objetivo: fortalecimento isométrico dos músculos profundos cervicais, reeducação postural global e estratégias de prevenção de recidivas no ambiente de trabalho. Isometria de flexão, extensão e lateralização.' },
+  };
+  document.getElementById('rProtocolTitle').textContent = phaseProtocols[fase].title;
+  document.getElementById('rProtocolText').textContent  = phaseProtocols[fase].text;
+
+  // Conducts by phase
+  const conducts = {
+    aguda: [
+      { icon:'🌡️', title:'Termoterapia (compressa quente e úmida)', text:'Aplicar na região do trapézio e nuca por 20-30 minutos. Pode repetir 2-3x ao dia. Relaxa espasmo, melhora circulação local e reduz dor. Não usar calor se houver edema ou rubor local.' },
+      { icon:'🛋️', title:'Repouso relativo', text:'Evitar sustentar pesos, posições fixas por mais de 45 minutos e movimentos bruscos. O repouso absoluto prolonga a dor — manter mobilidade suave é terapêutico.' },
+      { icon:'🖥️', title:'Ajuste ergonômico imediato', text:'Elevar monitor à altura dos olhos. Trazer celular para a altura do rosto. Cada grau de flexão cervical reduzido alivia quilos de pressão sobre a coluna.' },
+      ...(isG2 ? [{ icon:'🚫', title:'Evitar movimentos que periferizam a dor', text:'Se ao girar o pescoço a dor desce mais para o braço (periferização), esse movimento está PROIBIDO. Só manter movimentos que centralizam ou não alteram os sintomas.' }] : []),
+    ],
+    subaguda: [
+      { icon:'🔄', title:'Progressão cautelosa da amplitude', text:'Iniciar exercícios de mobilidade dentro do limite indolor. A regra de ouro: "leve puxão" é permitido, dor aguda ou pontada indica parar.' },
+      { icon:'🖥️', title:'Reforçar ergonomia no trabalho', text:'Verificar se os ajustes da Fase 1 foram mantidos. Adicionar suporte lombar se necessário. Usar despertador para pausas ativas a cada 45 minutos.' },
+      { icon:'📈', title:'Monitorar resposta aos exercícios', text:'Após cada exercício, verificar se a dor piorou ou melhorou nas próximas horas. Padrão esperado: leve cansaço muscular que some em até 24h.' },
+    ],
+    cronica: [
+      { icon:'💪', title:'Fortalecimento isométrico progressivo', text:'Isometria em flexão, extensão e lateralização. Iniciar com 5s de contração, progredir para 10s. Não gerar movimento. 10 repetições, 2-3x por semana.' },
+      { icon:'🧍', title:'Reeducação postural global', text:'Trabalhar postura sentada, de pé e durante o uso de dispositivos. O hábito postural correto é mais eficaz que qualquer exercício isolado na prevenção de recidivas.' },
+      { icon:'🏃', title:'Estimular atividade física regular', text:'Natação, pilates e yoga são excelentes para cervicalgia crônica. Exercício aeróbico reduz a inflamação sistêmica de baixo grau associada à dor crônica.' },
+      { icon:'📚', title:'Educação em neurociência da dor', text:'Explicar ao paciente que dor cervical crônica envolve sensibilização central. O movimento é seguro e necessário. Desmistificar o medo do movimento (cinesiofobia).' },
+    ],
+  };
+  document.getElementById('rConductList').innerHTML = (conducts[fase] || []).map(c => `
+    <div class="conduct-item">
+      <span class="conduct-icon">${c.icon}</span>
+      <div class="conduct-text"><strong>${c.title}</strong>${c.text}</div>
+    </div>`).join('');
+
+  // Ergonomia callout
+  if (postura !== 'nao') {
+    document.getElementById('rErgoArea').innerHTML = `
+      <div class="alert-box warning">
+        📐 <strong>Síndrome do Text Neck identificada:</strong> Flexão cervical de 60° ao olhar para o celular equivale a ~27 kg de pressão na coluna cervical. Ajuste ergonômico imediato é parte do tratamento — não apenas prevenção.
+        <br><br>
+        <strong>Ações imediatas:</strong> Elevar monitor à altura dos olhos · Trazer celular para a altura do rosto · Alarme a cada 45 min para pausa ativa · Teclado e mouse externos se notebook
+      </div>`;
+  } else { document.getElementById('rErgoArea').innerHTML = ''; }
+
+  // Exercises
+  const exs = getExercises(padrao, fase);
+  const colorMap = { g1t:'g1c', g2t:'g2c', both:'g1c' };
+  document.getElementById('rExList').innerHTML = exs.map((e,i) => `
+    <div class="exercise-item">
+      <div class="ex-num ${colorMap[e.tag]}">${i+1}</div>
+      <p><span class="ex-tag ${e.tag}">${e.tagLabel}</span><strong>${e.name}</strong>${e.desc}</p>
+    </div>`).join('');
+
+  // Alerts
+  let alerts = [];
+  if (sintomas.includes('tontura')) alerts.push({ type:'warning', text:'⚠ <strong>Tontura / vertigem:</strong> Pode indicar comprometimento vértebro-basilar ou VPPB. Evitar extensão cervical rápida. Testar posicionamento antes de avançar para mobilizações.' });
+  if (sintomas.includes('cefaleia') && isG2) alerts.push({ type:'info', text:'ℹ <strong>Cefaleia cervicogênica:</strong> Comum na cervicobraquialgia. Costuma melhorar com a redução da irritação radicular. Retração de queixo e termoterapia têm boa resposta.' });
+  if (padrao === 'braquialgia' && fase === 'subaguda') alerts.push({ type:'danger', text:'⚠ <strong>Grupo 2 — Regra de ouro:</strong> Qualquer exercício ou postura que faça a dor DESCER para o braço (periferização) está PROIBIDO. Manter somente o que centraliza ou não altera os sintomas.' });
+  if (dor >= 7 && fase === 'cronica') alerts.push({ type:'warning', text:'⚠ <strong>Dor intensa em fase crônica (≥7/10):</strong> Considerar investigação de causa estrutural (RM cervical) antes de progredir para fortalecimento. Dor intensa persistente pode indicar hérnia discal compressiva.' });
+  document.getElementById('rAlertsArea').innerHTML = alerts.map(a => `<div class="alert-box ${a.type}">${a.text}</div>`).join('');
+
+  // Functional limitation
+  const fd = FUNC_DATA[impacto] || FUNC_DATA['sem_impacto'];
+  const fhdr = document.getElementById('rFuncHeader');
+  fhdr.className = 'func-header ' + fd.css;
+  document.getElementById('rFuncIcon').textContent  = fd.icon;
+  document.getElementById('rFuncLabel').textContent = fd.label;
+  document.getElementById('rFuncTitle').textContent = fd.title;
+  document.getElementById('rFuncLabel').className   = 'func-label';
+  document.getElementById('rFuncTitle').className   = 'func-title';
+  document.getElementById('rFuncBody').innerHTML =
+    fd.items.map(item => `
+      <div class="func-item">
+        <span class="func-item-icon">${item.icon}</span>
+        <div class="func-item-text"><strong>${item.title}</strong>${item.text}</div>
+      </div>`).join('')
+    + `<div class="func-reeval"><span>⏱</span><span>${fd.reeval}</span></div>`;
+
+  // Messages
+  const grupoLabel = padrao === 'mecanica' ? 'mecânica/postural' : padrao === 'braquialgia' ? 'com irradiação para o braço' : 'com componente misto';
+  currentMsgs = [
+    `Olá! Para iniciarmos seu atendimento com toda a segurança, preciso te fazer algumas perguntas de rotina. Responda Sim ou Não:\n\n1. Essa dor começou após algum acidente ou batida forte no pescoço?\n2. A dor piora muito à noite ou vem com febre e perda de peso?\n3. Você sente fraqueza nos braços ou suas mãos estão desajeitadas?\n4. Notou dificuldade para caminhar ou perda de controle de urina/fezes?`,
+    `Entendi o seu caso! A sua dor cervical é ${grupoLabel} e está muito ligada à postura sustentada durante o trabalho.\n\nNosso primeiro passo:\n\n• Eleve seu monitor com livros ou suporte para que a tela fique na altura dos olhos\n• Traga o celular para a altura do rosto ao usar\n• Aplique compressa quente na nuca e ombros por 20 minutos no fim do dia\n• Configure um alarme a cada 1 hora: levante, beba água e gire os ombros para trás 10 vezes\n\nFaça isso hoje e amanhã me conta como se sentiu!`,
+    `Bom dia! De 0 a 10, como está a dor no pescoço hoje ao acordar e ao trabalhar?\nAs compressas quentes aliviaram o peso nos ombros?\nEstá conseguindo fazer as pausas de 1 hora?\n\nMe conta para ajustarmos a conduta!`,
+    `Como a sua dor já diminuiu, hoje vamos devolver o movimento para o pescoço!\n\nEstou enviando os exercícios indicados para o seu caso. Faça sentado, com a coluna reta.\n\nRegra de ouro: deve gerar um leve "puxão" — nunca dor aguda ou pontada. ${padrao === 'braquialgia' ? '\n\n⚠ IMPORTANTE: Se sentir dor descer para o braço durante algum exercício, PARE e me avise.' : ''}\n\nFaça 3 séries de cada, 1-2x ao dia.`,
+  ];
+  showMsg(0, document.querySelector('.msg-tab'));
+
+  rc.scrollIntoView({ behavior:'smooth', block:'start' });
+}
+
+// ══════════════════════════════════════════
+// MESSAGE TABS
+// ══════════════════════════════════════════
+function showMsg(idx, btn) {
+  document.querySelectorAll('.msg-tab').forEach(t => t.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  document.getElementById('rMsg').textContent = currentMsgs[idx] || '';
+  const bc = document.getElementById('btnCopy');
+  bc.textContent = '📋 Copiar para WhatsApp';
+  bc.classList.remove('copied');
+}
+
+function copiarMsg() {
+  navigator.clipboard.writeText(document.getElementById('rMsg').textContent).then(() => {
+    const btn = document.getElementById('btnCopy');
+    btn.textContent = '✅ Copiado!';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = '📋 Copiar para WhatsApp'; btn.classList.remove('copied'); }, 2200);
+  });
+}
+
+// ══════════════════════════════════════════
+// REINICIAR
+// ══════════════════════════════════════════
+function reiniciar() {
+  document.getElementById('resultCard').style.display = 'none';
+  document.getElementById('emergencyCard').style.display = 'none';
+  document.getElementById('formCard').style.display = 'block';
+  Object.keys(rfState).forEach(k => delete rfState[k]);
+  if (window._radioState) window._radioState = {};
+  document.querySelectorAll('.yn-btn').forEach(b => b.classList.remove('sel-sim','sel-nao'));
+  document.querySelectorAll('.radio-opt').forEach(o => o.classList.remove('selected'));
+  document.querySelectorAll('.check-item').forEach(el => { el.classList.remove('checked'); el.querySelector('input').checked = false; });
+  document.getElementById('dorAtual').value = 5;
+  updateSlider(document.getElementById('dorAtual'), 'sliderDor');
+  document.getElementById('formCard').scrollIntoView({ behavior:'smooth', block:'start' });
+}
+</script>
+</body>
+</html>

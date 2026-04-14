@@ -230,3 +230,105 @@ Sub-classificação da cor de Manchester dentro do Grupo 2:
 ---
 
 **REGRA GERAL:** Uma única Red Flag sempre classifica como Grupo 1, independente de todos os outros dados. A intensidade da dor e a capacidade funcional são critérios complementares — não substitutos das Red Flags.
+
+
+==============================
+CERVICALGIA
+==============================
+
+---
+
+**PROTOCOLO DE CERVICALGIA — CRITÉRIOS DE ESTRATIFICAÇÃO**
+*Referência para anotações clínicas*
+
+---
+
+**LÓGICA DE PRIORIDADE**
+Etapa 1 (Red Flags) é verificada primeiro. Qualquer SIM = emergência, sem estratificação de grupo. Se todos forem NÃO, a Etapa 2 classifica o grupo clínico. A Etapa 3 determina a fase e a conduta específica dentro do grupo.
+
+---
+
+**🚨 EMERGÊNCIA — Red Flags (qualquer SIM contraindicada a fisioterapia remota)**
+
+Etapa 1 — resposta SIM em qualquer pergunta abaixo encerra o atendimento remoto:
+
+- A dor começou após acidente, batida forte ou movimento brusco tipo "chicote" no pescoço? → Risco de fratura cervical ou lesão ligamentar instável
+- A dor é constante, piora muito à noite ao deitar, ou vem acompanhada de febre e perda de peso sem motivo? → Risco de tumor ou infecção vertebral
+- Fraqueza progressiva nos braços, dormência forte nas mãos, ou sensação de "mãos desajeitadas" (deixando cair objetos)? → Risco de mielopatia cervical ou radiculopatia severa
+- Dificuldade recente para caminhar (desequilíbrio) ou perda de controle de urina/fezes? → Mielopatia cervical avançada — urgência neurológica
+
+---
+
+**🟦 GRUPO 1 — Cervicalgia Mecânica / Postural**
+
+Ativado pela resposta A na Etapa 2:
+
+- Padrão de dor: "A — Dor localizada no pescoço, nuca e ombros"
+  - Sensação de peso, cansaço ou tensão que piora no fim do dia de trabalho
+  - Piora com uso prolongado de telas ou celular
+  - A dor NÃO desce para o braço
+- Postura de trabalho: qualquer opção diferente de "Não — sem relação com postura" reforça o Grupo 1 e ativa o alerta de Text Neck
+
+Perfil clínico típico: tensão e espasmo do trapézio, elevador da escápula e músculos suboccipitais. Pontos-gatilho. Síndrome do Text Neck por uso de telas. Excelente resposta a termoterapia, ergonomia e controle motor.
+
+---
+
+**🟣 GRUPO 2 — Cervicobraquialgia (Radiculopatia Cervical)**
+
+Ativado pela resposta B na Etapa 2:
+
+- Padrão de dor: "B — Dor que desce pelo braço até o cotovelo, antebraço ou dedos"
+  - Sensação de choque elétrico, queimação ou formigamento
+  - Irradia do pescoço para o membro superior
+  - Piora com movimentos do pescoço ou pressão no ombro
+
+Perfil clínico típico: irritação ou compressão de raiz nervosa cervical (radiculopatia). Exige cuidado com extremos de movimento. Foco na abertura do forame neural. Regra de ouro: qualquer movimento que faça a dor DESCER para o braço (periferização) está proibido.
+
+---
+
+**🔀 COMPONENTE MISTO**
+
+Ativado pela resposta C na Etapa 2:
+
+- Padrão de dor: "C — Ambas: dor local no pescoço e irradiação para o braço"
+  - Componente local de tensão muscular com episódios de irradiação para o braço
+  - Pode variar conforme a postura
+
+Protocolo híbrido: recebe exercícios de ambos os grupos com atenção especial para não provocar periferização durante os exercícios do Grupo 1.
+
+---
+
+**📅 DETERMINAÇÃO DA FASE CLÍNICA (Etapa 3)**
+
+A fase define qual conduta e quais exercícios serão gerados dentro do grupo:
+
+- "Aguda — começou há menos de 7 dias" → Fase 1: termoterapia, automassagem, ergonomia, repouso relativo. SEM exercícios de amplitude forçada.
+- "Subaguda — entre 1 e 4 semanas" → Fase 2: recuperação da mobilidade. Rotação e inclinação lateral suaves. Alongamento de trapézio (Grupo 1) ou retração de queixo (Grupo 2).
+- "Crônica / Recorrente — há mais de 1 mês ou episódios repetidos" → Fase 3: fortalecimento isométrico (flexão, extensão e lateralização), reeducação postural global, prevenção de recidivas.
+
+---
+
+**📍 DETERMINAÇÃO DA LIMITAÇÃO FUNCIONAL (Etapa 3)**
+*(resposta ao seletor de impacto no trabalho)*
+
+- "Sem impacto — trabalha normalmente" → Verde: ajuste ergonômico, pausas ativas, exercícios preventivos. Monitoramento quinzenal.
+- "Com dor — trabalha mas com desconforto constante" → Verde-Amarelo: ajuste ergonômico urgente, termoterapia, comunicar supervisor. Reavaliar em 1 semana.
+- "Adaptado — precisa de pausas frequentes ou adaptações" → Amarelo/Laranja: avaliar afastamento parcial, suporte emocional, controlar a dor antes de progredir. Reavaliar semanalmente.
+- "Afastado — dor impede o trabalho" → Vermelho: avaliação médica presencial indicada, RM cervical, documentação para INSS, suporte para saúde mental. Contato a cada 3 dias.
+
+---
+
+**TABELA RESUMO**
+
+| Pergunta / Campo | Emergência | Grupo 1 | Grupo 2 | Misto |
+|---|---|---|---|---|
+| Red Flags (Etapa 1) | Qualquer SIM | Todos NÃO | Todos NÃO | Todos NÃO |
+| Padrão de dor (Etapa 2) | — | Opção A | Opção B | Opção C |
+| Dor desce para o braço | — | NÃO | SIM | Às vezes |
+| Fase aguda → conduta | — | Fase 1 | Fase 1 | Fase 1 |
+| Fase subaguda → conduta | — | Fase 2 + alongamento trapézio | Fase 2 + retração de queixo | Fase 2 + ambos |
+| Fase crônica → conduta | — | Fase 3 + isometria | Fase 3 + isometria | Fase 3 + isometria |
+
+---
+
+**REGRA GERAL — GRUPO 2:** Nunca prescrever alongamento puxando a cabeça para o lado oposto da dor (estira o nervo já irritado). O exercício central é a retração de queixo. Qualquer periferização (dor desce mais para o braço) durante o exercício = exercício proibido imediatamente.
