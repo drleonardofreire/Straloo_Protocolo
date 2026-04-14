@@ -1,0 +1,862 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Straloo — Triagem de Urgências Ortopédicas</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #F2EFE9;
+    --surface: #FFFFFF;
+    --surface2: #F8F6F2;
+    --primary: #0E4D5C;
+    --primary-light: #1A7A8C;
+    --accent: #E8A84C;
+    --accent-dark: #C8882C;
+    --danger: #C0392B;
+    --danger-light: #FDECEB;
+    --warning: #D68910;
+    --warning-light: #FEF9EC;
+    --warning-mid: #F39C12;
+    --success: #1A7A5C;
+    --success-light: #E8F5F0;
+    --success-mid: #27AE60;
+    --manchester-red: #C0392B;
+    --manchester-red-bg: #FDECEB;
+    --manchester-orange: #D35400;
+    --manchester-orange-bg: #FEF0E6;
+    --manchester-yellow: #D68910;
+    --manchester-yellow-bg: #FEF9EC;
+    --manchester-green: #1A7A5C;
+    --manchester-green-bg: #E8F5F0;
+    --text: #1A2530;
+    --text-muted: #6B7A85;
+    --border: #DDD8CF;
+    --shadow: 0 4px 24px rgba(14,77,92,0.10);
+    --radius: 16px;
+    --radius-sm: 8px;
+    --transition: all 0.32s cubic-bezier(0.4,0,0.2,1);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; overflow-x: hidden; }
+
+  /* ─── HEADER ─── */
+  .header { background: var(--primary); padding: 18px 32px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 16px rgba(0,0,0,0.18); }
+  .header-left { display: flex; align-items: center; gap: 18px; }
+  .btn-home { display: inline-flex; align-items: center; gap: 6px; font-family: 'DM Sans', sans-serif; font-size: 0.78rem; font-weight: 600; color: rgba(255,255,255,0.6); background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); border-radius: 50px; padding: 5px 14px; text-decoration: none; transition: var(--transition); letter-spacing: 0.03em; }
+  .btn-home:hover { color: white; background: rgba(255,255,255,0.14); border-color: rgba(255,255,255,0.3); }
+  .logo { font-family: 'DM Serif Display', serif; font-size: 1.6rem; color: #FFF; letter-spacing: 0.02em; }
+  .logo span { color: var(--accent); }
+  .header-badge { font-size: 0.72rem; font-weight: 600; color: var(--accent); background: rgba(232,168,76,0.15); border: 1px solid rgba(232,168,76,0.35); border-radius: 50px; padding: 4px 12px; letter-spacing: 0.08em; text-transform: uppercase; }
+
+  /* ─── MAIN ─── */
+  .main { max-width: 820px; margin: 0 auto; padding: 40px 20px 80px; }
+
+  /* ─── CARDS ─── */
+  .section-card { background: var(--surface); border-radius: var(--radius); padding: 40px 44px; box-shadow: var(--shadow); margin-bottom: 24px; animation: fadeUp 0.4s ease both; }
+  @keyframes fadeUp { from { opacity:0; transform:translateY(16px); } to { opacity:1; transform:translateY(0); } }
+  .section-tag { display: inline-flex; align-items: center; gap: 6px; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--primary); background: rgba(14,77,92,0.08); border-radius: 50px; padding: 4px 12px; margin-bottom: 12px; }
+  .section-tag.danger-tag { color: var(--danger); background: var(--danger-light); }
+  .section-title { font-family: 'DM Serif Display', serif; font-size: 1.7rem; color: var(--primary); line-height: 1.25; margin-bottom: 6px; }
+  .section-subtitle { font-size: 0.88rem; color: var(--text-muted); line-height: 1.65; margin-bottom: 28px; }
+  .intro-msg { background: rgba(14,77,92,0.04); border-left: 3px solid var(--primary-light); border-radius: 0 var(--radius-sm) var(--radius-sm) 0; padding: 12px 16px; font-size: 0.85rem; color: #34505A; line-height: 1.65; margin-bottom: 24px; font-style: italic; }
+  .intro-msg strong { font-style: normal; font-size: 0.72rem; letter-spacing: 0.07em; text-transform: uppercase; display: block; margin-bottom: 4px; color: var(--primary-light); }
+
+  /* ─── GROUP DIVIDER ─── */
+  .group-divider { background: var(--surface2); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 20px 22px; margin: 24px 0; }
+  .group-title { font-size: 0.75rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 16px; padding-bottom: 8px; border-bottom: 1px solid var(--border); }
+
+  /* ─── FORM ─── */
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px; }
+  .form-group { margin-bottom: 20px; }
+  .form-label { display: block; font-size: 0.88rem; font-weight: 600; color: var(--text); margin-bottom: 7px; line-height: 1.45; }
+  .form-label small { display: block; font-weight: 400; color: var(--text-muted); font-size: 0.8rem; margin-top: 2px; }
+  .form-input, .form-select { width: 100%; padding: 11px 14px; border: 2px solid var(--border); border-radius: var(--radius-sm); background: var(--surface); color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 0.9rem; outline: none; transition: var(--transition); appearance: none; }
+  .form-select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%236B7A85' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 14px center; padding-right: 36px; }
+  .form-input:focus, .form-select:focus { border-color: var(--primary-light); box-shadow: 0 0 0 3px rgba(26,122,140,0.12); }
+  .form-input::placeholder { color: var(--text-muted); }
+  .form-textarea { width: 100%; padding: 11px 14px; border: 2px solid var(--border); border-radius: var(--radius-sm); background: var(--surface); color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 0.9rem; outline: none; transition: var(--transition); resize: vertical; min-height: 72px; }
+  .form-textarea:focus { border-color: var(--primary-light); box-shadow: 0 0 0 3px rgba(26,122,140,0.12); }
+
+  /* ─── PAIN SLIDER ─── */
+  .slider-wrap { background: var(--surface2); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 16px 18px; }
+  .slider-track { display: flex; align-items: center; gap: 16px; margin-bottom: 10px; }
+  .slider-track input[type="range"] { flex: 1; -webkit-appearance: none; appearance: none; height: 6px; border-radius: 3px; outline: none; cursor: pointer; }
+  .slider-track input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 22px; height: 22px; border-radius: 50%; background: var(--primary); border: 3px solid white; box-shadow: 0 2px 8px rgba(14,77,92,0.3); cursor: pointer; transition: var(--transition); }
+  .slider-track input[type="range"]::-webkit-slider-thumb:hover { background: var(--primary-light); transform: scale(1.15); }
+  .slider-value { font-family: 'DM Serif Display', serif; font-size: 2rem; color: var(--primary); min-width: 40px; text-align: center; line-height: 1; }
+  .slider-labels { display: flex; justify-content: space-between; font-size: 0.72rem; color: var(--text-muted); }
+
+  /* ─── YES/NO BUTTONS ─── */
+  .yn-group { display: flex; gap: 10px; }
+  .yn-btn { flex: 1; padding: 11px; border-radius: var(--radius-sm); border: 2px solid var(--border); background: transparent; font-family: 'DM Sans', sans-serif; font-size: 0.88rem; font-weight: 600; cursor: pointer; transition: var(--transition); color: var(--text-muted); }
+  .yn-btn:hover { border-color: var(--primary-light); color: var(--primary); }
+  .yn-btn.sel-sim { border-color: var(--danger); background: var(--danger-light); color: var(--danger); }
+  .yn-btn.sel-nao { border-color: var(--success); background: var(--success-light); color: var(--success); }
+
+  /* ─── CHECK PILLS ─── */
+  .check-grid { display: flex; flex-wrap: wrap; gap: 9px; background: var(--surface2); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 14px 16px; }
+  .check-item { display: flex; align-items: center; gap: 7px; padding: 6px 13px; border-radius: 50px; border: 2px solid var(--border); background: var(--surface); cursor: pointer; transition: var(--transition); user-select: none; font-size: 0.84rem; font-weight: 500; color: var(--text-muted); }
+  .check-item:hover { border-color: var(--primary-light); color: var(--text); }
+  .check-item.checked { border-color: var(--primary); background: rgba(14,77,92,0.07); color: var(--primary); font-weight: 600; }
+  .check-item input { display: none; }
+
+  /* ─── RADIO PILLS ─── */
+  .radio-inline { display: flex; gap: 9px; flex-wrap: wrap; }
+  .radio-pill { display: flex; align-items: center; gap: 7px; padding: 9px 18px; border-radius: 50px; border: 2px solid var(--border); background: transparent; cursor: pointer; transition: var(--transition); user-select: none; font-size: 0.84rem; font-weight: 500; color: var(--text-muted); }
+  .radio-pill:hover { border-color: var(--primary-light); color: var(--text); }
+  .radio-pill.selected { border-color: var(--primary); background: rgba(14,77,92,0.07); color: var(--primary); font-weight: 600; }
+  .radio-pill input { display: none; }
+
+  /* ─── NOTA TÉCNICA ─── */
+  .nota-btn { display: inline-flex; align-items: center; gap: 5px; font-size: 0.74rem; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; color: var(--primary-light); background: rgba(26,122,140,0.08); border: 1px solid rgba(26,122,140,0.2); border-radius: 50px; padding: 3px 10px; cursor: pointer; transition: var(--transition); margin-bottom: 10px; }
+  .nota-btn:hover { background: rgba(26,122,140,0.15); }
+  .nota-box { background: rgba(14,77,92,0.04); border-left: 3px solid var(--primary-light); border-radius: 0 var(--radius-sm) var(--radius-sm) 0; padding: 12px 16px; font-size: 0.82rem; color: #34505A; line-height: 1.65; margin-bottom: 12px; display: none; }
+  .nota-box.open { display: block; animation: fadeUp 0.25s ease; }
+
+  .extra-info { display: none; margin-top: 14px; }
+  .extra-info.open { display: block; animation: fadeUp 0.3s ease both; }
+
+  /* ─── GENERATE BUTTON ─── */
+  .btn-generate { width: 100%; padding: 17px 32px; margin-top: 8px; background: var(--primary); color: white; border: none; font-family: 'DM Serif Display', serif; font-size: 1.15rem; border-radius: var(--radius-sm); cursor: pointer; transition: var(--transition); letter-spacing: 0.02em; box-shadow: 0 4px 20px rgba(14,77,92,0.3); display: flex; align-items: center; justify-content: center; gap: 10px; }
+  .btn-generate:hover { background: var(--primary-light); transform: translateY(-2px); box-shadow: 0 8px 28px rgba(14,77,92,0.35); }
+  .btn-generate:active { transform: scale(0.99); }
+
+  /* ─── MANCHESTER BADGE ─── */
+  .manchester-strip { display: flex; gap: 0; border-radius: var(--radius-sm); overflow: hidden; margin-bottom: 20px; border: 1px solid var(--border); }
+  .mc-item { flex: 1; padding: 10px 8px; text-align: center; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; opacity: 0.35; transition: var(--transition); }
+  .mc-item.active { opacity: 1; }
+  .mc-red    { background: var(--manchester-red-bg);    color: var(--manchester-red);    border-right: 1px solid rgba(192,57,43,0.2); }
+  .mc-orange { background: var(--manchester-orange-bg); color: var(--manchester-orange); border-right: 1px solid rgba(211,84,0,0.2); }
+  .mc-yellow { background: var(--manchester-yellow-bg); color: var(--manchester-yellow); border-right: 1px solid rgba(214,137,16,0.2); }
+  .mc-green  { background: var(--manchester-green-bg);  color: var(--manchester-green); }
+
+  /* ─── RESULT ─── */
+  .result-section-title { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 12px; }
+  .divider { height: 1px; background: var(--border); margin: 24px 0; }
+  .result-badge { display: inline-flex; align-items: center; gap: 8px; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; border-radius: 50px; padding: 5px 16px; margin-bottom: 12px; }
+  .result-title { font-family: 'DM Serif Display', serif; font-size: 2rem; line-height: 1.15; margin-bottom: 8px; }
+  .result-subtitle { font-size: 0.9rem; color: var(--text-muted); line-height: 1.65; }
+  .g1 .result-badge { background: var(--manchester-red-bg); color: var(--manchester-red); }
+  .g1 .result-title { color: var(--manchester-red); }
+  .g2 .result-badge { background: var(--manchester-yellow-bg); color: var(--manchester-yellow); }
+  .g2 .result-title { color: var(--manchester-yellow); }
+
+  /* ─── CONDUCT ─── */
+  .conduct-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
+  .conduct-item { display: flex; align-items: flex-start; gap: 12px; padding: 13px 16px; border-radius: var(--radius-sm); background: var(--surface2); border: 1px solid var(--border); }
+  .conduct-icon { font-size: 1rem; flex-shrink: 0; margin-top: 1px; }
+  .conduct-text { font-size: 0.88rem; line-height: 1.55; color: var(--text); }
+  .conduct-text strong { font-weight: 600; display: block; margin-bottom: 2px; }
+
+  /* ─── POLICE PROTOCOL ─── */
+  .police-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px; }
+  .police-card { border-radius: var(--radius-sm); border: 1px solid var(--border); overflow: hidden; }
+  .police-header { padding: 10px 14px; display: flex; align-items: center; gap: 10px; }
+  .police-letter { font-family: 'DM Serif Display', serif; font-size: 1.5rem; font-weight: 700; line-height: 1; }
+  .police-word { font-size: 0.75rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; }
+  .police-body { padding: 10px 14px; font-size: 0.84rem; line-height: 1.6; color: var(--text); border-top: 1px solid var(--border); background: var(--surface2); }
+
+  /* ─── EMERGENCY CONTACTS ─── */
+  .contact-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 20px; }
+  .contact-card { display: flex; align-items: center; gap: 12px; padding: 13px 16px; border-radius: var(--radius-sm); border: 1px solid var(--border); background: var(--surface2); cursor: pointer; transition: var(--transition); text-decoration: none; }
+  .contact-card:hover { border-color: var(--danger); background: var(--danger-light); }
+  .contact-num { font-family: 'DM Serif Display', serif; font-size: 1.4rem; color: var(--danger); font-weight: 700; flex-shrink: 0; min-width: 52px; }
+  .contact-info strong { display: block; font-size: 0.84rem; font-weight: 600; color: var(--text); margin-bottom: 1px; }
+  .contact-info span { font-size: 0.75rem; color: var(--text-muted); }
+
+  /* ─── ALERT BOXES ─── */
+  .alert-box { border-radius: var(--radius-sm); padding: 14px 18px; margin-bottom: 14px; border-left: 4px solid; font-size: 0.84rem; line-height: 1.65; }
+  .alert-box.warning { border-color: var(--warning-mid); background: var(--warning-light); color: #7A5010; }
+  .alert-box.danger  { border-color: var(--danger);      background: var(--danger-light);  color: #8C2020; }
+  .alert-box.info    { border-color: var(--primary-light); background: rgba(14,77,92,0.05); color: #1A3D4A; }
+  .alert-box.success { border-color: var(--success-mid);  background: var(--success-light); color: #1A5040; }
+  .alert-box strong  { font-weight: 700; }
+
+  /* ─── PILL LIST ─── */
+  .pill-list { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
+  .pill { font-size: 0.8rem; font-weight: 500; padding: 5px 13px; border-radius: 50px; background: rgba(14,77,92,0.07); color: var(--primary); }
+  .pill.warn  { background: rgba(214,137,16,0.1); color: #8C5A10; }
+  .pill.ok    { background: var(--success-light); color: var(--success); }
+  .pill.block { background: var(--danger-light); color: var(--danger); }
+
+  /* ─── FUNCTIONAL LIMITATION ─── */
+  .func-block { border-radius: var(--radius-sm); overflow: hidden; border: 1px solid var(--border); margin-bottom: 20px; }
+  .func-header { padding: 16px 22px; display: flex; align-items: center; gap: 14px; }
+  .func-header.fl-preservada { background: #E8F5F0; border-bottom: 1px solid rgba(26,122,92,0.18); }
+  .func-header.fl-parcial    { background: #FEF9EC; border-bottom: 1px solid rgba(214,137,16,0.2); }
+  .func-header.fl-severa     { background: var(--manchester-orange-bg); border-bottom: 1px solid rgba(211,84,0,0.2); }
+  .func-header.fl-grave      { background: var(--danger-light); border-bottom: 1px solid rgba(192,57,43,0.18); }
+  .func-icon { font-size: 1.6rem; flex-shrink: 0; }
+  .func-label { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 2px; }
+  .fl-preservada .func-label { color: var(--success); }
+  .fl-parcial    .func-label { color: var(--warning); }
+  .fl-severa     .func-label { color: var(--manchester-orange); }
+  .fl-grave      .func-label { color: var(--danger); }
+  .func-title { font-family: 'DM Serif Display', serif; font-size: 1.15rem; line-height: 1.2; }
+  .fl-preservada .func-title { color: var(--success); }
+  .fl-parcial    .func-title { color: var(--warning); }
+  .fl-severa     .func-title { color: var(--manchester-orange); }
+  .fl-grave      .func-title { color: var(--danger); }
+  .func-body { padding: 16px 20px; display: flex; flex-direction: column; gap: 10px; }
+  .func-item { display: flex; align-items: flex-start; gap: 10px; }
+  .func-item-icon { flex-shrink: 0; font-size: 1rem; margin-top: 2px; }
+  .func-item-text { font-size: 0.87rem; line-height: 1.6; color: var(--text); }
+  .func-item-text strong { display: block; font-weight: 600; font-size: 0.84rem; margin-bottom: 1px; }
+  .func-reeval { margin-top: 4px; padding: 12px 20px; border-top: 1px dashed var(--border); font-size: 0.82rem; color: var(--text-muted); display: flex; align-items: flex-start; gap: 8px; line-height: 1.55; }
+
+  /* ─── MESSAGE TABS ─── */
+  .msg-tabs { display: flex; gap: 8px; margin-bottom: 12px; flex-wrap: wrap; }
+  .msg-tab { font-size: 0.78rem; font-weight: 600; padding: 6px 14px; border-radius: 50px; border: 2px solid var(--border); background: transparent; cursor: pointer; transition: var(--transition); color: var(--text-muted); }
+  .msg-tab:hover { border-color: var(--primary-light); color: var(--text); }
+  .msg-tab.active { border-color: var(--primary); background: rgba(14,77,92,0.07); color: var(--primary); }
+  .msg-box { background: var(--surface2); border: 1px dashed var(--primary-light); border-radius: var(--radius-sm); padding: 18px 20px; font-size: 0.88rem; color: var(--text); line-height: 1.7; white-space: pre-line; margin-bottom: 12px; }
+  .btn-copy { display: inline-flex; align-items: center; gap: 7px; background: transparent; border: 2px solid var(--primary-light); color: var(--primary); font-family: 'DM Sans', sans-serif; font-size: 0.83rem; font-weight: 600; padding: 9px 20px; border-radius: var(--radius-sm); cursor: pointer; transition: var(--transition); }
+  .btn-copy:hover { background: var(--primary); color: white; border-color: var(--primary); }
+  .btn-copy.copied { background: var(--success-light); border-color: var(--success); color: var(--success); }
+
+  /* ─── RESULT ACTIONS ─── */
+  .result-actions { display: flex; gap: 12px; margin-top: 32px; padding-top: 24px; border-top: 1px solid var(--border); }
+  .btn-restart { background: transparent; border: 2px solid var(--border); color: var(--text-muted); font-family: 'DM Sans', sans-serif; font-size: 0.88rem; font-weight: 600; padding: 12px 24px; border-radius: var(--radius-sm); cursor: pointer; transition: var(--transition); }
+  .btn-restart:hover { border-color: var(--text-muted); color: var(--text); }
+  .btn-print { background: var(--primary); color: white; border: none; font-family: 'DM Sans', sans-serif; font-size: 0.88rem; font-weight: 600; padding: 12px 24px; border-radius: var(--radius-sm); cursor: pointer; transition: var(--transition); }
+  .btn-print:hover { background: var(--primary-light); }
+
+  @media (max-width: 600px) {
+    .section-card { padding: 28px 20px; }
+    .form-row { grid-template-columns: 1fr; }
+    .police-grid { grid-template-columns: 1fr; }
+    .contact-grid { grid-template-columns: 1fr; }
+    .section-title { font-size: 1.4rem; }
+    .main { padding: 24px 12px 60px; }
+    .result-title { font-size: 1.5rem; }
+  }
+  @media print {
+    .header, .btn-generate, .result-actions, .btn-copy, .msg-tabs, #formCard { display: none !important; }
+    body { background: white; }
+    #resultCard { box-shadow: none; border: 1px solid #ddd; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-left">
+    <a class="btn-home" href="index.html">← Protocolos</a>
+    <div class="logo">Straloo<span>.</span></div>
+  </div>
+  <div class="header-badge">Urgências Ortopédicas</div>
+</div>
+
+<div class="main">
+
+<!-- ═══════════════ FORM ═══════════════ -->
+<div class="section-card" id="formCard">
+  <div class="section-tag">🚑 Triagem de Manchester · Ortopedia e Trauma</div>
+  <h2 class="section-title">Urgências e Emergências Ortopédicas</h2>
+  <p class="section-subtitle">Protocolo de teleatendimento para triagem de lesões ortopédicas e traumatológicas. Baseado nos critérios da Triagem de Manchester e avaliação primária de trauma.</p>
+
+  <div class="intro-msg">
+    <strong>Mensagem inicial via WhatsApp</strong>
+    "Olá! Sou o(a) fisioterapeuta da empresa. Para garantir a sua segurança e dar a melhor orientação, preciso fazer algumas perguntas rápidas sobre a sua dor ou lesão. Pode me responder de forma breve?"
+  </div>
+
+  <!-- ETAPA 1: MECANISMO E CONTEXTO -->
+  <div class="group-divider">
+    <div class="group-title">📋 Etapa 1 — Mecanismo e Contexto da Lesão</div>
+
+    <div class="form-row">
+      <div class="form-group" style="margin-bottom:0">
+        <label class="form-label">Mecanismo da lesão<small>O que aconteceu?</small></label>
+        <select class="form-select" id="mecanismo">
+          <option value="queda_altura">Queda de altura ou acidente de maior impacto</option>
+          <option value="torção">Torção / entorse</option>
+          <option value="batida">Batida / trauma direto</option>
+          <option value="sobrecarga">Sobrecarga / esforço repetitivo</option>
+          <option value="espontaneo">Início espontâneo / sem trauma claro</option>
+          <option value="acidente_transito">Acidente de trânsito</option>
+        </select>
+      </div>
+      <div class="form-group" style="margin-bottom:0">
+        <label class="form-label">Região da lesão<small>Parte do corpo afetada</small></label>
+        <select class="form-select" id="regiao">
+          <option value="tornozelo_pe">Tornozelo / Pé</option>
+          <option value="joelho">Joelho</option>
+          <option value="quadril">Quadril / Pelve</option>
+          <option value="ombro_braco">Ombro / Braço</option>
+          <option value="cotovelo_antebraco">Cotovelo / Antebraço</option>
+          <option value="punho_mao">Punho / Mão / Dedos</option>
+          <option value="coluna_lombar">Coluna Lombar</option>
+          <option value="coluna_cervical">Coluna Cervical / Pescoço</option>
+          <option value="torax_costelas">Tórax / Costelas</option>
+          <option value="multiplas">Múltiplas regiões</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group" style="margin-bottom:0">
+        <label class="form-label">Tempo de evolução<small>Há quanto tempo ocorreu?</small></label>
+        <select class="form-select" id="tempoEvolucao">
+          <option value="agora">Aconteceu agora (menos de 1h)</option>
+          <option value="hoje">Hoje (1h a 24h)</option>
+          <option value="dias">Nos últimos 2 a 7 dias</option>
+          <option value="semanas">Há mais de uma semana</option>
+        </select>
+      </div>
+      <div class="form-group" style="margin-bottom:0">
+        <label class="form-label">Intensidade da dor atual<small>Escala de 0 a 10</small></label>
+        <div class="slider-wrap" style="padding: 12px 14px;">
+          <div class="slider-track">
+            <input type="range" id="dorAtual" min="0" max="10" value="5" oninput="updateSlider(this,'sliderDor')">
+            <span class="slider-value" id="sliderDor">5</span>
+          </div>
+          <div class="slider-labels"><span>0 — Sem dor</span><span>10 — Pior dor</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ETAPA 2: RED FLAGS -->
+  <div class="group-divider" style="border-left: 4px solid var(--danger);">
+    <div class="group-title" style="color:var(--danger);">⚠ Etapa 2 — Pesquisa de Red Flags</div>
+    <p style="font-size:0.84rem; color:var(--text-muted); margin-bottom:16px; line-height:1.6">Qualquer SIM classifica o paciente como Grupo 1 (emergência). Responda com base no relato do paciente.</p>
+
+    <!-- Extremidades -->
+    <div style="font-size:0.75rem; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:var(--text-muted); margin-bottom:12px;">Trauma de Extremidades</div>
+
+    <div class="form-group">
+      <div class="form-label">Ferimento aberto com exposição óssea ou sangramento que não para?<small>Fratura exposta — emergência cirúrgica</small></div>
+      <button class="nota-btn" onclick="toggleNota('n_rf1')">📋 Nota Técnica</button>
+      <div class="nota-box" id="n_rf1">Fratura exposta é emergência cirúrgica. Risco de infecção óssea grave (osteomielite), lesão neurovascular e síndrome compartimental. Não tentar redução manual. Cobrir o local com pano limpo estéril, imobilizar como está e encaminhar imediatamente. Sangramento arterial (pulsátil, vermelho vivo) exige compressão direta e torniquete improvido se necessário.</div>
+      <div class="yn-group"><button class="yn-btn" onclick="setRF('rf1','sim',this,'Fratura exposta ou sangramento ativo')">SIM</button><button class="yn-btn" onclick="setRF('rf1','nao',this)">NÃO</button></div>
+    </div>
+
+    <div class="form-group">
+      <div class="form-label">Deformidade visual grave — membro ou articulação claramente fora do lugar?<small>Suspeita de luxação ou fratura com desvio</small></div>
+      <button class="nota-btn" onclick="toggleNota('n_rf2')">📋 Nota Técnica</button>
+      <div class="nota-box" id="n_rf2">Deformidade angular ou rotacional visível, encurtamento de membro, ombro ou cotovelo claramente fora do lugar — suspeita de fratura com desvio ou luxação. A tentativa de redução manual pelo paciente pode causar lesão vascular, nervosa ou piorar o dano ósseo. Imobilizar na posição encontrada. Luxações devem ser reduzidas por ortopedista com analgesia adequada, preferencialmente com imagem prévia.</div>
+      <div class="yn-group"><button class="yn-btn" onclick="setRF('rf2','sim',this,'Deformidade grave — suspeita de luxação ou fratura com desvio')">SIM</button><button class="yn-btn" onclick="setRF('rf2','nao',this)">NÃO</button></div>
+    </div>
+
+    <div class="form-group">
+      <div class="form-label">Pele pálida, fria ou arroxeada na extremidade afetada?<small>Sinal de isquemia / lesão vascular — urgência máxima</small></div>
+      <button class="nota-btn" onclick="toggleNota('n_rf3')">📋 Nota Técnica</button>
+      <div class="nota-box" id="n_rf3">Palidez, cianose ou temperatura fria distal à lesão indicam comprometimento vascular. A janela para reversão da isquemia de membro é de 4-6h. Compressão vascular por hematoma ou síndrome compartimental deve ser investigada. Este é um dos sinais mais urgentes — qualquer suspeita exige transferência imediata para centro cirúrgico vascular. Os 6 Ps da isquemia: Pain (dor desproporcional), Paleness (palidez), Pulselessness (ausência de pulso), Paresthesia (parestesia), Paralysis (paralisia), Poikilothermia (frio).</div>
+      <div class="yn-group"><button class="yn-btn" onclick="setRF('rf3','sim',this,'Sinais de isquemia — pele pálida, fria ou arroxeada')">SIM</button><button class="yn-btn" onclick="setRF('rf3','nao',this)">NÃO</button></div>
+    </div>
+
+    <div class="form-group">
+      <div class="form-label">Dormência severa, perda de sensibilidade ou incapacidade total de mover a extremidade?<small>Possível síndrome compartimental ou lesão nervosa</small></div>
+      <button class="nota-btn" onclick="toggleNota('n_rf4')">📋 Nota Técnica</button>
+      <div class="nota-box" id="n_rf4">A síndrome compartimental é uma emergência cirúrgica (fasciotomia urgente). Sinais: dor desproporcional ao trauma, piora com alongamento passivo do músculo, parestesia, paralisia e pressão de compartimento elevada. A demora no diagnóstico resulta em necrose muscular permanente, contratura de Volkmann e risco de amputação. Lesão nervosa periférica (plexo braquial, nervo radial, ciático) também deve ser investigada com dormência seletiva.</div>
+      <div class="yn-group"><button class="yn-btn" onclick="setRF('rf4','sim',this,'Dormência severa ou paralisia — síndrome compartimental / lesão nervosa')">SIM</button><button class="yn-btn" onclick="setRF('rf4','nao',this)">NÃO</button></div>
+    </div>
+
+    <div class="form-group">
+      <div class="form-label">Dor extrema e desproporcional que não alivia com nada?<small>Dor excruciante — sinal de alarme vascular ou compartimental</small></div>
+      <div class="yn-group"><button class="yn-btn" onclick="setRF('rf5','sim',this,'Dor desproporcional e intratável')">SIM</button><button class="yn-btn" onclick="setRF('rf5','nao',this)">NÃO</button></div>
+    </div>
+
+    <!-- Coluna -->
+    <div style="font-size:0.75rem; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:var(--text-muted); margin: 20px 0 12px;">Coluna e Sistema Nervoso</div>
+
+    <div class="form-group">
+      <div class="form-label">Dificuldade para controlar urina ou fezes, ou dormência na região genital / nádegas?<small>Síndrome da Cauda Equina — urgência cirúrgica</small></div>
+      <button class="nota-btn" onclick="toggleNota('n_rf6')">📋 Nota Técnica</button>
+      <div class="nota-box" id="n_rf6">A Síndrome da Cauda Equina é urgência neurocirúrgica. A janela para recuperação da função esfincteriana é de horas. Retenção urinária é o sinal mais precoce e frequente (hipotonia vesical). A incontinência por transbordamento é fase mais tardia. Qualquer suspeita exige RM de emergência e avaliação neurocirúrgica imediata. É a principal causa de processos éticos contra fisioterapeutas em análise de hérnia discal.</div>
+      <div class="yn-group"><button class="yn-btn" onclick="setRF('rf6','sim',this,'Síndrome da Cauda Equina — disfunção vesical/intestinal/genital')">SIM</button><button class="yn-btn" onclick="setRF('rf6','nao',this)">NÃO</button></div>
+    </div>
+
+    <div class="form-group">
+      <div class="form-label">Fraqueza súbita progressiva nas pernas após trauma cervical ou lombar?<small>Suspeita de lesão medular</small></div>
+      <div class="yn-group"><button class="yn-btn" onclick="setRF('rf7','sim',this,'Fraqueza progressiva nos membros — suspeita de lesão medular')">SIM</button><button class="yn-btn" onclick="setRF('rf7','nao',this)">NÃO</button></div>
+    </div>
+
+    <div class="form-group" style="margin-bottom:0">
+      <div class="form-label">Febre associada à dor nas costas, ou dor que não melhora em repouso?<small>Suspeita de infecção vertebral ou patologia não-mecânica</small></div>
+      <div class="yn-group"><button class="yn-btn" onclick="setRF('rf8','sim',this,'Febre + dor vertebral ou dor não-mecânica')">SIM</button><button class="yn-btn" onclick="setRF('rf8','nao',this)">NÃO</button></div>
+    </div>
+  </div>
+
+  <!-- ETAPA 3: AVALIAÇÃO FUNCIONAL -->
+  <div class="group-divider">
+    <div class="group-title">🏃 Etapa 3 — Capacidade Funcional</div>
+    <button class="nota-btn" onclick="toggleNota('n_func')">📋 Nota Técnica — Regra de Ottawa</button>
+    <div class="nota-box" id="n_func">As Regras de Ottawa (tornozelo, joelho e pé) são ferramentas de triagem para indicação de radiografia. Para tornozelo: necessidade de RX se dor na zona maleolar + incapacidade de dar 4 passos imediatamente após o trauma ou na avaliação. Para joelho: dor + incapacidade de apoiar peso + derrame articular imediato. A capacidade de suportar peso é o principal indicador funcional para triagem de fratura em trauma de MMII.</div>
+
+    <div class="form-group">
+      <label class="form-label">Capacidade de suportar peso / mover o membro<small>Avaliação funcional imediata</small></label>
+      <select class="form-select" id="capacidadeFuncional">
+        <option value="preservada">Preservada — consegue apoiar e caminhar normalmente</option>
+        <option value="parcial">Parcial — consegue apoiar com dor ou limitação</option>
+        <option value="minima">Mínima — consegue apoiar apenas alguns passos</option>
+        <option value="ausente">Ausente — incapaz de apoiar qualquer peso / mover o membro</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Sinais visuais presentes<small>Selecione todos que se aplicam</small></label>
+      <div class="check-grid" id="checkSinais">
+        <label class="check-item" onclick="toggleCheck(this)"><input type="checkbox" value="inchaço"> <span>🫧 Inchaço importante</span></label>
+        <label class="check-item" onclick="toggleCheck(this)"><input type="checkbox" value="roxo"> <span>🟣 Hematoma / roxidão</span></label>
+        <label class="check-item" onclick="toggleCheck(this)"><input type="checkbox" value="calor"> <span>🔥 Calor local</span></label>
+        <label class="check-item" onclick="toggleCheck(this)"><input type="checkbox" value="deformidade_leve"> <span>🔄 Deformidade leve</span></label>
+        <label class="check-item" onclick="toggleCheck(this)"><input type="checkbox" value="crepitacao"> <span>💥 Crepitação ao movimento</span></label>
+      </div>
+    </div>
+
+    <div class="form-group" style="margin-bottom:0">
+      <label class="form-label">Impacto no trabalho e nas AVDs<small>Como a lesão afeta a rotina do paciente</small></label>
+      <select class="form-select" id="impactoTrab">
+        <option value="sem_impacto">Sem impacto — consegue trabalhar normalmente</option>
+        <option value="com_adaptacao">Com adaptação — trabalha com restrições ou dor</option>
+        <option value="afastado_parcial">Afastamento parcial — não consegue realizar parte das funções</option>
+        <option value="afastado_total">Afastamento total — incapaz de trabalhar</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- ETAPA 4: MEDICAÇÃO E ATENDIMENTO PRÉVIO -->
+  <div class="group-divider">
+    <div class="group-title">💊 Etapa 4 — Histórico e Medicação</div>
+    <div class="form-row">
+      <div>
+        <label class="form-label">Já foi atendido por médico ou UPA?</label>
+        <select class="form-select" id="atendimentoPrevio" onchange="toggleAtendimento()">
+          <option value="nao">Não</option>
+          <option value="sim">Sim</option>
+        </select>
+        <div class="extra-info" id="atendimentoInfo">
+          <label class="form-label" style="margin-top:12px">O que foi orientado / diagnóstico</label>
+          <textarea class="form-textarea" id="atendimentoDetalhe" placeholder="Ex: suspeita de entorse, imobilizou, pediu RX..."></textarea>
+        </div>
+      </div>
+      <div>
+        <label class="form-label">Uso de medicação atual?</label>
+        <select class="form-select" id="medicacao">
+          <option value="nao">Não está usando</option>
+          <option value="analgesico">Analgésico (paracetamol / dipirona)</option>
+          <option value="aine">AINE (ibuprofeno / diclofenaco)</option>
+          <option value="multiplos">Múltiplos medicamentos</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <button class="btn-generate" onclick="estratificar()">
+    <span>🎯</span> Estratificar e Gerar Conduta Clínica
+  </button>
+</div>
+
+<!-- ═══════════════ RESULT ═══════════════ -->
+<div class="section-card" id="resultCard" style="display:none">
+
+  <!-- Manchester strip -->
+  <div class="manchester-strip">
+    <div class="mc-item mc-red"    id="mc-red">🔴 Vermelho · Emergência</div>
+    <div class="mc-item mc-orange" id="mc-orange">🟠 Laranja · Muito Urgente</div>
+    <div class="mc-item mc-yellow" id="mc-yellow">🟡 Amarelo · Urgente</div>
+    <div class="mc-item mc-green"  id="mc-green">🟢 Verde · Pouco Urgente</div>
+  </div>
+
+  <div id="resultHeader">
+    <div class="result-badge" id="rBadge"></div>
+    <h2 class="result-title" id="rTitle"></h2>
+    <p class="result-subtitle" id="rSubtitle"></p>
+    <div class="pill-list" id="rContextPills" style="margin-top:12px"></div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- Red flags fired -->
+  <div id="rFlagsArea"></div>
+
+  <!-- Conduct -->
+  <div class="result-section-title">Conduta Fisioterapêutica</div>
+  <div class="conduct-list" id="rConductList"></div>
+
+  <!-- POLICE -->
+  <div id="rPoliceArea"></div>
+
+  <!-- Alerts -->
+  <div id="rAlertsArea"></div>
+
+  <!-- Emergency contacts (G1 only) -->
+  <div id="rContactsArea"></div>
+
+  <div class="divider"></div>
+
+  <!-- FUNCTIONAL LIMITATION -->
+  <div class="result-section-title">📍 Limitação Funcional e Cuidados Associados</div>
+  <div class="func-block" id="rFuncBlock">
+    <div class="func-header" id="rFuncHeader">
+      <span class="func-icon" id="rFuncIcon"></span>
+      <div>
+        <div class="func-label" id="rFuncLabel"></div>
+        <div class="func-title" id="rFuncTitle"></div>
+      </div>
+    </div>
+    <div class="func-body" id="rFuncBody"></div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- WhatsApp messages -->
+  <div class="result-section-title">💬 Mensagens para o Paciente (WhatsApp)</div>
+  <div class="msg-tabs">
+    <button class="msg-tab active" onclick="showMsg(0,this)">Triagem inicial</button>
+    <button class="msg-tab" onclick="showMsg(1,this)">Conduta / Orientação</button>
+    <button class="msg-tab" onclick="showMsg(2,this)">Monitoramento 48h</button>
+  </div>
+  <div class="msg-box" id="rMsg"></div>
+  <button class="btn-copy" id="btnCopy" onclick="copiarMsg()">📋 Copiar para WhatsApp</button>
+
+  <div class="result-actions">
+    <button class="btn-print" onclick="window.print()">🖨 Imprimir</button>
+    <button class="btn-restart" onclick="reiniciar()">↺ Nova Avaliação</button>
+  </div>
+
+</div>
+</div><!-- /main -->
+
+<script>
+// ══════════════════════════════════════════
+// STATE
+// ══════════════════════════════════════════
+const rfState = {};
+let currentMsgs = [];
+
+// ══════════════════════════════════════════
+// UTILS
+// ══════════════════════════════════════════
+function toggleNota(id) { document.getElementById(id).classList.toggle('open'); }
+
+function updateSlider(input, valId) {
+  const val = input.value;
+  document.getElementById(valId).textContent = val;
+  const pct = (val / 10) * 100;
+  input.style.background = `linear-gradient(to right,#1A7A8C 0%,#1A7A8C ${pct}%,#DDD8CF ${pct}%,#DDD8CF 100%)`;
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  updateSlider(document.getElementById('dorAtual'), 'sliderDor');
+});
+
+function toggleCheck(label) {
+  setTimeout(() => label.classList.toggle('checked', label.querySelector('input').checked), 10);
+}
+
+function selectPill(el, name) {
+  document.querySelectorAll(`.radio-pill`).forEach(p => {
+    if (p.querySelector(`input[name="${name}"]`)) p.classList.remove('selected');
+  });
+  el.classList.add('selected');
+  const r = el.querySelector('input'); if (r) r.checked = true;
+}
+
+function setRF(key, val, btn, reason) {
+  rfState[key] = { val, reason };
+  const group = btn.parentElement;
+  group.querySelectorAll('.yn-btn').forEach(b => b.classList.remove('sel-sim','sel-nao'));
+  btn.classList.add(val === 'sim' ? 'sel-sim' : 'sel-nao');
+}
+
+function toggleAtendimento() {
+  const val = document.getElementById('atendimentoPrevio').value;
+  document.getElementById('atendimentoInfo').classList.toggle('open', val === 'sim');
+}
+
+// ══════════════════════════════════════════
+// FUNCTIONAL LIMITATION DATABASE
+// ══════════════════════════════════════════
+const FUNC_DATA = {
+  preservada: {
+    css: 'fl-preservada', icon: '🟢',
+    label: 'Limitação Funcional Preservada',
+    title: 'Apoia o peso e se movimenta sem restrição grave',
+    items: [
+      { icon: '💼', title: 'Retorno ao trabalho orientado', text: 'Avaliar adaptações ergonômicas temporárias. Evitar sobrecarga do membro afetado. Monitorar progressão dos sintomas nas próximas 48h.' },
+      { icon: '🧊', title: 'Protocolo POLICE domiciliar', text: 'Iniciar proteção, carga otimizada, gelo 20 min 3x/dia, compressão com faixa elástica e elevação do membro acima do coração.' },
+      { icon: '📅', title: 'Reavaliação programada', text: 'Agendar teleconsulta em 48-72h para monitoramento. Se piorar antes disso, orientar retorno imediato.' },
+      { icon: '📚', title: 'Educação sobre sinais de alerta', text: 'Instruir o paciente a retornar se surgir dormência, roxidão progressiva, inchaço muito aumentado ou impossibilidade de apoiar.' },
+    ],
+    reeval: 'Reavaliar em 48-72h. Monitorar evolução do inchaço, dor e capacidade de apoio.'
+  },
+  parcial: {
+    css: 'fl-parcial', icon: '🟡',
+    label: 'Limitação Funcional Parcial',
+    title: 'Apoia com dor ou limitação — adaptações necessárias',
+    items: [
+      { icon: '🩺', title: 'Indicar avaliação médica e imagem', text: 'Limitação parcial de carga em MMII indica necessidade de radiografia para descartar fratura. Segundo as Regras de Ottawa: dor maleolar + < 4 passos = indicação de RX.' },
+      { icon: '🪵', title: 'Imobilização temporária orientada', text: 'Orientar uso de suporte improviso (bandagem, tornozeleira, meia compressiva). Muleta ou apoio para descarga se for membro inferior.' },
+      { icon: '💼', title: 'Afastamento parcial do trabalho', text: 'Comunicar supervisor sobre limitação. Avaliar possibilidade de trabalho remoto ou adaptação de função temporariamente.' },
+      { icon: '🧊', title: 'POLICE com ênfase em proteção', text: 'Reforçar proteção e carga otimizada — evitar forçar o membro. Gelo e elevação para controle de inchaço. Não usar calor na fase aguda.' },
+      { icon: '😟', title: 'Manejo da ansiedade pós-lesão', text: 'Lesões traumáticas agudas causam ansiedade. Validar a preocupação, informar sobre o processo de recuperação e reforçar que o acompanhamento está sendo feito.' },
+    ],
+    reeval: 'Reavaliar em 24-48h. Se não melhorar a capacidade de apoio, encaminhar para RX e avaliação presencial.'
+  },
+  severa: {
+    css: 'fl-severa', icon: '🟠',
+    label: 'Limitação Funcional Severa',
+    title: 'Poucos passos possíveis — avaliação médica indicada',
+    items: [
+      { icon: '🏥', title: 'Encaminhar para avaliação médica presencial', text: 'Incapacidade de dar mais que 4 passos = indicação de radiografia pelas Regras de Ottawa. Não postergar. Orientar busca de UPA ou pronto-socorro ortopédico.' },
+      { icon: '🦽', title: 'Imobilização e descarga total', text: 'Orientar descarga total do membro. Muleta, cadeira de rodas ou apoio de terceiros para locomoção. Não forçar em hipótese alguma antes de imagem.' },
+      { icon: '💼', title: 'Afastamento total do trabalho', text: 'Emitir declaração de atendimento. Comunicar RH sobre afastamento necessário. Orientar paciente sobre documentação para INSS se necessário.' },
+      { icon: '🤝', title: 'Rede de apoio imediata', text: 'Verificar se o paciente tem apoio em casa para locomoção e AVDs básicas. Mobilizar familiar ou cuidador se necessário.' },
+      { icon: '📋', title: 'Documentar e monitorar', text: 'Registrar todos os achados. Manter contato nas próximas 24h para verificar se o paciente conseguiu atendimento médico.' },
+    ],
+    reeval: 'Contato em 24h para confirmar atendimento médico. Monitorar sinais de alarme vascular e compartimental.'
+  },
+  grave: {
+    css: 'fl-grave', icon: '🔴',
+    label: 'Limitação Funcional Grave / Impossibilidade Total',
+    title: 'Incapaz de apoiar o membro — emergência ortopédica',
+    items: [
+      { icon: '🚨', title: 'Acionar serviço de emergência', text: 'Incapacidade total de apoio após trauma = alto risco de fratura. Acionar SAMU (192) ou encaminhar para pronto-socorro ortopédico imediatamente. Não aguardar piora.' },
+      { icon: '🚫', title: 'Imobilizar na posição encontrada', text: 'NÃO tentar reposicionar ou endireitar o membro. Imobilizar com tábua, revista enrolada ou travesseiro. Manter a posição em que se encontra.' },
+      { icon: '🍽️', title: 'Jejum absoluto', text: 'Orientar o paciente a NÃO comer nem beber nada. Pode necessitar de cirurgia de emergência. Anestesia geral exige estômago vazio.' },
+      { icon: '🩸', title: 'Controle de sangramento se houver', text: 'Se houver sangramento externo: comprimir com pano limpo. Se não ceder: torniquete improvisado acima da lesão e comunicar tempo de aplicação ao resgate.' },
+      { icon: '📍', title: 'Monitorar sinais de alarme', text: 'Observar palidez, cianose, frio distal, dormência ou piora da dor enquanto aguarda socorro. São indicadores de comprometimento vascular — relatar ao SAMU.' },
+    ],
+    reeval: 'Acompanhar até chegada do serviço de emergência. Registrar horário da lesão, mecanismo e sinais vitais se possível.'
+  }
+};
+
+// ══════════════════════════════════════════
+// STRATIFICATION ENGINE
+// ══════════════════════════════════════════
+function estratificar() {
+  const flags = Object.entries(rfState).filter(([k,v]) => v.val === 'sim');
+  const dor = parseInt(document.getElementById('dorAtual').value);
+  const mecanismo = document.getElementById('mecanismo').value;
+  const regiao = document.getElementById('regiao').value;
+  const capacidade = document.getElementById('capacidadeFuncional').value;
+  const sinais = [...document.querySelectorAll('#checkSinais input:checked')].map(i => i.value);
+  const impacto = document.getElementById('impactoTrab').value;
+  const tempo = document.getElementById('tempoEvolucao').value;
+
+  let group, manchesterLevel, funcLevel;
+
+  // Map functional capacity to limitation level
+  const funcMap = { preservada: 'preservada', parcial: 'parcial', minima: 'severa', ausente: 'grave' };
+  funcLevel = funcMap[capacidade];
+
+  if (flags.length > 0 || capacidade === 'ausente' || dor >= 9) {
+    group = 'G1';
+    manchesterLevel = dor >= 9 || flags.some(([k]) => ['rf1','rf3','rf4','rf6','rf7'].includes(k)) ? 'red' : 'orange';
+  } else {
+    group = 'G2';
+    manchesterLevel = (dor >= 6 || capacidade === 'minima' || sinais.includes('crepitacao') || sinais.includes('deformidade_leve')) ? 'yellow' : 'green';
+    if (capacidade === 'minima') funcLevel = 'severa';
+  }
+
+  renderResult({ group, manchesterLevel, flags, dor, mecanismo, regiao, capacidade, sinais, impacto, tempo, funcLevel });
+}
+
+// ══════════════════════════════════════════
+// RENDER RESULT
+// ══════════════════════════════════════════
+function renderResult({ group, manchesterLevel, flags, dor, mecanismo, regiao, capacidade, sinais, impacto, tempo, funcLevel }) {
+  const rc = document.getElementById('resultCard');
+  rc.style.display = 'block';
+  rc.className = 'section-card ' + group.toLowerCase();
+
+  // Manchester strip
+  document.querySelectorAll('.mc-item').forEach(el => el.classList.remove('active'));
+  if (manchesterLevel === 'red')    document.getElementById('mc-red').classList.add('active');
+  if (manchesterLevel === 'orange') { document.getElementById('mc-red').classList.add('active'); document.getElementById('mc-orange').classList.add('active'); }
+  if (manchesterLevel === 'yellow') document.getElementById('mc-yellow').classList.add('active');
+  if (manchesterLevel === 'green')  document.getElementById('mc-green').classList.add('active');
+
+  // Result header
+  const rh = document.getElementById('resultHeader');
+  rh.className = group === 'G1' ? 'g1' : 'g2';
+
+  const titles = {
+    G1: { badge: group === 'G1' && manchesterLevel === 'red' ? '🔴 Emergência / Urgência Absoluta' : '🟠 Muito Urgente — Encaminhamento Imediato', title: group === 'G1' && manchesterLevel === 'red' ? 'Encaminhamento Emergencial Indicado' : 'Encaminhamento Médico Prioritário', sub: 'Presença de red flags ou incapacidade funcional grave. Fisioterapia conservadora contraindicada neste momento. Acione serviço de emergência ou encaminhe para UPA ortopédica.' },
+    G2: { badge: manchesterLevel === 'yellow' ? '🟡 Urgência — Manejo Conservador' : '🟢 Pouco Urgente — Manejo Conservador', title: 'Lesão Musculoesquelética sem Sinais de Alerta', sub: 'Ausência de red flags. Conduta fisioterapêutica conservadora indicada. Aplicar protocolo POLICE. Monitorar evolução nas próximas 48h.' }
+  };
+
+  document.getElementById('rBadge').textContent    = titles[group].badge;
+  document.getElementById('rTitle').textContent    = titles[group].title;
+  document.getElementById('rSubtitle').textContent = titles[group].sub;
+
+  // Context pills
+  const regiaoLabels = { tornozelo_pe:'Tornozelo/Pé', joelho:'Joelho', quadril:'Quadril', ombro_braco:'Ombro/Braço', cotovelo_antebraco:'Cotovelo', punho_mao:'Punho/Mão', coluna_lombar:'Lombar', coluna_cervical:'Cervical', torax_costelas:'Tórax', multiplas:'Múltiplas regiões' };
+  const mecLabels = { queda_altura:'Queda/Acidente', torção:'Torção', batida:'Trauma direto', sobrecarga:'Sobrecarga', espontaneo:'Espontâneo', acidente_transito:'Acidente trânsito' };
+  document.getElementById('rContextPills').innerHTML = [
+    regiaoLabels[regiao] || regiao,
+    mecLabels[mecanismo] || mecanismo,
+    `Dor ${dor}/10`,
+    tempo === 'agora' ? 'Trauma imediato' : tempo === 'hoje' ? 'Até 24h' : tempo === 'dias' ? 'Dias' : 'Semanas'
+  ].map(p => `<span class="pill">${p}</span>`).join('') + sinais.map(s => `<span class="pill warn">${s}</span>`).join('');
+
+  // Flags fired
+  if (flags.length > 0) {
+    document.getElementById('rFlagsArea').innerHTML = `
+      <div class="result-section-title">Red Flags Identificadas</div>
+      ${flags.map(([k,v]) => `<div class="alert-box danger">🚨 <strong>${v.reason}</strong></div>`).join('')}`;
+  } else {
+    document.getElementById('rFlagsArea').innerHTML = '<div class="alert-box success">✅ <strong>Nenhuma red flag identificada</strong> — conduta conservadora segura para prosseguir.</div>';
+  }
+
+  // Conduct
+  const conducts = {
+    G1: [
+      { icon:'🚫', title:'Não tentar reposicionar o membro', text:'Não reduzir luxações, não endireitar deformidades. Imobilizar na posição encontrada com apoios improvisados.' },
+      { icon:'🏥', title:'Acionar emergência imediatamente', text:'SAMU (192), UPA 24h ou pronto-socorro ortopédico. Informar mecanismo do trauma, tempo de evolução e sinais vitais se possível.' },
+      { icon:'🍽️', title:'Jejum absoluto', text:'Orientar o paciente a não comer nem beber nada. Pode necessitar de cirurgia de emergência. Anestesia geral exige estômago vazio.' },
+      { icon:'🩸', title:'Controle de sangramento ativo', text:'Comprimir com pano limpo e pressão constante. Sangramento pulsátil (arterial): torniquete improvisado acima da lesão — registrar horário.' },
+      { icon:'🧊', title:'Gelo para controle de edema local (se não houver ferida aberta)', text:'20 minutos com pano protetor. NÃO aplicar sobre feridas abertas ou suspeita de fratura exposta.' },
+    ],
+    G2: [
+      { icon:'🛡️', title:'Proteção do membro afetado', text:'Evitar movimentos bruscos e atividades que provoquem dor. Utilizar suporte elástico ou tornozeleira se disponível.' },
+      { icon:'⚖️', title:'Carga otimizada (não repouso absoluto)', text:'Evitar repouso total. Apoiar o peso de forma tolerável com cuidado. O movimento controlado acelera a recuperação e prevem atrofia.' },
+      { icon:'🧊', title:'Crioterapia — 20 min, 3x ao dia', text:'Gelo protegido com pano fino. Verificar contraindicações: Raynaud, TVP, déficit sensorial. NÃO usar calor na fase aguda (primeiras 48-72h).' },
+      { icon:'🩹', title:'Compressão com faixa elástica', text:'Comprimir levemente do distal para o proximal. Não apertar demais — verificar se dedos estão quentes e sem dormência após a aplicação.' },
+      { icon:'⬆️', title:'Elevação acima do coração', text:'Manter o membro elevado para reduzir edema e dor ao repouso. Especialmente importante durante o sono.' },
+    ],
+  };
+
+  document.getElementById('rConductList').innerHTML = (conducts[group] || []).map(c => `
+    <div class="conduct-item">
+      <span class="conduct-icon">${c.icon}</span>
+      <div class="conduct-text"><strong>${c.title}</strong>${c.text}</div>
+    </div>`).join('');
+
+  // POLICE for G2
+  if (group === 'G2') {
+    document.getElementById('rPoliceArea').innerHTML = `
+      <div class="result-section-title">Protocolo POLICE</div>
+      <div class="police-grid">
+        ${[
+          { l:'P', w:'Proteção',         c:'var(--primary)',       t:'Proteja a articulação. Evite movimentos bruscos ou que causem dor aguda.' },
+          { l:'O', w:'Carga Otimizada',  c:'var(--primary-light)', t:'Apoie o peso de forma tolerável. Repouso absoluto prolonga a recuperação.' },
+          { l:'L', w:'Gelo',             c:'#1A5A8C',              t:'Gelo 20 min, 3-4x/dia. Proteger a pele. Reduz dor, inchaço e espasmo.' },
+          { l:'I', w:'Compressão',       c:'#1A7A5C',              t:'Faixa elástica do distal para o proximal. Não apertar demais — checar dedos.' },
+          { l:'C', w:'Compressão',       c:'#6C3A8C',              t:'(ver acima)' },
+          { l:'E', w:'Elevação',         c:'#8C5A10',              t:'Membro acima do coração. Reduz edema e dor ao repouso. Manter ao dormir.' },
+        ].filter((_, i) => i !== 4).map(p => `
+          <div class="police-card">
+            <div class="police-header" style="background:${p.c}18; border-bottom:1px solid ${p.c}30">
+              <span class="police-letter" style="color:${p.c}">${p.l}</span>
+              <span class="police-word" style="color:${p.c}">${p.w}</span>
+            </div>
+            <div class="police-body">${p.t}</div>
+          </div>`).join('')}
+      </div>`;
+  } else {
+    document.getElementById('rPoliceArea').innerHTML = '';
+  }
+
+  // Alerts
+  let alerts = [];
+  if (group === 'G2' && (regiao === 'tornozelo_pe' || regiao === 'joelho')) {
+    alerts.push({ type:'warning', text:`⚠ <strong>Regras de Ottawa — ${regiao === 'tornozelo_pe' ? 'Tornozelo' : 'Joelho'}:</strong> Se dor na região maleolar + incapacidade de dar 4 passos = indicação de radiografia. Encaminhar para avaliação médica se houver dúvida.` });
+  }
+  if (group === 'G2' && mecanismo === 'queda_altura') {
+    alerts.push({ type:'warning', text:'⚠ <strong>Mecanismo de alto impacto:</strong> Queda de altura aumenta risco de fratura mesmo sem deformidade visível. Considerar avaliação radiográfica mesmo com função parcialmente preservada.' });
+  }
+  if (group === 'G2' && sinais.includes('crepitacao')) {
+    alerts.push({ type:'danger', text:'🚨 <strong>Crepitação ao movimento:</strong> Pode indicar fratura sem desvio. Imobilizar o membro e encaminhar para radiografia antes de qualquer mobilização ativa.' });
+  }
+  if (group === 'G2' && dor >= 7) {
+    alerts.push({ type:'warning', text:'⚠ <strong>Dor intensa (≥7/10):</strong> Monitorar evolução a cada 2h. Se a dor não ceder com gelo e elevação, encaminhar para avaliação médica nas próximas horas.' });
+  }
+  if (group === 'G1') {
+    alerts.push({ type:'danger', text:'⚠ <strong>Contraindicação absoluta:</strong> Não realizar qualquer exercício, mobilização ativa ou técnica fisioterapêutica até avaliação médica presencial e liberação por imagem.' });
+  }
+  document.getElementById('rAlertsArea').innerHTML = alerts.map(a => `<div class="alert-box ${a.type}">${a.text}</div>`).join('');
+
+  // Emergency contacts (G1)
+  if (group === 'G1') {
+    document.getElementById('rContactsArea').innerHTML = `
+      <div class="result-section-title">📞 Serviços de Emergência — Fortaleza / CE</div>
+      <div class="contact-grid">
+        <div class="contact-card"><span class="contact-num">192</span><div class="contact-info"><strong>SAMU</strong><span>Atendimento móvel de urgência</span></div></div>
+        <div class="contact-card"><span class="contact-num">193</span><div class="contact-info"><strong>Corpo de Bombeiros</strong><span>Resgates e emergências</span></div></div>
+        <div class="contact-card"><span class="contact-num">UPA</span><div class="contact-info"><strong>UPAs 24h</strong><span>Unidades de Pronto Atendimento</span></div></div>
+        <div class="contact-card"><span class="contact-num">190</span><div class="contact-info"><strong>Polícia Militar</strong><span>Emergências com segurança</span></div></div>
+      </div>`;
+  } else {
+    document.getElementById('rContactsArea').innerHTML = '';
+  }
+
+  // Functional limitation
+  const fd = FUNC_DATA[funcLevel];
+  const fhdr = document.getElementById('rFuncHeader');
+  fhdr.className = 'func-header ' + fd.css;
+  document.getElementById('rFuncIcon').textContent  = fd.icon;
+  document.getElementById('rFuncLabel').textContent = fd.label;
+  document.getElementById('rFuncTitle').textContent = fd.title;
+  document.getElementById('rFuncLabel').className   = 'func-label';
+  document.getElementById('rFuncTitle').className   = 'func-title';
+  document.getElementById('rFuncBody').innerHTML =
+    fd.items.map(item => `
+      <div class="func-item">
+        <span class="func-item-icon">${item.icon}</span>
+        <div class="func-item-text"><strong>${item.title}</strong>${item.text}</div>
+      </div>`).join('')
+    + `<div class="func-reeval"><span>⏱</span><span>${fd.reeval}</span></div>`;
+
+  // Messages
+  const msgs = {
+    G1: [
+      `Olá! Sou o(a) fisioterapeuta da empresa. Para garantir a sua segurança, preciso te informar: com base no que você relatou, você apresenta sinais que precisam de avaliação médica IMEDIATA e presencial.\n\nPor favor:\n• NÃO tente colocar o membro no lugar\n• NÃO coma nem beba nada agora\n• Imobilize o membro como está\n\nProcure a emergência mais próxima ou acione o SAMU: 192`,
+      `Orientações enquanto aguarda atendimento:\n\n${flags.length > 0 ? '⚠ Sinais de alerta identificados: ' + flags.map(([k,v]) => v.reason).join(', ') + '\n\n' : ''}• Mantenha o membro imobilizado na posição em que está\n• Não apoie peso e não force movimentos\n• Aplique gelo SE não houver ferida aberta (20 min)\n• Em caso de sangramento: comprima com pano limpo\n• Informe ao médico: mecanismo da lesão, horário e intensidade da dor`,
+      `Olá! Passando para verificar como você está após o atendimento médico. Recebeu algum diagnóstico ou orientação? Tem imagens de RX ou tomografia? Assim que tiver a liberação médica, daremos continuidade ao acompanhamento fisioterapêutico.`,
+    ],
+    G2: [
+      `Olá! Sou o(a) fisioterapeuta da empresa. Seus sintomas indicam uma lesão muscular ou de ligamentos sem sinais de gravidade extrema. Vamos iniciar o método POLICE para aliviar a dor e o inchaço:\n\n• Proteção: evite movimentos bruscos\n• Carga otimizada: apoie o peso com cuidado\n• Gelo: 20 min, 3x ao dia com pano protetor\n• Compressão: faixa elástica leve\n• Elevação: membro acima do coração`,
+      `Orientações complementares:\n\n• Evite calor na fase aguda (primeiras 48-72h)\n• Não use a lesão em excesso, mas tampouco fique em repouso total\n• Analgésico/anti-inflamatório conforme orientação médica\n• Monitore: se surgir dormência, roxidão intensa, muito inchaço ou impossibilidade de apoiar — procure atendimento médico para radiografia`,
+      `Olá! Passando para verificar como você está após 48h. A dor melhorou? Consegue apoiar o peso normalmente? O inchaço reduziu?\n\nSe não houver melhora ou se piorou, orientamos buscar atendimento médico para avaliação com exame de imagem. Qualquer dúvida, estou por aqui!`,
+    ],
+  };
+
+  currentMsgs = msgs[group];
+  showMsg(0, document.querySelector('.msg-tab'));
+
+  rc.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+// ══════════════════════════════════════════
+// MESSAGE TABS
+// ══════════════════════════════════════════
+function showMsg(idx, btn) {
+  document.querySelectorAll('.msg-tab').forEach(t => t.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  document.getElementById('rMsg').textContent = currentMsgs[idx] || '';
+  const bc = document.getElementById('btnCopy');
+  bc.textContent = '📋 Copiar para WhatsApp';
+  bc.classList.remove('copied');
+}
+
+function copiarMsg() {
+  navigator.clipboard.writeText(document.getElementById('rMsg').textContent).then(() => {
+    const btn = document.getElementById('btnCopy');
+    btn.textContent = '✅ Copiado!';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = '📋 Copiar para WhatsApp'; btn.classList.remove('copied'); }, 2200);
+  });
+}
+
+// ══════════════════════════════════════════
+// REINICIAR
+// ══════════════════════════════════════════
+function reiniciar() {
+  document.getElementById('resultCard').style.display = 'none';
+  Object.keys(rfState).forEach(k => delete rfState[k]);
+  document.querySelectorAll('.yn-btn').forEach(b => b.classList.remove('sel-sim','sel-nao'));
+  document.querySelectorAll('.check-item').forEach(el => { el.classList.remove('checked'); el.querySelector('input').checked = false; });
+  document.getElementById('dorAtual').value = 5;
+  updateSlider(document.getElementById('dorAtual'), 'sliderDor');
+  document.getElementById('atendimentoInfo').classList.remove('open');
+  document.getElementById('formCard').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+</script>
+</body>
+</html>

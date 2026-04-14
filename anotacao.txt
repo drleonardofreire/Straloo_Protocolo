@@ -127,3 +127,106 @@ Todos os critérios abaixo devem ser verdadeiros simultaneamente:
 ---
 
 **REGRA GERAL:** Uma única condição de G3 prevalece sobre qualquer combinação de condições de G1. Sempre guiar a conduta pela sintomatologia do paciente — os exames são orientativos, não absolutos.
+
+
+==================================
+EMERGÊNCIA
+==================================
+
+Agora atualizo o `index.html` para ativar o card:Pronto! A página está completa e integrada. Aqui o que foi construído:
+
+**`straloo_emergencia.html`** — 4 etapas + resultado completo:
+
+**Etapa 1 — Mecanismo e Contexto** com seletor de mecanismo (queda, torção, batida, acidente de trânsito), região do corpo afetada, tempo de evolução e escala de dor.
+
+**Etapa 2 — Red Flags** dividida em dois blocos. Para extremidades: fratura exposta, deformidade grave, sinais de isquemia (os 6 Ps), dormência/paralisia e dor desproporcional. Para coluna: Síndrome da Cauda Equina, fraqueza progressiva nos membros e febre com dor vertebral — todas com notas técnicas clínicas detalhadas.
+
+**Etapa 3 — Capacidade Funcional** com avaliação de carga, sinais visuais (inchaço, hematoma, crepitação, deformidade leve) e impacto no trabalho. Inclui nota sobre as Regras de Ottawa para indicação de radiografia.
+
+**Etapa 4 — Histórico e Medicação** com atendimento médico prévio e uso atual de medicação.
+
+**Motor de Estratificação** classifica em dois grupos com cor de Manchester:
+
+🔴🟠 **Grupo 1 (Emergência)** — qualquer red flag positiva, incapacidade total de apoio ou dor ≥9. Exibe condutas de imobilização e jejum, contatos de emergência de Fortaleza (SAMU 192, Bombeiros 193, UPA, PM 190) e alerta de contraindicação absoluta.
+
+🟡🟢 **Grupo 2 (Conservador)** — sem red flags. Exibe protocolo POLICE completo com cards visuais, alertas contextuais por região (Regras de Ottawa para tornozelo/joelho, alerta de crepitação) e orientações de retorno.
+
+**Bloco de Limitação Funcional** em 4 níveis (🟢 preservada / 🟡 parcial / 🟠 severa / 🔴 grave) com cuidados específicos para trabalho, afastamento e segurança domiciliar. Três mensagens de WhatsApp prontas para copiar por grupo.
+
+---
+
+**PROTOCOLO DE URGÊNCIAS ORTOPÉDICAS — CRITÉRIOS DE ESTRATIFICAÇÃO**
+*Referência para anotações clínicas — Triagem de Manchester*
+
+---
+
+**LÓGICA DE PRIORIDADE**
+O sistema verifica primeiro a presença de Red Flags e incapacidade total. Se qualquer Red Flag for SIM ou a capacidade funcional for ausente → Grupo 1 imediato. Se todos os Red Flags forem NÃO → Grupo 2 com sub-classificação pela cor de Manchester.
+
+---
+
+**🔴🟠 GRUPO 1 — Emergência / Urgência Absoluta (Vermelho e Laranja)**
+
+Ativado se qualquer uma das condições abaixo for verdadeira:
+
+*Red Flags — Etapa 2 (qualquer SIM ativa o Grupo 1):*
+- Ferimento aberto com exposição óssea ou sangramento que não para → Fratura exposta
+- Deformidade visual grave — membro ou articulação claramente fora do lugar → Luxação ou fratura com desvio
+- Pele pálida, fria ou arroxeada na extremidade afetada → Sinal de isquemia / lesão vascular
+- Dormência severa, perda de sensibilidade ou incapacidade total de mover a extremidade → Síndrome compartimental ou lesão nervosa
+- Dor extrema e desproporcional que não alivia com nada → Sinal de alarme vascular ou compartimental
+- Dificuldade para controlar urina ou fezes, ou dormência na região genital / nádegas → Síndrome da Cauda Equina
+- Fraqueza súbita progressiva nas pernas após trauma cervical ou lombar → Suspeita de lesão medular
+- Febre associada à dor nas costas, ou dor que não melhora em repouso → Infecção vertebral ou patologia não-mecânica
+
+*Capacidade funcional — Etapa 3:*
+- "Ausente — incapaz de apoiar qualquer peso / mover o membro"
+
+*Intensidade da dor — Etapa 1:*
+- Escala de dor igual ou acima de 9/10
+
+Sub-classificação da cor de Manchester dentro do Grupo 1:
+- 🔴 Vermelho (emergência máxima): dor ≥ 9/10, ou red flags de isquemia (pele pálida/fria/roxa), dormência severa/paralisia, fratura exposta, Síndrome da Cauda Equina ou fraqueza progressiva nos membros
+- 🟠 Laranja (muito urgente): demais red flags positivos (deformidade, dor desproporcional, febre com dor vertebral) sem os sinais acima
+
+---
+
+**🟡🟢 GRUPO 2 — Urgência Menor / Manejo Conservador (Amarelo e Verde)**
+
+Ativado somente quando todos os critérios abaixo forem verdadeiros simultaneamente:
+
+- Todos os Red Flags da Etapa 2 respondidos com NÃO
+- Capacidade funcional diferente de "Ausente" (pode ser preservada, parcial ou mínima)
+- Dor abaixo de 9/10
+
+Sub-classificação da cor de Manchester dentro do Grupo 2:
+- 🟡 Amarelo (urgente): qualquer uma destas condições — dor ≥ 6/10, ou capacidade funcional "Mínima — consegue apenas alguns passos", ou crepitação ao movimento marcada, ou deformidade leve marcada
+- 🟢 Verde (pouco urgente): nenhuma das condições acima — dor abaixo de 6/10, capacidade preservada ou parcial, sem crepitação e sem deformidade
+
+---
+
+**📍 MAPEAMENTO DA LIMITAÇÃO FUNCIONAL**
+*(determinada pela resposta à Etapa 3 — Capacidade de suportar peso)*
+
+- "Preservada — consegue apoiar e caminhar normalmente" → Limitação Verde: retorno ao trabalho orientado, protocolo POLICE domiciliar, reavaliação em 48-72h
+- "Parcial — consegue apoiar com dor ou limitação" → Limitação Amarela: indicar RX se MMII, imobilização temporária, avaliação de afastamento parcial
+- "Mínima — consegue apoiar apenas alguns passos" → Limitação Laranja: encaminhar para avaliação médica e imagem, descarga total, afastamento total do trabalho
+- "Ausente — incapaz de apoiar qualquer peso / mover o membro" → Limitação Vermelha: acionar emergência, imobilizar na posição encontrada, jejum absoluto
+
+---
+
+**TABELA RESUMO RÁPIDO**
+
+| Critério              | Grupo 1 🔴🟠                       | Grupo 2 🟡🟢 |
+|-----------------------|-------------------------------------|---------------|
+| Qualquer Red Flag     | SIM                                 | NÃO (todos) |
+| Capacidade funcional  | Ausente                             | Preservada, parcial ou mínima |
+| Dor                   | ≥ 9/10                              | < 9/10 |
+| Manchester Vermelho   | Dor ≥9 + isquemia + paralisia + SCE | — |
+| Manchester Laranja    | Demais red flags                    | — |
+| Manchester Amarelo    | —                                   | Dor ≥6 + mínima + crepitação   |
+| Manchester Verde      | —                                   | Dor < 6, sem sinais graves |
+
+---
+
+**REGRA GERAL:** Uma única Red Flag sempre classifica como Grupo 1, independente de todos os outros dados. A intensidade da dor e a capacidade funcional são critérios complementares — não substitutos das Red Flags.
