@@ -1,0 +1,37 @@
+=================================
+LOMBAGIA
+================================
+Informações para entender o protocolo de lombalgia:
+
+RESPOSTAS PARA ACESSAR OS GRUPOS:
+* 1. Para acessar o GRUPO A (Padrão Discal / Hérnia)
+O código prioriza a Extensão e sinais de Radiculopatia. Responda as seguintes combinações:
+Ponto Chave (Etapa 5): No Teste de Extensão, selecione: "A dor fica mais curta/centraliza".
+OU (Etapa 5): No Teste de Alívio Postural, selecione: "Pior ao sentar / Melhor caminhando".
+OU (Sinais Radiculares):
+Etapa 2: Irradiação "Até o pé" ou "Até o joelho".
+Etapa 5: No Teste de Extensão, NÃO selecione "Piora".
+
+* 2. Para acessar o GRUPO B (Padrão de Estenose / Facetário)
+O código busca a Flexão e a piora com a extensão da coluna. Responda:
+Ponto Chave (Etapa 5): No Teste de Flexão, selecione: "A dor 'sobe' para o centro das costas (centraliza)".
+OU (Etapa 5): No Teste de Extensão, selecione: "Piora ou irradia mais na extensão".
+OU (Etapa 5): No Teste de Alívio Postural, selecione: "Melhor sentado / Pior caminhando".
+
+* 3. Para acessar o GRUPO C (Instabilidade / Controle Motor)
+O código entra neste grupo quando não há preferência direcional clara ou quando a dor sugere falha de estabilização. Responda:
+Ponto Chave (Etapa 3): Em Sensação da Dor, selecione: "Fisgada ou pontada súbita" (Sugere instabilidade).
+OU (Etapa 5): Selecione "Sem mudança / indiferente" tanto na Flexão quanto na Extensão.
+Contexto Geral: Se o paciente não tiver dor que irradia para o pé e não apresentar melhora/piora clara com os movimentos de inclinar para frente ou para trás.
+
+1. O seu Grupo 3 (Hérnia) virou o Grupo A (Extensão)
+No seu texto, você cita que a dor piora ao tossir ou sentar (flexão).
+No Código: Se o paciente responde "Pior ao sentar" e "Melhora ao inclinar para trás", o sistema entende que a Extensão é o remédio. Ele é classificado como Grupo A porque a conduta prioritária é o protocolo de extensão progressiva para reduzir a pressão discal.
+
+2. O seu Grupo 2 (Faceta) e Grupo 3 (Estenose) viraram o Grupo B (Flexão)
+Você notou que tanto a estenose quanto a dor facetária pioram ao inclinar para trás?
+No Código: O sistema agrupa esses pacientes no Grupo B. Se o paciente diz que piora ao caminhar ou ao inclinar para trás, a conduta gerada é o protocolo de Flexão (abraçar joelhos, bicicleta), que alivia tanto a compressão do canal (estenose) quanto o choque entre as vértebras (faceta).
+
+3. O seu Grupo 1 (Inespecífica) virou o Grupo C (Estabilização)
+Este é o grupo da "fisgada" ou do "cansaço" sem irradiação.
+No Código: Se os testes de inclinar para frente e para trás não mudam a dor (indiferente), o sistema joga para o Grupo C. O foco aqui é o fortalecimento do Core (Transverso/Multífidos) que você sugeriu, além de combater a cinesiofobia.

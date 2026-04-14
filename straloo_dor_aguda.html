@@ -1,0 +1,759 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Straloo — Protocolo Dor Aguda</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #F2EFE9;
+    --surface: #FFFFFF;
+    --surface2: #F8F6F2;
+    --primary: #0E4D5C;
+    --primary-light: #1A7A8C;
+    --accent: #E8A84C;
+    --accent-dark: #C8882C;
+    --danger: #C0392B;
+    --danger-light: #FDECEB;
+    --danger-mid: #E74C3C;
+    --warning: #D68910;
+    --warning-light: #FEF9EC;
+    --warning-mid: #F39C12;
+    --success: #1A7A5C;
+    --success-light: #E8F5F0;
+    --success-mid: #27AE60;
+    --text: #1A2530;
+    --text-muted: #6B7A85;
+    --border: #DDD8CF;
+    --shadow: 0 4px 24px rgba(14,77,92,0.10);
+    --radius: 16px;
+    --radius-sm: 8px;
+    --transition: all 0.32s cubic-bezier(0.4,0,0.2,1);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ─── HEADER ─── */
+  .header {
+    background: var(--primary);
+    padding: 18px 32px;
+    display: flex; align-items: center; justify-content: space-between;
+    position: sticky; top: 0; z-index: 100;
+    box-shadow: 0 2px 16px rgba(0,0,0,0.18);
+  }
+  .header-left { display: flex; align-items: center; gap: 18px; }
+  .btn-home {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-family: 'DM Sans', sans-serif; font-size: 0.78rem; font-weight: 600;
+    color: rgba(255,255,255,0.6); background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.15); border-radius: 50px;
+    padding: 5px 14px; text-decoration: none; transition: var(--transition); letter-spacing: 0.03em;
+  }
+  .btn-home:hover { color: white; background: rgba(255,255,255,0.14); border-color: rgba(255,255,255,0.3); }
+  .logo { font-family: 'DM Serif Display', serif; font-size: 1.6rem; color: #FFF; letter-spacing: 0.02em; }
+  .logo span { color: var(--accent); }
+  .header-badge {
+    font-size: 0.72rem; font-weight: 600; color: var(--accent);
+    background: rgba(232,168,76,0.15); border: 1px solid rgba(232,168,76,0.35);
+    border-radius: 50px; padding: 4px 12px; letter-spacing: 0.08em; text-transform: uppercase;
+  }
+
+  /* ─── MAIN ─── */
+  .main { max-width: 820px; margin: 0 auto; padding: 40px 20px 80px; }
+
+  /* ─── SECTION CARD ─── */
+  .section-card {
+    background: var(--surface); border-radius: var(--radius);
+    padding: 40px 44px; box-shadow: var(--shadow); margin-bottom: 24px;
+    animation: fadeUp 0.4s ease both;
+  }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ─── SECTION HEADER ─── */
+  .section-tag {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--primary); background: rgba(14,77,92,0.08);
+    border-radius: 50px; padding: 4px 12px; margin-bottom: 12px;
+  }
+  .section-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.7rem; color: var(--primary); line-height: 1.25; margin-bottom: 6px;
+  }
+  .section-subtitle { font-size: 0.88rem; color: var(--text-muted); line-height: 1.65; margin-bottom: 32px; }
+  .intro-msg {
+    background: rgba(14,77,92,0.04); border-left: 3px solid var(--primary-light);
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+    padding: 12px 16px; font-size: 0.85rem; color: #34505A; line-height: 1.65;
+    margin-bottom: 28px; font-style: italic;
+  }
+  .intro-msg strong { font-style: normal; font-size: 0.72rem; letter-spacing: 0.07em; text-transform: uppercase; display: block; margin-bottom: 4px; color: var(--primary-light); }
+
+  /* ─── GROUP DIVIDER ─── */
+  .group-divider {
+    background: var(--surface2); border: 1px solid var(--border);
+    border-radius: var(--radius-sm); padding: 20px 22px; margin: 24px 0;
+  }
+  .group-title {
+    font-size: 0.75rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--text-muted); margin-bottom: 16px; padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  /* ─── FORM ELEMENTS ─── */
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px; }
+  .form-group { margin-bottom: 20px; }
+  .form-label {
+    display: block; font-size: 0.88rem; font-weight: 600; color: var(--text);
+    margin-bottom: 7px; line-height: 1.45;
+  }
+  .form-label small { display: block; font-weight: 400; color: var(--text-muted); font-size: 0.8rem; margin-top: 2px; }
+
+  .form-input, .form-select {
+    width: 100%; padding: 11px 14px;
+    border: 2px solid var(--border); border-radius: var(--radius-sm);
+    background: var(--surface); color: var(--text);
+    font-family: 'DM Sans', sans-serif; font-size: 0.9rem;
+    outline: none; transition: var(--transition); appearance: none;
+  }
+  .form-select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%236B7A85' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 14px center; padding-right: 36px; }
+  .form-input:focus, .form-select:focus { border-color: var(--primary-light); box-shadow: 0 0 0 3px rgba(26,122,140,0.12); }
+  .form-input::placeholder { color: var(--text-muted); }
+
+  .form-textarea {
+    width: 100%; padding: 11px 14px;
+    border: 2px solid var(--border); border-radius: var(--radius-sm);
+    background: var(--surface); color: var(--text);
+    font-family: 'DM Sans', sans-serif; font-size: 0.9rem;
+    outline: none; transition: var(--transition); resize: vertical; min-height: 72px;
+  }
+  .form-textarea:focus { border-color: var(--primary-light); box-shadow: 0 0 0 3px rgba(26,122,140,0.12); }
+
+  /* ─── PAIN SLIDER ─── */
+  .slider-wrap {
+    background: var(--surface2); border: 1px solid var(--border);
+    border-radius: var(--radius-sm); padding: 16px 18px;
+  }
+  .slider-track { display: flex; align-items: center; gap: 16px; margin-bottom: 10px; }
+  .slider-track input[type="range"] {
+    flex: 1; -webkit-appearance: none; height: 6px;
+    border-radius: 3px; background: linear-gradient(to right, var(--teal, var(--primary-light)) 0%, var(--teal, var(--primary-light)) 50%, #DDD8CF 50%, #DDD8CF 100%);
+    outline: none; cursor: pointer;
+  }
+  .slider-track input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none; width: 22px; height: 22px; border-radius: 50%;
+    background: var(--primary); border: 3px solid white;
+    box-shadow: 0 2px 8px rgba(14,77,92,0.3); cursor: pointer; transition: var(--transition);
+  }
+  .slider-track input[type="range"]::-webkit-slider-thumb:hover { background: var(--primary-light); transform: scale(1.15); }
+  .slider-value {
+    font-family: 'DM Serif Display', serif; font-size: 2rem; color: var(--primary);
+    min-width: 40px; text-align: center; line-height: 1;
+  }
+  .slider-labels { display: flex; justify-content: space-between; font-size: 0.72rem; color: var(--text-muted); }
+
+  /* ─── CHECKBOX GRID ─── */
+  .check-grid {
+    display: flex; flex-wrap: wrap; gap: 10px;
+    background: var(--surface2); border: 1px solid var(--border);
+    border-radius: var(--radius-sm); padding: 14px 16px;
+  }
+  .check-item {
+    display: flex; align-items: center; gap: 8px;
+    padding: 7px 14px; border-radius: 50px;
+    border: 2px solid var(--border); background: var(--surface);
+    cursor: pointer; transition: var(--transition); user-select: none;
+    font-size: 0.85rem; font-weight: 500; color: var(--text-muted);
+  }
+  .check-item:hover { border-color: var(--primary-light); color: var(--text); }
+  .check-item.checked { border-color: var(--primary); background: rgba(14,77,92,0.07); color: var(--primary); font-weight: 600; }
+  .check-item input { display: none; }
+
+  /* ─── RADIO INLINE ─── */
+  .radio-inline { display: flex; gap: 10px; flex-wrap: wrap; }
+  .radio-pill {
+    display: flex; align-items: center; gap: 7px;
+    padding: 9px 18px; border-radius: 50px;
+    border: 2px solid var(--border); background: transparent;
+    cursor: pointer; transition: var(--transition); user-select: none;
+    font-size: 0.85rem; font-weight: 500; color: var(--text-muted);
+  }
+  .radio-pill:hover { border-color: var(--primary-light); color: var(--text); }
+  .radio-pill.selected { border-color: var(--primary); background: rgba(14,77,92,0.07); color: var(--primary); font-weight: 600; }
+  .radio-pill input { display: none; }
+
+  /* ─── HIDDEN EXTRA ─── */
+  .extra-info { display: none; margin-top: 14px; animation: fadeUp 0.3s ease both; }
+  .extra-info.open { display: block; }
+
+  /* ─── GENERATE BUTTON ─── */
+  .btn-generate {
+    width: 100%; padding: 17px 32px; margin-top: 8px;
+    background: var(--primary); color: white; border: none;
+    font-family: 'DM Serif Display', serif; font-size: 1.15rem;
+    border-radius: var(--radius-sm); cursor: pointer;
+    transition: var(--transition); letter-spacing: 0.02em;
+    box-shadow: 0 4px 20px rgba(14,77,92,0.3);
+    display: flex; align-items: center; justify-content: center; gap: 10px;
+  }
+  .btn-generate:hover { background: var(--primary-light); transform: translateY(-2px); box-shadow: 0 8px 28px rgba(14,77,92,0.35); }
+  .btn-generate:active { transform: scale(0.99); }
+
+  /* ─── RESULT ─── */
+  #resultArea { display: none; }
+
+  .result-header { margin-bottom: 28px; }
+  .result-status-badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-size: 0.72rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase;
+    border-radius: 50px; padding: 5px 16px; margin-bottom: 12px;
+  }
+  .result-title { font-family: 'DM Serif Display', serif; font-size: 2rem; line-height: 1.15; margin-bottom: 8px; }
+  .result-subtitle { font-size: 0.9rem; color: var(--text-muted); line-height: 1.65; }
+
+  /* color variants */
+  .type-danger .result-status-badge { background: rgba(192,57,43,0.12); color: var(--danger); }
+  .type-danger .result-title { color: var(--danger); }
+  .type-warning .result-status-badge { background: rgba(214,137,16,0.12); color: var(--warning); }
+  .type-warning .result-title { color: var(--warning); }
+  .type-success .result-status-badge { background: rgba(26,122,92,0.12); color: var(--success); }
+  .type-success .result-title { color: var(--success); }
+
+  .divider { height: 1px; background: var(--border); margin: 24px 0; }
+
+  /* criteria box */
+  .criteria-box {
+    border-radius: var(--radius-sm); padding: 16px 20px; margin-bottom: 20px;
+    border-left: 4px solid;
+  }
+  .criteria-box.danger { border-color: var(--danger); background: var(--danger-light); }
+  .criteria-box.warning { border-color: var(--warning-mid); background: var(--warning-light); }
+  .criteria-box.success { border-color: var(--success-mid); background: var(--success-light); }
+  .criteria-box-title { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 8px; }
+  .criteria-box.danger .criteria-box-title { color: var(--danger); }
+  .criteria-box.warning .criteria-box-title { color: var(--warning); }
+  .criteria-box.success .criteria-box-title { color: var(--success); }
+  .criteria-list { display: flex; flex-wrap: wrap; gap: 8px; }
+  .criteria-pill {
+    font-size: 0.8rem; font-weight: 500; padding: 4px 12px; border-radius: 50px;
+  }
+  .danger .criteria-pill { background: rgba(192,57,43,0.1); color: var(--danger); }
+  .warning .criteria-pill { background: rgba(214,137,16,0.12); color: #A06010; }
+  .success .criteria-pill { background: rgba(26,122,92,0.1); color: var(--success); }
+
+  /* conduct section */
+  .conduct-title {
+    font-size: 0.75rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--text-muted); margin-bottom: 12px;
+  }
+  .conduct-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
+  .conduct-item {
+    display: flex; align-items: flex-start; gap: 12px;
+    padding: 13px 16px; border-radius: var(--radius-sm);
+    background: var(--surface2); border: 1px solid var(--border);
+  }
+  .conduct-icon { font-size: 1rem; flex-shrink: 0; margin-top: 1px; }
+  .conduct-text { font-size: 0.88rem; line-height: 1.55; color: var(--text); }
+  .conduct-text strong { font-weight: 600; display: block; margin-bottom: 2px; }
+
+  /* alert box */
+  .alert-box {
+    border-radius: var(--radius-sm); padding: 14px 18px; margin-bottom: 16px;
+    border-left: 4px solid; font-size: 0.85rem; line-height: 1.65;
+  }
+  .alert-box.warning { border-color: var(--warning-mid); background: var(--warning-light); color: #7A5010; }
+  .alert-box.danger  { border-color: var(--danger); background: var(--danger-light); color: #8C2020; }
+  .alert-box.info    { border-color: var(--primary-light); background: rgba(14,77,92,0.05); color: #1A3D4A; }
+  .alert-box strong  { font-weight: 700; }
+
+  /* exame alerta */
+  .exam-alert {
+    background: rgba(232,168,76,0.12); border: 1px solid rgba(232,168,76,0.35);
+    border-radius: var(--radius-sm); padding: 12px 16px; margin-bottom: 20px;
+    display: flex; align-items: flex-start; gap: 10px; font-size: 0.85rem;
+  }
+  .exam-alert strong { color: var(--accent-dark); }
+
+  /* message box */
+  .msg-box {
+    background: var(--surface2); border: 1px dashed var(--primary-light);
+    border-radius: var(--radius-sm); padding: 18px 20px;
+    font-size: 0.88rem; color: var(--text); line-height: 1.7;
+    white-space: pre-line; margin-bottom: 12px;
+  }
+  .btn-copy {
+    display: inline-flex; align-items: center; gap: 7px;
+    background: transparent; border: 2px solid var(--primary-light);
+    color: var(--primary); font-family: 'DM Sans', sans-serif;
+    font-size: 0.83rem; font-weight: 600; padding: 9px 20px;
+    border-radius: var(--radius-sm); cursor: pointer; transition: var(--transition);
+  }
+  .btn-copy:hover { background: var(--primary); color: white; border-color: var(--primary); }
+  .btn-copy.copied { background: var(--success-light); border-color: var(--success); color: var(--success); }
+
+  /* ─── RESTART / PRINT ─── */
+  .result-actions {
+    display: flex; gap: 12px; margin-top: 32px; padding-top: 24px; border-top: 1px solid var(--border);
+  }
+  .btn-restart {
+    background: transparent; border: 2px solid var(--border); color: var(--text-muted);
+    font-family: 'DM Sans', sans-serif; font-size: 0.88rem; font-weight: 600;
+    padding: 12px 24px; border-radius: var(--radius-sm); cursor: pointer; transition: var(--transition);
+  }
+  .btn-restart:hover { border-color: var(--text-muted); color: var(--text); }
+  .btn-print {
+    background: var(--primary); color: white; border: none;
+    font-family: 'DM Sans', sans-serif; font-size: 0.88rem; font-weight: 600;
+    padding: 12px 24px; border-radius: var(--radius-sm); cursor: pointer; transition: var(--transition);
+  }
+  .btn-print:hover { background: var(--primary-light); }
+
+  /* nota técnica */
+  .nota-btn {
+    display: inline-flex; align-items: center; gap: 5px;
+    font-size: 0.75rem; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase;
+    color: var(--primary-light); background: rgba(26,122,140,0.08);
+    border: 1px solid rgba(26,122,140,0.2); border-radius: 50px; padding: 3px 10px;
+    cursor: pointer; transition: var(--transition); margin-bottom: 10px;
+  }
+  .nota-btn:hover { background: rgba(26,122,140,0.15); }
+  .nota-box {
+    background: rgba(14,77,92,0.04); border-left: 3px solid var(--primary-light);
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+    padding: 12px 16px; font-size: 0.82rem; color: #34505A;
+    line-height: 1.65; margin-bottom: 12px; display: none;
+  }
+  .nota-box.open { display: block; animation: fadeUp 0.25s ease; }
+
+  /* ─── RESPONSIVE ─── */
+  @media (max-width: 600px) {
+    .section-card { padding: 28px 20px; }
+    .form-row { grid-template-columns: 1fr; }
+    .section-title { font-size: 1.4rem; }
+    .main { padding: 24px 12px 60px; }
+    .result-title { font-size: 1.5rem; }
+  }
+  @media print {
+    .header, .btn-generate, .result-actions, .btn-copy, .section-card:not(#resultCard) { display: none !important; }
+    body { background: white; }
+    #resultCard { box-shadow: none; border: 1px solid #ddd; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="header-left">
+    <a class="btn-home" href="index.html">← Protocolos</a>
+    <div class="logo">Straloo<span>.</span></div>
+  </div>
+  <div class="header-badge">Triagem · Dor Aguda</div>
+</div>
+
+<div class="main">
+
+  <!-- ════════════ FORM CARD ════════════ -->
+  <div class="section-card" id="formCard">
+    <div class="section-tag">🩺 Fase 1 · Triagem Inicial</div>
+    <h2 class="section-title">Padronização de Fluxo</h2>
+    <p class="section-subtitle">Protocolo de Dor Aguda — Fisioterapia em Teleatendimento. Preencha os dados clínicos do paciente para gerar a classificação e conduta.</p>
+
+    <div class="intro-msg">
+      <strong>Sugestão de mensagem inicial</strong>
+      "Olá, <em>[nome do paciente]</em>! Vi que você relatou uma piora no seu quadro e quero entender melhor para poder te orientar com mais precisão. Me conta, por gentileza:"
+    </div>
+
+    <!-- Nome -->
+    <div class="form-group">
+      <label class="form-label">Nome do Paciente</label>
+      <input class="form-input" type="text" id="pacienteNome" placeholder="Ex: João Silva">
+    </div>
+
+    <!-- Início + Gatilho -->
+    <div class="form-row">
+      <div class="form-group" style="margin-bottom:0">
+        <label class="form-label">Início da Dor<small>Quando começou essa piora?</small></label>
+        <select class="form-select" id="inicioDor">
+          <option value="progressivo">Progressivo</option>
+          <option value="subito">Súbito</option>
+        </select>
+      </div>
+      <div class="form-group" style="margin-bottom:0">
+        <label class="form-label">Gatilho<small>Queda, pancada ou esforço diferente?</small></label>
+        <select class="form-select" id="gatilho">
+          <option value="nenhum">Sem gatilho definido</option>
+          <option value="trauma">Trauma (Queda / Pancada)</option>
+          <option value="sobrecarga">Exercício / Sobrecarga</option>
+          <option value="movimento">Movimento Específico</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Intensidade -->
+    <div class="form-group" style="margin-top:20px">
+      <label class="form-label">Intensidade da Dor<small>De 0 a 10, quanto você classifica sua dor agora?</small></label>
+      <div class="slider-wrap">
+        <div class="slider-track">
+          <input type="range" id="intensidade" min="0" max="10" value="5" oninput="updateSlider(this)">
+          <span class="slider-value" id="sliderVal">5</span>
+        </div>
+        <div class="slider-labels"><span>0 — Sem dor</span><span>10 — Pior dor</span></div>
+      </div>
+    </div>
+
+    <!-- Sinais Flogísticos -->
+    <div class="form-group">
+      <label class="form-label">Sinais Flogísticos<small>Inchaço, vermelhidão, calor ou dor ao repouso?</small></label>
+      <button class="nota-btn" onclick="toggleNota('nFlog')">📋 Nota Técnica</button>
+      <div class="nota-box" id="nFlog">Presença de sinais flogísticos (edema, calor, rubor, dor em repouso) indica processo inflamatório ativo. A combinação de 2+ sinais eleva o risco de conduta protetora e pode contraindicar exercícios resistidos e de alta intensidade. Atenção especial: sinais sistêmicos como febre associados a edema e calor podem indicar infecção articular — encaminhar para avaliação médica.</div>
+      <div class="check-grid" id="checkFlog">
+        <label class="check-item" onclick="toggleCheck(this)">
+          <input type="checkbox" value="Edema"> <span>🫧 Edema</span>
+        </label>
+        <label class="check-item" onclick="toggleCheck(this)">
+          <input type="checkbox" value="Calor"> <span>🔥 Calor</span>
+        </label>
+        <label class="check-item" onclick="toggleCheck(this)">
+          <input type="checkbox" value="Rubor"> <span>🔴 Rubor</span>
+        </label>
+        <label class="check-item" onclick="toggleCheck(this)">
+          <input type="checkbox" value="DorRepouso"> <span>🛏 Dor ao Repouso</span>
+        </label>
+      </div>
+    </div>
+
+    <!-- Medicação -->
+    <div class="group-divider">
+      <div class="group-title">Uso de Medicamento</div>
+      <div class="form-row">
+        <div>
+          <label class="form-label">Uso atual?</label>
+          <select class="form-select" id="medTipo">
+            <option value="nenhum">Não está usando</option>
+            <option value="prescrita">Medicação Prescrita</option>
+            <option value="automedicacao">Automedicação</option>
+          </select>
+        </div>
+        <div>
+          <label class="form-label">Qual medicação?</label>
+          <input class="form-input" type="text" id="medQual" placeholder="Nome do remédio">
+        </div>
+      </div>
+      <div class="form-group" style="margin-bottom:0">
+        <label class="form-label">Resposta percebida à medicação:</label>
+        <div class="radio-inline">
+          <label class="radio-pill" onclick="selectPill(this,'medResp')"><input type="radio" name="medResp" value="Boa"> Boa</label>
+          <label class="radio-pill" onclick="selectPill(this,'medResp')"><input type="radio" name="medResp" value="Parcial"> Parcial</label>
+          <label class="radio-pill selected" onclick="selectPill(this,'medResp')"><input type="radio" name="medResp" value="Nenhuma" checked> Nenhuma / Não avaliado</label>
+        </div>
+      </div>
+    </div>
+
+    <!-- Atendimento médico -->
+    <div class="group-divider">
+      <div class="group-title">Atendimento Médico Prévio</div>
+      <div class="form-group" style="margin-bottom:0">
+        <label class="form-label">Procurou pronto atendimento ou consulta de urgência recentemente?</label>
+        <select class="form-select" id="atendimentoMedico" onchange="toggleExtraInfo()">
+          <option value="nao">Não</option>
+          <option value="sim">Sim</option>
+        </select>
+        <div class="extra-info" id="medInfoExtra">
+          <label class="form-label" style="margin-top:12px">O que foi orientado? (Diagnóstico / Restrições)</label>
+          <textarea class="form-textarea" id="medOrientacao" placeholder="Ex: Suspeita de entorse, repouso por 48h..."></textarea>
+        </div>
+      </div>
+    </div>
+
+    <!-- Exames -->
+    <div class="group-divider">
+      <div class="group-title">Exames Complementares</div>
+      <div class="form-group" style="margin-bottom:0">
+        <label class="form-label">Já fez ou tem pedido de exame para essa dor?</label>
+        <select class="form-select" id="examesStatus">
+          <option value="nao">Não realizados</option>
+          <option value="realizados">Já realizou — solicitar envio</option>
+          <option value="solicitados">Foi solicitado mas ainda não fez</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Impacto funcional -->
+    <div class="form-group">
+      <label class="form-label">Impacto Funcional<small>Dificulta caminhar, subir escadas, vestir-se ou dormir?</small></label>
+      <select class="form-select" id="impacto">
+        <option value="leve">Leve — impacto mínimo nas AVDs</option>
+        <option value="moderado">Moderado — dificulta ações do dia a dia</option>
+        <option value="grave">Grave — incapaz / marcha prejudicada</option>
+      </select>
+    </div>
+
+    <!-- BUTTON -->
+    <button class="btn-generate" onclick="processarConduta()">
+      <span>🎯</span> Gerar Classificação e Conduta
+    </button>
+  </div>
+
+  <!-- ════════════ RESULT CARD ════════════ -->
+  <div class="section-card" id="resultCard" style="display:none;">
+
+    <div class="result-header" id="resultHeader">
+      <div class="result-status-badge" id="rBadge"></div>
+      <h2 class="result-title" id="rTitle"></h2>
+      <p class="result-subtitle" id="rSubtitle"></p>
+    </div>
+
+    <!-- Exam alert -->
+    <div class="exam-alert" id="examAlert" style="display:none">
+      <span>📋</span>
+      <div><strong id="examAlertTitle">Conduta de Exames: </strong> <span id="examAlertText"></span></div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- Criteria -->
+    <div class="criteria-box" id="rCriteriaBox">
+      <div class="criteria-box-title" id="rCriteriaTitle">Critérios Fisioterapêuticos</div>
+      <div class="criteria-list" id="rCriteriaList"></div>
+    </div>
+
+    <!-- Conduct -->
+    <div class="conduct-title">Conduta Fisioterapêutica</div>
+    <div class="conduct-list" id="rConductList"></div>
+
+    <!-- Alerts -->
+    <div id="rAlertsArea"></div>
+
+    <div class="divider"></div>
+
+    <!-- Message -->
+    <div class="conduct-title">💬 Sugestão de Mensagem para o Paciente</div>
+    <div class="msg-box" id="rMsg"></div>
+    <button class="btn-copy" id="btnCopy" onclick="copiarMensagem()">📋 Copiar para WhatsApp</button>
+
+    <div class="result-actions">
+      <button class="btn-print" onclick="window.print()">🖨 Imprimir</button>
+      <button class="btn-restart" onclick="reiniciar()">↺ Nova Triagem</button>
+    </div>
+
+  </div>
+</div><!-- /main -->
+
+<script>
+// ── UTILS ──────────────────────────────────────────
+function toggleNota(id) {
+  document.getElementById(id).classList.toggle('open');
+}
+
+function updateSlider(input) {
+  const val = input.value;
+  document.getElementById('sliderVal').textContent = val;
+  const pct = (val / 10) * 100;
+  input.style.background = `linear-gradient(to right, #1A7A8C 0%, #1A7A8C ${pct}%, #DDD8CF ${pct}%, #DDD8CF 100%)`;
+}
+// Init slider bg
+document.addEventListener('DOMContentLoaded', () => updateSlider(document.getElementById('intensidade')));
+
+function toggleCheck(label) {
+  setTimeout(() => label.classList.toggle('checked', label.querySelector('input').checked), 0);
+}
+
+function selectPill(el, name) {
+  document.querySelectorAll(`.radio-pill`).forEach(p => {
+    if (p.querySelector(`input[name="${name}"]`)) p.classList.remove('selected');
+  });
+  el.classList.add('selected');
+}
+
+function toggleExtraInfo() {
+  const val = document.getElementById('atendimentoMedico').value;
+  document.getElementById('medInfoExtra').classList.toggle('open', val === 'sim');
+}
+
+// ── MAIN LOGIC ──────────────────────────────────────
+function processarConduta() {
+  const nome = document.getElementById('pacienteNome').value.trim() || "Paciente";
+  const intensidade = parseInt(document.getElementById('intensidade').value);
+  const gatilho = document.getElementById('gatilho').value;
+  const flogisticos = document.querySelectorAll('.flogistico-check:checked, #checkFlog .check-item.checked input').length;
+  const flogCount = [...document.querySelectorAll('#checkFlog .check-item.checked')].length;
+  const exames = document.getElementById('examesStatus').value;
+  const impacto = document.getElementById('impacto').value;
+  const medTipo = document.getElementById('medTipo').value;
+  const medQual = document.getElementById('medQual').value.trim();
+  const medResp = document.querySelector('input[name="medResp"]:checked')?.value || 'Nenhuma';
+
+  // Exame alert
+  const examAlert = document.getElementById('examAlert');
+  if (exames !== 'nao') {
+    examAlert.style.display = 'flex';
+    document.getElementById('examAlertText').textContent =
+      exames === 'realizados'
+        ? 'Solicitar o envio dos exames já realizados pelo paciente.'
+        : 'Lembrar o paciente de enviar quando tiver realizado.';
+  } else {
+    examAlert.style.display = 'none';
+  }
+
+  // Med info as context
+  const medInfo = medTipo !== 'nenhum' && medQual
+    ? `(${medTipo === 'prescrita' ? 'Prescrita' : 'Automedicação'}: ${medQual} — Resposta: ${medResp})`
+    : '';
+
+  let type, badge, title, subtitle, criteria, conducts, alerts, msg;
+
+  // ── CASO A: PÓS-TRAUMA ─────────────────
+  if (gatilho === 'trauma' && (intensidade >= 5 || flogCount > 2)) {
+    type = 'danger';
+    badge = '🚨 Dor Aguda Pós-Trauma';
+    title = 'Encaminhamento Médico Indicado';
+    subtitle = 'Trauma recente com dor moderada a intensa ou sinais flogísticos importantes. Fisioterapia ativa está contraindicada até avaliação médica.';
+    criteria = ['Trauma recente', 'Dor ≥ 5/10', 'Limitação funcional relevante', 'Suspeita de lesão estrutural'];
+    conducts = [
+      { icon: '🚫', title: 'Não iniciar protocolo ativo', text: 'Suspender exercícios resistidos e de impacto imediatamente.' },
+      { icon: '🏥', title: 'Encaminhar para emergência', text: 'Se ainda não fez avaliação médica, orientar busca de atendimento presencial urgente.' },
+      { icon: '🧊', title: 'Medidas analgésicas', text: 'Apenas crioterapia e orientações de posicionamento até liberação médica. Verificar contraindicações.' },
+      { icon: '📋', title: 'Solicitar exames de imagem', text: impacto === 'grave' ? 'Impacto grave — priorizar RX ou US para descartar fratura ou lesão ligamentar.' : 'Solicitar exames conforme achados clínicos médicos.' },
+    ];
+    if (document.getElementById('atendimentoMedico').value === 'sim') {
+      conducts.push({ icon: '✅', title: 'Já passou pela emergência', text: 'Respeitar orientações médicas. Suspender/ajustar exercícios temporariamente e reavaliar em 72h.' });
+    }
+    alerts = [
+      { type: 'danger', text: '⚠ Se houver deformidade, crepitação óssea ou perda de força abrupta: encaminhar à emergência com urgência.' },
+    ];
+    msg = document.getElementById('atendimentoMedico').value === 'sim'
+      ? `Olá, ${nome}! Entendido! Como você passou por atendimento médico recente, vamos respeitar as orientações que recebeu. Vamos suspender/ajustar os exercícios temporariamente e reavaliar sua evolução em 72h. Combinado?`
+      : `Olá, ${nome}! Como houve um trauma recente, o mais seguro agora é suspendermos os exercícios até que um médico avalie. Se ainda não fez exames e houver suspeita de lesão, o ideal é realizar uma imagem. Você consegue ir até uma emergência?`;
+
+  // ── CASO B: SINAIS FLOGÍSTICOS / ALTA INTENSIDADE ──
+  } else if (flogCount > 1 || intensidade > 7) {
+    type = 'warning';
+    badge = '⚠ Dor Aguda com Sinais Flogísticos';
+    title = 'Conduta Protetora Indicada';
+    subtitle = 'Presença de sinais inflamatórios ativos ou alta intensidade de dor. Repouso relativo e redução do estímulo mecânico são prioritários.';
+    criteria = ['Edema / Calor / Rubor presentes', 'Dor > 7/10', 'Dor em repouso', 'Piora com exercício ativo'];
+    conducts = [
+      { icon: '🛑', title: 'Reduzir estímulo mecânico', text: 'Repouso relativo. Suspender exercícios que aumentem a dor. Evitar esforço na região afetada.' },
+      { icon: '🧊', title: 'Crioterapia 3x/dia por 20 min', text: 'Verificar contraindicações antes: Raynaud, TVP, déficit sensorial, urticária ao frio, crioglobulinemia.' },
+      { icon: '📐', title: 'Elevação do membro', text: 'Se for membro inferior: manter elevado para reduzir edema e dor ao repouso.' },
+      { icon: '🏃', title: 'Movimentos suaves tolerados', text: 'Mobilidade suave e isométricos indolores apenas se bem tolerados pelo paciente.' },
+      { icon: '⚕️', title: 'Avaliar encaminhamento', text: 'Se sinais de infecção (febre associada) ou sem melhora em 48h: encaminhar para avaliação médica.' },
+    ];
+    alerts = [
+      { type: 'warning', text: '⚠ Paciente com febre não deve realizar Fisioterapia Motora. Se não houver melhora ou houver piora funcional em 48h, indicar atendimento médico.' },
+      { type: 'info', text: 'ℹ Contraindicações da crioterapia: Doença de Raynaud, Insuficiência Circulatória Periférica, TVP, Urticária ao Frio, Crioglobulinemia, Déficit Sensorial, Rigidez Articular Crônica (preferir calor).' },
+    ];
+    msg = `Olá, ${nome}! Esses sinais indicam que o corpo está reagindo ao que pode ser uma inflamação. Recomendo repouso leve, aplicação de gelo 3x/dia por 20 minutos, manter o local elevado e observar se há febre. Se em 48h não houver melhora, oriento buscar atendimento médico para avaliar mais de perto.`;
+
+  // ── CASO C: DOR AGUDA SIMPLES ──────────
+  } else {
+    type = 'success';
+    badge = '✅ Apta para Atividade';
+    title = 'Dor Aguda Simples';
+    subtitle = 'Dor mecânica previsível e controlável, sem sinais inflamatórios importantes. Manter movimento com ajustes de carga.';
+    criteria = ['Dor ≤ 6/10', 'Sem sinais flogísticos importantes', 'Sem traumas recentes', 'Função relativamente preservada'];
+    conducts = [
+      { icon: '🏃', title: 'Manter ou introduzir exercícios leves', text: 'Ajustar carga e amplitude. Foco em movimentos indolores ou com leve desconforto tolerável.' },
+      { icon: '📚', title: 'Educação sobre a dor', text: 'Explicar que dor não significa dano. Reduzir cinesiofobia e catastrofização.' },
+      { icon: '🌡', title: 'Termoterapia conforme resposta', text: 'Calor local pode ser aplicado se não houver sinais inflamatórios agudos ativos.' },
+      { icon: '📈', title: 'Reavaliar em até 72h', text: 'Se piorar → conduta B (protetora). Se persistir → considerar teleconsulta ou interconsulta médica.' },
+    ];
+    alerts = [
+      { type: 'info', text: 'ℹ Crioterapia — Contraindicações: Doença de Raynaud, TVP, Insuficiência Circulatória Periférica, Urticária ao Frio, Crioglobulinemia, Déficit Sensorial e Rigidez Articular Crônica (preferir calor nesse caso).' },
+    ];
+    msg = `Olá, ${nome}! Vi seu relato. Como sua dor é previsível e controlável, vamos manter o corpo em movimento com ajustes. Vamos focar em mobilidade hoje e reduzir a intensidade. Como você se sente para iniciarmos exercícios leves?`;
+  }
+
+  renderResult({ type, badge, title, subtitle, criteria, conducts, alerts, msg });
+}
+
+// ── RENDER ──────────────────────────────────────────
+function renderResult({ type, badge, title, subtitle, criteria, conducts, alerts, msg }) {
+  const rc = document.getElementById('resultCard');
+  const rh = document.getElementById('resultHeader');
+
+  // remove old type classes
+  rh.className = 'result-header';
+  rc.className = 'section-card';
+  rh.classList.add('type-' + type);
+
+  document.getElementById('rBadge').textContent = badge;
+  document.getElementById('rTitle').textContent = title;
+  document.getElementById('rSubtitle').textContent = subtitle;
+
+  // Criteria
+  const cb = document.getElementById('rCriteriaBox');
+  cb.className = 'criteria-box ' + type;
+  document.getElementById('rCriteriaTitle').textContent = 'Critérios Fisioterapêuticos';
+  document.getElementById('rCriteriaList').innerHTML = criteria.map(c => `<span class="criteria-pill">${c}</span>`).join('');
+
+  // Conducts
+  document.getElementById('rConductList').innerHTML = conducts.map(c => `
+    <div class="conduct-item">
+      <span class="conduct-icon">${c.icon}</span>
+      <div class="conduct-text"><strong>${c.title}</strong>${c.text}</div>
+    </div>`).join('');
+
+  // Alerts
+  document.getElementById('rAlertsArea').innerHTML = alerts.map(a =>
+    `<div class="alert-box ${a.type}">${a.text}</div>`
+  ).join('');
+
+  // Message
+  document.getElementById('rMsg').textContent = msg;
+  document.getElementById('btnCopy').classList.remove('copied');
+  document.getElementById('btnCopy').textContent = '📋 Copiar para WhatsApp';
+
+  // Show result
+  rc.style.display = 'block';
+  setTimeout(() => {
+    rc.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }, 80);
+}
+
+// ── COPY ────────────────────────────────────────────
+function copiarMensagem() {
+  const texto = document.getElementById('rMsg').textContent;
+  navigator.clipboard.writeText(texto).then(() => {
+    const btn = document.getElementById('btnCopy');
+    btn.textContent = '✅ Copiado!';
+    btn.classList.add('copied');
+    setTimeout(() => {
+      btn.textContent = '📋 Copiar para WhatsApp';
+      btn.classList.remove('copied');
+    }, 2500);
+  });
+}
+
+// ── REINICIAR ───────────────────────────────────────
+function reiniciar() {
+  document.getElementById('resultCard').style.display = 'none';
+  document.getElementById('pacienteNome').value = '';
+  document.getElementById('intensidade').value = 5;
+  document.getElementById('sliderVal').textContent = '5';
+  updateSlider(document.getElementById('intensidade'));
+  document.querySelectorAll('#checkFlog .check-item').forEach(el => {
+    el.classList.remove('checked');
+    el.querySelector('input').checked = false;
+  });
+  document.querySelectorAll('.radio-pill').forEach(p => p.classList.remove('selected'));
+  document.querySelector('.radio-pill:last-child').classList.add('selected');
+  document.getElementById('medInfoExtra').classList.remove('open');
+  document.getElementById('formCard').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+</script>
+</body>
+</html>
