@@ -16,7 +16,6 @@
     --accent-dark: #C8882C;
     --danger: #C0392B;
     --danger-light: #FDECEB;
-    --danger-mid: #E74C3C;
     --warning: #D68910;
     --warning-light: #FEF9EC;
     --warning-mid: #F39C12;
@@ -81,7 +80,6 @@
     to   { opacity: 1; transform: translateY(0); }
   }
 
-  /* ─── SECTION HEADER ─── */
   .section-tag {
     display: inline-flex; align-items: center; gap: 6px;
     font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
@@ -115,10 +113,7 @@
   /* ─── FORM ELEMENTS ─── */
   .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px; }
   .form-group { margin-bottom: 20px; }
-  .form-label {
-    display: block; font-size: 0.88rem; font-weight: 600; color: var(--text);
-    margin-bottom: 7px; line-height: 1.45;
-  }
+  .form-label { display: block; font-size: 0.88rem; font-weight: 600; color: var(--text); margin-bottom: 7px; line-height: 1.45; }
   .form-label small { display: block; font-weight: 400; color: var(--text-muted); font-size: 0.8rem; margin-top: 2px; }
 
   .form-input, .form-select {
@@ -128,7 +123,10 @@
     font-family: 'DM Sans', sans-serif; font-size: 0.9rem;
     outline: none; transition: var(--transition); appearance: none;
   }
-  .form-select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%236B7A85' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 14px center; padding-right: 36px; }
+  .form-select {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%236B7A85' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat; background-position: right 14px center; padding-right: 36px;
+  }
   .form-input:focus, .form-select:focus { border-color: var(--primary-light); box-shadow: 0 0 0 3px rgba(26,122,140,0.12); }
   .form-input::placeholder { color: var(--text-muted); }
 
@@ -142,202 +140,125 @@
   .form-textarea:focus { border-color: var(--primary-light); box-shadow: 0 0 0 3px rgba(26,122,140,0.12); }
 
   /* ─── PAIN SLIDER ─── */
-  .slider-wrap {
-    background: var(--surface2); border: 1px solid var(--border);
-    border-radius: var(--radius-sm); padding: 16px 18px;
-  }
+  .slider-wrap { background: var(--surface2); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 16px 18px; }
   .slider-track { display: flex; align-items: center; gap: 16px; margin-bottom: 10px; }
-  .slider-track input[type="range"] {
-    flex: 1; -webkit-appearance: none; height: 6px;
-    border-radius: 3px; background: linear-gradient(to right, var(--teal, var(--primary-light)) 0%, var(--teal, var(--primary-light)) 50%, #DDD8CF 50%, #DDD8CF 100%);
-    outline: none; cursor: pointer;
-  }
-  .slider-track input[type="range"]::-webkit-slider-thumb {
-    -webkit-appearance: none; width: 22px; height: 22px; border-radius: 50%;
-    background: var(--primary); border: 3px solid white;
-    box-shadow: 0 2px 8px rgba(14,77,92,0.3); cursor: pointer; transition: var(--transition);
-  }
+  .slider-track input[type="range"] { flex: 1; -webkit-appearance: none; appearance: none; height: 6px; border-radius: 3px; outline: none; cursor: pointer; }
+  .slider-track input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 22px; height: 22px; border-radius: 50%; background: var(--primary); border: 3px solid white; box-shadow: 0 2px 8px rgba(14,77,92,0.3); cursor: pointer; transition: var(--transition); }
   .slider-track input[type="range"]::-webkit-slider-thumb:hover { background: var(--primary-light); transform: scale(1.15); }
-  .slider-value {
-    font-family: 'DM Serif Display', serif; font-size: 2rem; color: var(--primary);
-    min-width: 40px; text-align: center; line-height: 1;
-  }
+  .slider-value { font-family: 'DM Serif Display', serif; font-size: 2rem; color: var(--primary); min-width: 40px; text-align: center; line-height: 1; }
   .slider-labels { display: flex; justify-content: space-between; font-size: 0.72rem; color: var(--text-muted); }
 
   /* ─── CHECKBOX GRID ─── */
-  .check-grid {
-    display: flex; flex-wrap: wrap; gap: 10px;
-    background: var(--surface2); border: 1px solid var(--border);
-    border-radius: var(--radius-sm); padding: 14px 16px;
-  }
-  .check-item {
-    display: flex; align-items: center; gap: 8px;
-    padding: 7px 14px; border-radius: 50px;
-    border: 2px solid var(--border); background: var(--surface);
-    cursor: pointer; transition: var(--transition); user-select: none;
-    font-size: 0.85rem; font-weight: 500; color: var(--text-muted);
-  }
+  .check-grid { display: flex; flex-wrap: wrap; gap: 10px; background: var(--surface2); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 14px 16px; }
+  .check-item { display: flex; align-items: center; gap: 8px; padding: 7px 14px; border-radius: 50px; border: 2px solid var(--border); background: var(--surface); cursor: pointer; transition: var(--transition); user-select: none; font-size: 0.85rem; font-weight: 500; color: var(--text-muted); }
   .check-item:hover { border-color: var(--primary-light); color: var(--text); }
   .check-item.checked { border-color: var(--primary); background: rgba(14,77,92,0.07); color: var(--primary); font-weight: 600; }
   .check-item input { display: none; }
 
   /* ─── RADIO INLINE ─── */
   .radio-inline { display: flex; gap: 10px; flex-wrap: wrap; }
-  .radio-pill {
-    display: flex; align-items: center; gap: 7px;
-    padding: 9px 18px; border-radius: 50px;
-    border: 2px solid var(--border); background: transparent;
-    cursor: pointer; transition: var(--transition); user-select: none;
-    font-size: 0.85rem; font-weight: 500; color: var(--text-muted);
-  }
+  .radio-pill { display: flex; align-items: center; gap: 7px; padding: 9px 18px; border-radius: 50px; border: 2px solid var(--border); background: transparent; cursor: pointer; transition: var(--transition); user-select: none; font-size: 0.85rem; font-weight: 500; color: var(--text-muted); }
   .radio-pill:hover { border-color: var(--primary-light); color: var(--text); }
   .radio-pill.selected { border-color: var(--primary); background: rgba(14,77,92,0.07); color: var(--primary); font-weight: 600; }
   .radio-pill input { display: none; }
 
-  /* ─── HIDDEN EXTRA ─── */
-  .extra-info { display: none; margin-top: 14px; animation: fadeUp 0.3s ease both; }
-  .extra-info.open { display: block; }
+  .extra-info { display: none; margin-top: 14px; }
+  .extra-info.open { display: block; animation: fadeUp 0.3s ease both; }
 
   /* ─── GENERATE BUTTON ─── */
-  .btn-generate {
-    width: 100%; padding: 17px 32px; margin-top: 8px;
-    background: var(--primary); color: white; border: none;
-    font-family: 'DM Serif Display', serif; font-size: 1.15rem;
-    border-radius: var(--radius-sm); cursor: pointer;
-    transition: var(--transition); letter-spacing: 0.02em;
-    box-shadow: 0 4px 20px rgba(14,77,92,0.3);
-    display: flex; align-items: center; justify-content: center; gap: 10px;
-  }
+  .btn-generate { width: 100%; padding: 17px 32px; margin-top: 8px; background: var(--primary); color: white; border: none; font-family: 'DM Serif Display', serif; font-size: 1.15rem; border-radius: var(--radius-sm); cursor: pointer; transition: var(--transition); letter-spacing: 0.02em; box-shadow: 0 4px 20px rgba(14,77,92,0.3); display: flex; align-items: center; justify-content: center; gap: 10px; }
   .btn-generate:hover { background: var(--primary-light); transform: translateY(-2px); box-shadow: 0 8px 28px rgba(14,77,92,0.35); }
   .btn-generate:active { transform: scale(0.99); }
 
   /* ─── RESULT ─── */
-  #resultArea { display: none; }
-
   .result-header { margin-bottom: 28px; }
-  .result-status-badge {
-    display: inline-flex; align-items: center; gap: 8px;
-    font-size: 0.72rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase;
-    border-radius: 50px; padding: 5px 16px; margin-bottom: 12px;
-  }
+  .result-status-badge { display: inline-flex; align-items: center; gap: 8px; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; border-radius: 50px; padding: 5px 16px; margin-bottom: 12px; }
   .result-title { font-family: 'DM Serif Display', serif; font-size: 2rem; line-height: 1.15; margin-bottom: 8px; }
   .result-subtitle { font-size: 0.9rem; color: var(--text-muted); line-height: 1.65; }
 
-  /* color variants */
-  .type-danger .result-status-badge { background: rgba(192,57,43,0.12); color: var(--danger); }
-  .type-danger .result-title { color: var(--danger); }
+  .type-danger  .result-status-badge { background: rgba(192,57,43,0.12);  color: var(--danger); }
+  .type-danger  .result-title        { color: var(--danger); }
   .type-warning .result-status-badge { background: rgba(214,137,16,0.12); color: var(--warning); }
-  .type-warning .result-title { color: var(--warning); }
-  .type-success .result-status-badge { background: rgba(26,122,92,0.12); color: var(--success); }
-  .type-success .result-title { color: var(--success); }
+  .type-warning .result-title        { color: var(--warning); }
+  .type-success .result-status-badge { background: rgba(26,122,92,0.12);  color: var(--success); }
+  .type-success .result-title        { color: var(--success); }
 
   .divider { height: 1px; background: var(--border); margin: 24px 0; }
 
-  /* criteria box */
-  .criteria-box {
-    border-radius: var(--radius-sm); padding: 16px 20px; margin-bottom: 20px;
-    border-left: 4px solid;
-  }
-  .criteria-box.danger { border-color: var(--danger); background: var(--danger-light); }
+  .criteria-box { border-radius: var(--radius-sm); padding: 16px 20px; margin-bottom: 20px; border-left: 4px solid; }
+  .criteria-box.danger  { border-color: var(--danger);      background: var(--danger-light); }
   .criteria-box.warning { border-color: var(--warning-mid); background: var(--warning-light); }
   .criteria-box.success { border-color: var(--success-mid); background: var(--success-light); }
   .criteria-box-title { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 8px; }
-  .criteria-box.danger .criteria-box-title { color: var(--danger); }
+  .criteria-box.danger  .criteria-box-title { color: var(--danger); }
   .criteria-box.warning .criteria-box-title { color: var(--warning); }
   .criteria-box.success .criteria-box-title { color: var(--success); }
   .criteria-list { display: flex; flex-wrap: wrap; gap: 8px; }
-  .criteria-pill {
-    font-size: 0.8rem; font-weight: 500; padding: 4px 12px; border-radius: 50px;
-  }
-  .danger .criteria-pill { background: rgba(192,57,43,0.1); color: var(--danger); }
+  .criteria-pill { font-size: 0.8rem; font-weight: 500; padding: 4px 12px; border-radius: 50px; }
+  .danger  .criteria-pill { background: rgba(192,57,43,0.1);  color: var(--danger); }
   .warning .criteria-pill { background: rgba(214,137,16,0.12); color: #A06010; }
-  .success .criteria-pill { background: rgba(26,122,92,0.1); color: var(--success); }
+  .success .criteria-pill { background: rgba(26,122,92,0.1);  color: var(--success); }
 
-  /* conduct section */
-  .conduct-title {
-    font-size: 0.75rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
-    color: var(--text-muted); margin-bottom: 12px;
-  }
+  .result-section-title { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 12px; }
   .conduct-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
-  .conduct-item {
-    display: flex; align-items: flex-start; gap: 12px;
-    padding: 13px 16px; border-radius: var(--radius-sm);
-    background: var(--surface2); border: 1px solid var(--border);
-  }
+  .conduct-item { display: flex; align-items: flex-start; gap: 12px; padding: 13px 16px; border-radius: var(--radius-sm); background: var(--surface2); border: 1px solid var(--border); }
   .conduct-icon { font-size: 1rem; flex-shrink: 0; margin-top: 1px; }
   .conduct-text { font-size: 0.88rem; line-height: 1.55; color: var(--text); }
   .conduct-text strong { font-weight: 600; display: block; margin-bottom: 2px; }
 
+  /* ─── IMPACT BLOCK ─── */
+  .impact-block { border-radius: var(--radius-sm); overflow: hidden; border: 1px solid var(--border); margin-bottom: 20px; }
+
+  .impact-header { padding: 16px 22px; display: flex; align-items: center; gap: 14px; }
+  .impact-header.leve     { background: #E8F5F0; border-bottom: 1px solid rgba(26,122,92,0.18); }
+  .impact-header.moderado { background: #FEF3E2; border-bottom: 1px solid rgba(214,137,16,0.2); }
+  .impact-header.grave    { background: #FDECEB; border-bottom: 1px solid rgba(192,57,43,0.18); }
+
+  .impact-icon { font-size: 1.6rem; flex-shrink: 0; }
+  .impact-label { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 2px; }
+  .leve     .impact-label { color: #1A7A5C; }
+  .moderado .impact-label { color: #8C5A10; }
+  .grave    .impact-label { color: #8C1A1A; }
+
+  .impact-title { font-family: 'DM Serif Display', serif; font-size: 1.15rem; line-height: 1.2; }
+  .leve     .impact-title { color: #1A7A5C; }
+  .moderado .impact-title { color: #8C5A10; }
+  .grave    .impact-title { color: #8C1A1A; }
+
+  .impact-body { padding: 16px 20px; display: flex; flex-direction: column; gap: 10px; }
+  .impact-item { display: flex; align-items: flex-start; gap: 10px; }
+  .impact-item-icon { flex-shrink: 0; font-size: 1rem; margin-top: 2px; }
+  .impact-item-text { font-size: 0.87rem; line-height: 1.6; color: var(--text); }
+  .impact-item-text strong { display: block; font-weight: 600; font-size: 0.85rem; margin-bottom: 1px; }
+
+  .impact-reeval { margin-top: 6px; padding: 12px 20px; border-top: 1px dashed var(--border); font-size: 0.82rem; color: var(--text-muted); display: flex; align-items: flex-start; gap: 8px; line-height: 1.55; }
+
   /* alert box */
-  .alert-box {
-    border-radius: var(--radius-sm); padding: 14px 18px; margin-bottom: 16px;
-    border-left: 4px solid; font-size: 0.85rem; line-height: 1.65;
-  }
+  .alert-box { border-radius: var(--radius-sm); padding: 14px 18px; margin-bottom: 16px; border-left: 4px solid; font-size: 0.85rem; line-height: 1.65; }
   .alert-box.warning { border-color: var(--warning-mid); background: var(--warning-light); color: #7A5010; }
-  .alert-box.danger  { border-color: var(--danger); background: var(--danger-light); color: #8C2020; }
+  .alert-box.danger  { border-color: var(--danger);      background: var(--danger-light);  color: #8C2020; }
   .alert-box.info    { border-color: var(--primary-light); background: rgba(14,77,92,0.05); color: #1A3D4A; }
   .alert-box strong  { font-weight: 700; }
 
-  /* exame alerta */
-  .exam-alert {
-    background: rgba(232,168,76,0.12); border: 1px solid rgba(232,168,76,0.35);
-    border-radius: var(--radius-sm); padding: 12px 16px; margin-bottom: 20px;
-    display: flex; align-items: flex-start; gap: 10px; font-size: 0.85rem;
-  }
+  .exam-alert { background: rgba(232,168,76,0.12); border: 1px solid rgba(232,168,76,0.35); border-radius: var(--radius-sm); padding: 12px 16px; margin-bottom: 20px; display: flex; align-items: flex-start; gap: 10px; font-size: 0.85rem; }
   .exam-alert strong { color: var(--accent-dark); }
 
-  /* message box */
-  .msg-box {
-    background: var(--surface2); border: 1px dashed var(--primary-light);
-    border-radius: var(--radius-sm); padding: 18px 20px;
-    font-size: 0.88rem; color: var(--text); line-height: 1.7;
-    white-space: pre-line; margin-bottom: 12px;
-  }
-  .btn-copy {
-    display: inline-flex; align-items: center; gap: 7px;
-    background: transparent; border: 2px solid var(--primary-light);
-    color: var(--primary); font-family: 'DM Sans', sans-serif;
-    font-size: 0.83rem; font-weight: 600; padding: 9px 20px;
-    border-radius: var(--radius-sm); cursor: pointer; transition: var(--transition);
-  }
+  .msg-box { background: var(--surface2); border: 1px dashed var(--primary-light); border-radius: var(--radius-sm); padding: 18px 20px; font-size: 0.88rem; color: var(--text); line-height: 1.7; white-space: pre-line; margin-bottom: 12px; }
+  .btn-copy { display: inline-flex; align-items: center; gap: 7px; background: transparent; border: 2px solid var(--primary-light); color: var(--primary); font-family: 'DM Sans', sans-serif; font-size: 0.83rem; font-weight: 600; padding: 9px 20px; border-radius: var(--radius-sm); cursor: pointer; transition: var(--transition); }
   .btn-copy:hover { background: var(--primary); color: white; border-color: var(--primary); }
   .btn-copy.copied { background: var(--success-light); border-color: var(--success); color: var(--success); }
 
-  /* ─── RESTART / PRINT ─── */
-  .result-actions {
-    display: flex; gap: 12px; margin-top: 32px; padding-top: 24px; border-top: 1px solid var(--border);
-  }
-  .btn-restart {
-    background: transparent; border: 2px solid var(--border); color: var(--text-muted);
-    font-family: 'DM Sans', sans-serif; font-size: 0.88rem; font-weight: 600;
-    padding: 12px 24px; border-radius: var(--radius-sm); cursor: pointer; transition: var(--transition);
-  }
+  .result-actions { display: flex; gap: 12px; margin-top: 32px; padding-top: 24px; border-top: 1px solid var(--border); }
+  .btn-restart { background: transparent; border: 2px solid var(--border); color: var(--text-muted); font-family: 'DM Sans', sans-serif; font-size: 0.88rem; font-weight: 600; padding: 12px 24px; border-radius: var(--radius-sm); cursor: pointer; transition: var(--transition); }
   .btn-restart:hover { border-color: var(--text-muted); color: var(--text); }
-  .btn-print {
-    background: var(--primary); color: white; border: none;
-    font-family: 'DM Sans', sans-serif; font-size: 0.88rem; font-weight: 600;
-    padding: 12px 24px; border-radius: var(--radius-sm); cursor: pointer; transition: var(--transition);
-  }
+  .btn-print { background: var(--primary); color: white; border: none; font-family: 'DM Sans', sans-serif; font-size: 0.88rem; font-weight: 600; padding: 12px 24px; border-radius: var(--radius-sm); cursor: pointer; transition: var(--transition); }
   .btn-print:hover { background: var(--primary-light); }
 
-  /* nota técnica */
-  .nota-btn {
-    display: inline-flex; align-items: center; gap: 5px;
-    font-size: 0.75rem; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase;
-    color: var(--primary-light); background: rgba(26,122,140,0.08);
-    border: 1px solid rgba(26,122,140,0.2); border-radius: 50px; padding: 3px 10px;
-    cursor: pointer; transition: var(--transition); margin-bottom: 10px;
-  }
+  .nota-btn { display: inline-flex; align-items: center; gap: 5px; font-size: 0.75rem; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; color: var(--primary-light); background: rgba(26,122,140,0.08); border: 1px solid rgba(26,122,140,0.2); border-radius: 50px; padding: 3px 10px; cursor: pointer; transition: var(--transition); margin-bottom: 10px; }
   .nota-btn:hover { background: rgba(26,122,140,0.15); }
-  .nota-box {
-    background: rgba(14,77,92,0.04); border-left: 3px solid var(--primary-light);
-    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
-    padding: 12px 16px; font-size: 0.82rem; color: #34505A;
-    line-height: 1.65; margin-bottom: 12px; display: none;
-  }
+  .nota-box { background: rgba(14,77,92,0.04); border-left: 3px solid var(--primary-light); border-radius: 0 var(--radius-sm) var(--radius-sm) 0; padding: 12px 16px; font-size: 0.82rem; color: #34505A; line-height: 1.65; margin-bottom: 12px; display: none; }
   .nota-box.open { display: block; animation: fadeUp 0.25s ease; }
 
-  /* ─── RESPONSIVE ─── */
   @media (max-width: 600px) {
     .section-card { padding: 28px 20px; }
     .form-row { grid-template-columns: 1fr; }
@@ -346,7 +267,7 @@
     .result-title { font-size: 1.5rem; }
   }
   @media print {
-    .header, .btn-generate, .result-actions, .btn-copy, .section-card:not(#resultCard) { display: none !important; }
+    .header, .btn-generate, .result-actions, .btn-copy, #formCard { display: none !important; }
     body { background: white; }
     #resultCard { box-shadow: none; border: 1px solid #ddd; }
   }
@@ -354,7 +275,6 @@
 </head>
 <body>
 
-<!-- HEADER -->
 <div class="header">
   <div class="header-left">
     <a class="btn-home" href="index.html">← Protocolos</a>
@@ -365,24 +285,17 @@
 
 <div class="main">
 
-  <!-- ════════════ FORM CARD ════════════ -->
+  <!-- ════ FORM ════ -->
   <div class="section-card" id="formCard">
     <div class="section-tag">🩺 Fase 1 · Triagem Inicial</div>
     <h2 class="section-title">Padronização de Fluxo</h2>
-    <p class="section-subtitle">Protocolo de Dor Aguda — Fisioterapia em Teleatendimento. Preencha os dados clínicos do paciente para gerar a classificação e conduta.</p>
+    <p class="section-subtitle">Protocolo de Dor Aguda — Fisioterapia em Teleatendimento. Preencha os dados clínicos para gerar a classificação e conduta.</p>
 
     <div class="intro-msg">
       <strong>Sugestão de mensagem inicial</strong>
-      "Olá, <em>[nome do paciente]</em>! Vi que você relatou uma piora no seu quadro e quero entender melhor para poder te orientar com mais precisão. Me conta, por gentileza:"
+      "Olá! Vi que você relatou uma piora no seu quadro e quero entender melhor para poder te orientar com mais precisão. Me conta, por gentileza:"
     </div>
 
-    <!-- Nome -->
-    <div class="form-group">
-      <label class="form-label">Nome do Paciente</label>
-      <input class="form-input" type="text" id="pacienteNome" placeholder="Ex: João Silva">
-    </div>
-
-    <!-- Início + Gatilho -->
     <div class="form-row">
       <div class="form-group" style="margin-bottom:0">
         <label class="form-label">Início da Dor<small>Quando começou essa piora?</small></label>
@@ -392,7 +305,7 @@
         </select>
       </div>
       <div class="form-group" style="margin-bottom:0">
-        <label class="form-label">Gatilho<small>Queda, pancada ou esforço diferente?</small></label>
+        <label class="form-label">Gatilho<small>Teve alguma queda, pancada ou esforço diferente?</small></label>
         <select class="form-select" id="gatilho">
           <option value="nenhum">Sem gatilho definido</option>
           <option value="trauma">Trauma (Queda / Pancada)</option>
@@ -402,7 +315,6 @@
       </div>
     </div>
 
-    <!-- Intensidade -->
     <div class="form-group" style="margin-top:20px">
       <label class="form-label">Intensidade da Dor<small>De 0 a 10, quanto você classifica sua dor agora?</small></label>
       <div class="slider-wrap">
@@ -414,28 +326,18 @@
       </div>
     </div>
 
-    <!-- Sinais Flogísticos -->
     <div class="form-group">
-      <label class="form-label">Sinais Flogísticos<small>Inchaço, vermelhidão, calor ou dor ao repouso?</small></label>
+      <label class="form-label">Sinais Flogísticos<small>Está com inchaço, vermelhidão, calor ou dor ao repouso?</small></label>
       <button class="nota-btn" onclick="toggleNota('nFlog')">📋 Nota Técnica</button>
-      <div class="nota-box" id="nFlog">Presença de sinais flogísticos (edema, calor, rubor, dor em repouso) indica processo inflamatório ativo. A combinação de 2+ sinais eleva o risco de conduta protetora e pode contraindicar exercícios resistidos e de alta intensidade. Atenção especial: sinais sistêmicos como febre associados a edema e calor podem indicar infecção articular — encaminhar para avaliação médica.</div>
+      <div class="nota-box" id="nFlog">Presença de sinais flogísticos (edema, calor, rubor, dor em repouso) indica processo inflamatório ativo. A combinação de 2+ sinais eleva o risco de conduta protetora e pode contraindicar exercícios resistidos. Atenção: febre associada a edema e calor pode indicar infecção articular — encaminhar para avaliação médica.</div>
       <div class="check-grid" id="checkFlog">
-        <label class="check-item" onclick="toggleCheck(this)">
-          <input type="checkbox" value="Edema"> <span>🫧 Edema</span>
-        </label>
-        <label class="check-item" onclick="toggleCheck(this)">
-          <input type="checkbox" value="Calor"> <span>🔥 Calor</span>
-        </label>
-        <label class="check-item" onclick="toggleCheck(this)">
-          <input type="checkbox" value="Rubor"> <span>🔴 Rubor</span>
-        </label>
-        <label class="check-item" onclick="toggleCheck(this)">
-          <input type="checkbox" value="DorRepouso"> <span>🛏 Dor ao Repouso</span>
-        </label>
+        <label class="check-item" onclick="toggleCheck(this)"><input type="checkbox" value="Edema"> <span>🫧 Edema</span></label>
+        <label class="check-item" onclick="toggleCheck(this)"><input type="checkbox" value="Calor"> <span>🔥 Calor</span></label>
+        <label class="check-item" onclick="toggleCheck(this)"><input type="checkbox" value="Rubor"> <span>🔴 Rubor</span></label>
+        <label class="check-item" onclick="toggleCheck(this)"><input type="checkbox" value="DorRepouso"> <span>🛏 Dor ao Repouso</span></label>
       </div>
     </div>
 
-    <!-- Medicação -->
     <div class="group-divider">
       <div class="group-title">Uso de Medicamento</div>
       <div class="form-row">
@@ -462,7 +364,6 @@
       </div>
     </div>
 
-    <!-- Atendimento médico -->
     <div class="group-divider">
       <div class="group-title">Atendimento Médico Prévio</div>
       <div class="form-group" style="margin-bottom:0">
@@ -478,11 +379,10 @@
       </div>
     </div>
 
-    <!-- Exames -->
     <div class="group-divider">
       <div class="group-title">Exames Complementares</div>
       <div class="form-group" style="margin-bottom:0">
-        <label class="form-label">Já fez ou tem pedido de exame para essa dor?</label>
+        <label class="form-label">Já fez algum exame para essa dor ou tem pedido recente?</label>
         <select class="form-select" id="examesStatus">
           <option value="nao">Não realizados</option>
           <option value="realizados">Já realizou — solicitar envio</option>
@@ -491,9 +391,8 @@
       </div>
     </div>
 
-    <!-- Impacto funcional -->
     <div class="form-group">
-      <label class="form-label">Impacto Funcional<small>Dificulta caminhar, subir escadas, vestir-se ou dormir?</small></label>
+      <label class="form-label">Impacto Funcional<small>Esse incômodo tem dificultado ações do dia a dia, como caminhar, subir escadas, vestir-se ou dormir?</small></label>
       <select class="form-select" id="impacto">
         <option value="leve">Leve — impacto mínimo nas AVDs</option>
         <option value="moderado">Moderado — dificulta ações do dia a dia</option>
@@ -501,13 +400,12 @@
       </select>
     </div>
 
-    <!-- BUTTON -->
     <button class="btn-generate" onclick="processarConduta()">
       <span>🎯</span> Gerar Classificação e Conduta
     </button>
   </div>
 
-  <!-- ════════════ RESULT CARD ════════════ -->
+  <!-- ════ RESULT ════ -->
   <div class="section-card" id="resultCard" style="display:none;">
 
     <div class="result-header" id="resultHeader">
@@ -516,31 +414,40 @@
       <p class="result-subtitle" id="rSubtitle"></p>
     </div>
 
-    <!-- Exam alert -->
     <div class="exam-alert" id="examAlert" style="display:none">
       <span>📋</span>
-      <div><strong id="examAlertTitle">Conduta de Exames: </strong> <span id="examAlertText"></span></div>
+      <div><strong>Conduta de Exames: </strong><span id="examAlertText"></span></div>
     </div>
 
     <div class="divider"></div>
 
-    <!-- Criteria -->
     <div class="criteria-box" id="rCriteriaBox">
-      <div class="criteria-box-title" id="rCriteriaTitle">Critérios Fisioterapêuticos</div>
+      <div class="criteria-box-title">Critérios Fisioterapêuticos Identificados</div>
       <div class="criteria-list" id="rCriteriaList"></div>
     </div>
 
-    <!-- Conduct -->
-    <div class="conduct-title">Conduta Fisioterapêutica</div>
+    <div class="result-section-title">Conduta Fisioterapêutica</div>
     <div class="conduct-list" id="rConductList"></div>
-
-    <!-- Alerts -->
     <div id="rAlertsArea"></div>
 
     <div class="divider"></div>
 
-    <!-- Message -->
-    <div class="conduct-title">💬 Sugestão de Mensagem para o Paciente</div>
+    <!-- ── IMPACTO FUNCIONAL ── -->
+    <div class="result-section-title">📍 Impacto Funcional e Cuidados Associados</div>
+    <div class="impact-block" id="rImpactBlock">
+      <div class="impact-header" id="rImpactHeader">
+        <span class="impact-icon" id="rImpactIcon"></span>
+        <div>
+          <div class="impact-label" id="rImpactLabel"></div>
+          <div class="impact-title" id="rImpactTitle"></div>
+        </div>
+      </div>
+      <div class="impact-body" id="rImpactBody"></div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="result-section-title">💬 Sugestão de Mensagem para o Paciente</div>
     <div class="msg-box" id="rMsg"></div>
     <button class="btn-copy" id="btnCopy" onclick="copiarMensagem()">📋 Copiar para WhatsApp</button>
 
@@ -550,32 +457,98 @@
     </div>
 
   </div>
-</div><!-- /main -->
+</div>
 
 <script>
-// ── UTILS ──────────────────────────────────────────
-function toggleNota(id) {
-  document.getElementById(id).classList.toggle('open');
-}
+// ── IMPACT DATABASE ─────────────────────────────────
+const IMPACT_DATA = {
+  leve: {
+    css:   'leve',
+    icon:  '🟢',
+    label: 'Impacto Leve',
+    title: 'Atividades diárias preservadas com desconforto mínimo',
+    items: [
+      { icon: '🏃', title: 'Manter mobilidade e AVDs',
+        text: 'O paciente consegue realizar suas atividades. Orientar que manter o movimento é terapêutico — evitar repouso excessivo.' },
+      { icon: '📚', title: 'Educação sobre dor',
+        text: 'Reforçar que dor não significa dano estrutural. O movimento seguro acelera a recuperação e reduz o medo.' },
+      { icon: '⚙️', title: 'Ajuste de carga e amplitude',
+        text: 'Reduzir temporariamente a intensidade dos exercícios. Manter amplitude confortável e progredir conforme tolerância.' },
+      { icon: '💤', title: 'Higiene do sono',
+        text: 'Verificar se há impacto no descanso. Orientar posicionamento adequado e uso de suporte (travesseiros) se necessário.' },
+    ],
+    reeval: 'Reavaliar em 72h. Se não houver melhora, reclassificar para conduta protetora.'
+  },
+
+  moderado: {
+    css:   'moderado',
+    icon:  '🟡',
+    label: 'Impacto Moderado',
+    title: 'Atividades diárias comprometidas — atenção redobrada',
+    items: [
+      { icon: '🚶', title: 'Adaptação da locomoção',
+        text: 'Verificar se o paciente consegue caminhar sem risco de queda. Orientar uso de apoios e evitar terrenos irregulares.' },
+      { icon: '🪑', title: 'Posicionamento e ergonomia',
+        text: 'Ajustar cadeiras, altura do vaso, cama e superfícies de trabalho para reduzir esforço nas transições posturais.' },
+      { icon: '👕', title: 'Estratégias de autocuidado',
+        text: 'Orientar técnicas adaptadas para vestir-se, calçar sapatos e higiene. Envolver familiar ou cuidador se necessário.' },
+      { icon: '😴', title: 'Impacto no sono',
+        text: 'Dor moderada frequentemente compromete o sono. Orientar posicionamento, uso de calor/frio e reavaliar se insônia persistir.' },
+      { icon: '🧠', title: 'Aspecto emocional e social',
+        text: 'Limitação moderada pode gerar ansiedade e frustração. Validar o impacto emocional, reforçar expectativa de melhora e manter contato próximo.' },
+      { icon: '💼', title: 'Impacto no trabalho',
+        text: 'Verificar se a dor afeta a capacidade laboral. Orientar adaptações de postura e pausas frequentes. Considerar afastamento parcial se necessário.' },
+    ],
+    reeval: 'Reavaliar em 48h. Monitorar evolução. Se piorar, mudar imediatamente para conduta protetora.'
+  },
+
+  grave: {
+    css:   'grave',
+    icon:  '🔴',
+    label: 'Impacto Grave',
+    title: 'Incapacidade funcional — suporte imediato necessário',
+    items: [
+      { icon: '🚨', title: 'Risco de queda — avaliação prioritária',
+        text: 'Marcha prejudicada aumenta o risco de quedas. Orientar o paciente a não se mover sem apoio físico (pessoa ou superfície). Verificar ambiente doméstico.' },
+      { icon: '🏠', title: 'Adaptação do ambiente domiciliar',
+        text: 'Solicitar remoção de tapetes e obstáculos no chão. Orientar uso de barras de apoio, cadeira de banho, corrimão e cama em altura adequada.' },
+      { icon: '🤝', title: 'Envolvimento do cuidador',
+        text: 'Orientar familiar sobre como auxiliar nas transferências (leito/cadeira/banheiro) de forma segura, sem sobrecarregar o paciente.' },
+      { icon: '🛁', title: 'Adaptação das AVDs básicas',
+        text: 'Higiene, alimentação e vestuário podem estar comprometidos. Orientar estratégias de menor esforço e delegação de tarefas enquanto durar a fase aguda.' },
+      { icon: '😟', title: 'Impacto psicoemocional e social',
+        text: 'Incapacidade grave frequentemente gera medo, catastrofização, depressão situacional e isolamento. Atenção ativa ao estado emocional. Considerar encaminhamento para apoio psicológico.' },
+      { icon: '💼', title: 'Afastamento do trabalho',
+        text: 'Avaliar necessidade de afastamento laboral. Comunicar ao médico para emissão de atestado. Orientar sobre direitos previdenciários se aplicável.' },
+      { icon: '🏥', title: 'Considerar atendimento presencial',
+        text: 'Impacto grave com marcha comprometida pode indicar necessidade de avaliação presencial urgente. Fisioterapia remota pode ser insuficiente neste momento.' },
+    ],
+    reeval: 'Reavaliar em 24h. Monitoramento diário recomendado. Comunicar evolução à equipe médica.'
+  }
+};
+
+// ── UTILS ────────────────────────────────────────────
+function toggleNota(id) { document.getElementById(id).classList.toggle('open'); }
 
 function updateSlider(input) {
   const val = input.value;
   document.getElementById('sliderVal').textContent = val;
   const pct = (val / 10) * 100;
-  input.style.background = `linear-gradient(to right, #1A7A8C 0%, #1A7A8C ${pct}%, #DDD8CF ${pct}%, #DDD8CF 100%)`;
+  input.style.background = `linear-gradient(to right,#1A7A8C 0%,#1A7A8C ${pct}%,#DDD8CF ${pct}%,#DDD8CF 100%)`;
 }
-// Init slider bg
+
 document.addEventListener('DOMContentLoaded', () => updateSlider(document.getElementById('intensidade')));
 
 function toggleCheck(label) {
-  setTimeout(() => label.classList.toggle('checked', label.querySelector('input').checked), 0);
+  setTimeout(() => label.classList.toggle('checked', label.querySelector('input').checked), 10);
 }
 
 function selectPill(el, name) {
-  document.querySelectorAll(`.radio-pill`).forEach(p => {
+  document.querySelectorAll('.radio-pill').forEach(p => {
     if (p.querySelector(`input[name="${name}"]`)) p.classList.remove('selected');
   });
   el.classList.add('selected');
+  const r = el.querySelector('input'); if (r) r.checked = true;
 }
 
 function toggleExtraInfo() {
@@ -583,176 +556,166 @@ function toggleExtraInfo() {
   document.getElementById('medInfoExtra').classList.toggle('open', val === 'sim');
 }
 
-// ── MAIN LOGIC ──────────────────────────────────────
+// ── MAIN LOGIC ───────────────────────────────────────
 function processarConduta() {
-  const nome = document.getElementById('pacienteNome').value.trim() || "Paciente";
   const intensidade = parseInt(document.getElementById('intensidade').value);
-  const gatilho = document.getElementById('gatilho').value;
-  const flogisticos = document.querySelectorAll('.flogistico-check:checked, #checkFlog .check-item.checked input').length;
-  const flogCount = [...document.querySelectorAll('#checkFlog .check-item.checked')].length;
-  const exames = document.getElementById('examesStatus').value;
-  const impacto = document.getElementById('impacto').value;
-  const medTipo = document.getElementById('medTipo').value;
-  const medQual = document.getElementById('medQual').value.trim();
-  const medResp = document.querySelector('input[name="medResp"]:checked')?.value || 'Nenhuma';
+  const gatilho     = document.getElementById('gatilho').value;
+  const flogCount   = [...document.querySelectorAll('#checkFlog input:checked')].length;
+  const flogNames   = [...document.querySelectorAll('#checkFlog input:checked')].map(i => i.value);
+  const exames      = document.getElementById('examesStatus').value;
+  const impacto     = document.getElementById('impacto').value;
+  const foiAoMed    = document.getElementById('atendimentoMedico').value;
 
-  // Exame alert
-  const examAlert = document.getElementById('examAlert');
+  // Exam alert
+  const ea = document.getElementById('examAlert');
   if (exames !== 'nao') {
-    examAlert.style.display = 'flex';
-    document.getElementById('examAlertText').textContent =
-      exames === 'realizados'
-        ? 'Solicitar o envio dos exames já realizados pelo paciente.'
-        : 'Lembrar o paciente de enviar quando tiver realizado.';
-  } else {
-    examAlert.style.display = 'none';
-  }
-
-  // Med info as context
-  const medInfo = medTipo !== 'nenhum' && medQual
-    ? `(${medTipo === 'prescrita' ? 'Prescrita' : 'Automedicação'}: ${medQual} — Resposta: ${medResp})`
-    : '';
+    ea.style.display = 'flex';
+    document.getElementById('examAlertText').textContent = exames === 'realizados'
+      ? 'Solicitar o envio dos exames já realizados pelo paciente.'
+      : 'Lembrar o paciente de enviar quando tiver realizado.';
+  } else { ea.style.display = 'none'; }
 
   let type, badge, title, subtitle, criteria, conducts, alerts, msg;
 
-  // ── CASO A: PÓS-TRAUMA ─────────────────
-  if (gatilho === 'trauma' && (intensidade >= 5 || flogCount > 2)) {
-    type = 'danger';
-    badge = '🚨 Dor Aguda Pós-Trauma';
-    title = 'Encaminhamento Médico Indicado';
-    subtitle = 'Trauma recente com dor moderada a intensa ou sinais flogísticos importantes. Fisioterapia ativa está contraindicada até avaliação médica.';
-    criteria = ['Trauma recente', 'Dor ≥ 5/10', 'Limitação funcional relevante', 'Suspeita de lesão estrutural'];
+  // ── CASO A ──
+  if (gatilho === 'trauma' && (intensidade >= 5 || impacto === 'grave')) {
+    type     = 'danger';
+    badge    = '🚨 Dor Aguda Pós-Trauma';
+    title    = 'Encaminhamento Médico Indicado';
+    subtitle = 'Trauma recente com dor moderada a intensa. Fisioterapia ativa contraindicada até avaliação médica.';
+    criteria = ['Trauma recente', 'Dor ≥ 5/10', 'Suspeita de lesão estrutural'];
     conducts = [
-      { icon: '🚫', title: 'Não iniciar protocolo ativo', text: 'Suspender exercícios resistidos e de impacto imediatamente.' },
-      { icon: '🏥', title: 'Encaminhar para emergência', text: 'Se ainda não fez avaliação médica, orientar busca de atendimento presencial urgente.' },
-      { icon: '🧊', title: 'Medidas analgésicas', text: 'Apenas crioterapia e orientações de posicionamento até liberação médica. Verificar contraindicações.' },
-      { icon: '📋', title: 'Solicitar exames de imagem', text: impacto === 'grave' ? 'Impacto grave — priorizar RX ou US para descartar fratura ou lesão ligamentar.' : 'Solicitar exames conforme achados clínicos médicos.' },
+      { icon:'🚫', title:'Não iniciar protocolo ativo',   text:'Suspender exercícios resistidos e de impacto imediatamente.' },
+      { icon:'🏥', title:'Encaminhar para emergência',    text: foiAoMed === 'sim' ? 'Respeitar orientações médicas. Reavaliar em 72h.' : 'Orientar busca de atendimento médico presencial urgente.' },
+      { icon:'🧊', title:'Medidas analgésicas',           text:'Crioterapia e orientações de posicionamento até liberação médica. Verificar contraindicações.' },
+      { icon:'📋', title:'Solicitar exames de imagem',    text: impacto === 'grave' ? 'Impacto grave — priorizar RX/US para descartar fratura.' : 'Exames conforme achados médicos.' },
     ];
-    if (document.getElementById('atendimentoMedico').value === 'sim') {
-      conducts.push({ icon: '✅', title: 'Já passou pela emergência', text: 'Respeitar orientações médicas. Suspender/ajustar exercícios temporariamente e reavaliar em 72h.' });
-    }
-    alerts = [
-      { type: 'danger', text: '⚠ Se houver deformidade, crepitação óssea ou perda de força abrupta: encaminhar à emergência com urgência.' },
-    ];
-    msg = document.getElementById('atendimentoMedico').value === 'sim'
-      ? `Olá, ${nome}! Entendido! Como você passou por atendimento médico recente, vamos respeitar as orientações que recebeu. Vamos suspender/ajustar os exercícios temporariamente e reavaliar sua evolução em 72h. Combinado?`
-      : `Olá, ${nome}! Como houve um trauma recente, o mais seguro agora é suspendermos os exercícios até que um médico avalie. Se ainda não fez exames e houver suspeita de lesão, o ideal é realizar uma imagem. Você consegue ir até uma emergência?`;
+    alerts  = [{ type:'danger', text:'⚠ Se houver deformidade visível, crepitação ou perda de força abrupta: encaminhar à emergência imediatamente.' }];
+    msg     = foiAoMed === 'sim'
+      ? `Olá! Como você já passou por atendimento médico, vamos respeitar as orientações recebidas e suspender os exercícios temporariamente. Reavaliaremos sua evolução em 72h. Combinado?`
+      : `Olá! Como houve um trauma recente, o mais seguro é suspendermos os exercícios até uma avaliação médica. Se não fez exames ainda, o ideal é realizar uma imagem. Você consegue ir a uma emergência?`;
 
-  // ── CASO B: SINAIS FLOGÍSTICOS / ALTA INTENSIDADE ──
+  // ── CASO B ──
   } else if (flogCount > 1 || intensidade > 7) {
-    type = 'warning';
-    badge = '⚠ Dor Aguda com Sinais Flogísticos';
-    title = 'Conduta Protetora Indicada';
-    subtitle = 'Presença de sinais inflamatórios ativos ou alta intensidade de dor. Repouso relativo e redução do estímulo mecânico são prioritários.';
-    criteria = ['Edema / Calor / Rubor presentes', 'Dor > 7/10', 'Dor em repouso', 'Piora com exercício ativo'];
+    type     = 'warning';
+    badge    = '⚠ Dor Aguda com Sinais Flogísticos';
+    title    = 'Conduta Protetora Indicada';
+    subtitle = 'Presença de sinais inflamatórios ativos ou alta intensidade de dor. Repouso relativo é prioritário.';
+    criteria = [
+      ...(flogCount > 0 ? [`Sinais flogísticos: ${flogNames.join(', ')}`] : []),
+      ...(intensidade > 7 ? ['Dor > 7/10'] : []),
+    ];
     conducts = [
-      { icon: '🛑', title: 'Reduzir estímulo mecânico', text: 'Repouso relativo. Suspender exercícios que aumentem a dor. Evitar esforço na região afetada.' },
-      { icon: '🧊', title: 'Crioterapia 3x/dia por 20 min', text: 'Verificar contraindicações antes: Raynaud, TVP, déficit sensorial, urticária ao frio, crioglobulinemia.' },
-      { icon: '📐', title: 'Elevação do membro', text: 'Se for membro inferior: manter elevado para reduzir edema e dor ao repouso.' },
-      { icon: '🏃', title: 'Movimentos suaves tolerados', text: 'Mobilidade suave e isométricos indolores apenas se bem tolerados pelo paciente.' },
-      { icon: '⚕️', title: 'Avaliar encaminhamento', text: 'Se sinais de infecção (febre associada) ou sem melhora em 48h: encaminhar para avaliação médica.' },
+      { icon:'🛑', title:'Reduzir estímulo mecânico',      text:'Repouso relativo. Suspender exercícios que aumentem dor ou inchaço.' },
+      { icon:'🧊', title:'Crioterapia 3x/dia · 20 min',    text:'Verificar contraindicações: Raynaud, TVP, déficit sensorial, urticária ao frio, crioglobulinemia.' },
+      { icon:'📐', title:'Elevação do membro',              text:'Manter elevado para reduzir edema e dor ao repouso.' },
+      { icon:'🏃', title:'Movimentos suaves se tolerados',  text:'Mobilidade suave e isométricos indolores apenas se bem tolerados.' },
+      { icon:'⚕️', title:'Avaliar encaminhamento',          text:'Febre associada ou ausência de melhora em 48h: encaminhar para avaliação médica.' },
     ];
-    alerts = [
-      { type: 'warning', text: '⚠ Paciente com febre não deve realizar Fisioterapia Motora. Se não houver melhora ou houver piora funcional em 48h, indicar atendimento médico.' },
-      { type: 'info', text: 'ℹ Contraindicações da crioterapia: Doença de Raynaud, Insuficiência Circulatória Periférica, TVP, Urticária ao Frio, Crioglobulinemia, Déficit Sensorial, Rigidez Articular Crônica (preferir calor).' },
+    alerts  = [
+      { type:'warning', text:'⚠ Paciente com febre não deve realizar Fisioterapia Motora. Sem melhora ou com piora em 48h: indicar atendimento médico.' },
+      { type:'info',    text:'ℹ Contraindicações da crioterapia: Raynaud, Insuf. Circulatória Periférica, TVP, Urticária ao Frio, Crioglobulinemia, Déficit Sensorial. Para rigidez articular crônica, preferir calor.' },
     ];
-    msg = `Olá, ${nome}! Esses sinais indicam que o corpo está reagindo ao que pode ser uma inflamação. Recomendo repouso leve, aplicação de gelo 3x/dia por 20 minutos, manter o local elevado e observar se há febre. Se em 48h não houver melhora, oriento buscar atendimento médico para avaliar mais de perto.`;
+    msg = `Olá! Esses sinais indicam que o corpo está reagindo a uma inflamação. Recomendo repouso leve, aplicação de gelo 3x/dia por 20 minutos, manter o local elevado e observar se há febre. Se em 48h não houver melhora, procure atendimento médico.`;
 
-  // ── CASO C: DOR AGUDA SIMPLES ──────────
+  // ── CASO C ──
   } else {
-    type = 'success';
-    badge = '✅ Apta para Atividade';
-    title = 'Dor Aguda Simples';
-    subtitle = 'Dor mecânica previsível e controlável, sem sinais inflamatórios importantes. Manter movimento com ajustes de carga.';
-    criteria = ['Dor ≤ 6/10', 'Sem sinais flogísticos importantes', 'Sem traumas recentes', 'Função relativamente preservada'];
+    type     = 'success';
+    badge    = '✅ Apta para Atividade';
+    title    = 'Dor Aguda Simples';
+    subtitle = 'Dor mecânica previsível e controlável. Manter movimento com ajustes de carga.';
+    criteria = ['Dor ≤ 6/10', 'Sem sinais flogísticos relevantes', 'Sem traumas recentes', 'Função relativamente preservada'];
     conducts = [
-      { icon: '🏃', title: 'Manter ou introduzir exercícios leves', text: 'Ajustar carga e amplitude. Foco em movimentos indolores ou com leve desconforto tolerável.' },
-      { icon: '📚', title: 'Educação sobre a dor', text: 'Explicar que dor não significa dano. Reduzir cinesiofobia e catastrofização.' },
-      { icon: '🌡', title: 'Termoterapia conforme resposta', text: 'Calor local pode ser aplicado se não houver sinais inflamatórios agudos ativos.' },
-      { icon: '📈', title: 'Reavaliar em até 72h', text: 'Se piorar → conduta B (protetora). Se persistir → considerar teleconsulta ou interconsulta médica.' },
+      { icon:'🏃', title:'Exercícios com ajuste de carga', text:'Reduzir intensidade e amplitude. Foco em movimentos indolores. Progredir conforme tolerância.' },
+      { icon:'📚', title:'Educação sobre a dor',           text:'Explicar que dor não significa dano. Reduzir cinesiofobia e catastrofização.' },
+      { icon:'🌡',  title:'Termoterapia',                  text:'Calor local se não houver sinais inflamatórios ativos. Avaliar individualmente.' },
+      { icon:'📈', title:'Reavaliar em até 72h',           text:'Se piorar → conduta protetora. Se persistir → teleconsulta ou interconsulta médica.' },
     ];
-    alerts = [
-      { type: 'info', text: 'ℹ Crioterapia — Contraindicações: Doença de Raynaud, TVP, Insuficiência Circulatória Periférica, Urticária ao Frio, Crioglobulinemia, Déficit Sensorial e Rigidez Articular Crônica (preferir calor nesse caso).' },
-    ];
-    msg = `Olá, ${nome}! Vi seu relato. Como sua dor é previsível e controlável, vamos manter o corpo em movimento com ajustes. Vamos focar em mobilidade hoje e reduzir a intensidade. Como você se sente para iniciarmos exercícios leves?`;
+    alerts  = [{ type:'info', text:'ℹ Crioterapia — Contraindicações: Raynaud, TVP, Insuf. Circulatória, Urticária ao Frio, Crioglobulinemia, Déficit Sensorial. Para rigidez articular crônica, preferir calor.' }];
+    msg = `Olá! Vi seu relato. Como sua dor é previsível e controlável, vamos manter o corpo em movimento com ajustes. Vamos focar em mobilidade hoje e reduzir a intensidade. Como você se sente para iniciarmos exercícios leves?`;
   }
 
-  renderResult({ type, badge, title, subtitle, criteria, conducts, alerts, msg });
+  renderResult({ type, badge, title, subtitle, criteria, conducts, alerts, msg, impacto });
 }
 
-// ── RENDER ──────────────────────────────────────────
-function renderResult({ type, badge, title, subtitle, criteria, conducts, alerts, msg }) {
+// ── RENDER ───────────────────────────────────────────
+function renderResult({ type, badge, title, subtitle, criteria, conducts, alerts, msg, impacto }) {
   const rc = document.getElementById('resultCard');
-  const rh = document.getElementById('resultHeader');
+  document.getElementById('resultHeader').className = 'result-header type-' + type;
 
-  // remove old type classes
-  rh.className = 'result-header';
-  rc.className = 'section-card';
-  rh.classList.add('type-' + type);
-
-  document.getElementById('rBadge').textContent = badge;
-  document.getElementById('rTitle').textContent = title;
+  document.getElementById('rBadge').textContent    = badge;
+  document.getElementById('rTitle').textContent    = title;
   document.getElementById('rSubtitle').textContent = subtitle;
 
   // Criteria
-  const cb = document.getElementById('rCriteriaBox');
-  cb.className = 'criteria-box ' + type;
-  document.getElementById('rCriteriaTitle').textContent = 'Critérios Fisioterapêuticos';
-  document.getElementById('rCriteriaList').innerHTML = criteria.map(c => `<span class="criteria-pill">${c}</span>`).join('');
+  document.getElementById('rCriteriaBox').className = 'criteria-box ' + type;
+  document.getElementById('rCriteriaList').innerHTML =
+    criteria.map(c => `<span class="criteria-pill">${c}</span>`).join('');
 
   // Conducts
-  document.getElementById('rConductList').innerHTML = conducts.map(c => `
-    <div class="conduct-item">
-      <span class="conduct-icon">${c.icon}</span>
-      <div class="conduct-text"><strong>${c.title}</strong>${c.text}</div>
-    </div>`).join('');
+  document.getElementById('rConductList').innerHTML =
+    conducts.map(c => `
+      <div class="conduct-item">
+        <span class="conduct-icon">${c.icon}</span>
+        <div class="conduct-text"><strong>${c.title}</strong>${c.text}</div>
+      </div>`).join('');
 
   // Alerts
-  document.getElementById('rAlertsArea').innerHTML = alerts.map(a =>
-    `<div class="alert-box ${a.type}">${a.text}</div>`
-  ).join('');
+  document.getElementById('rAlertsArea').innerHTML =
+    alerts.map(a => `<div class="alert-box ${a.type}">${a.text}</div>`).join('');
+
+  // ── IMPACT BLOCK ──
+  const id = IMPACT_DATA[impacto];
+  const hdr = document.getElementById('rImpactHeader');
+  hdr.className = 'impact-header ' + id.css;
+
+  document.getElementById('rImpactIcon').textContent  = id.icon;
+  document.getElementById('rImpactLabel').textContent = id.label;
+  document.getElementById('rImpactTitle').textContent = id.title;
+  document.getElementById('rImpactLabel').className   = 'impact-label';
+  document.getElementById('rImpactTitle').className   = 'impact-title';
+
+  document.getElementById('rImpactBody').innerHTML =
+    id.items.map(item => `
+      <div class="impact-item">
+        <span class="impact-item-icon">${item.icon}</span>
+        <div class="impact-item-text"><strong>${item.title}</strong>${item.text}</div>
+      </div>`).join('')
+    + `<div class="impact-reeval"><span>⏱</span><span>${id.reeval}</span></div>`;
 
   // Message
   document.getElementById('rMsg').textContent = msg;
-  document.getElementById('btnCopy').classList.remove('copied');
-  document.getElementById('btnCopy').textContent = '📋 Copiar para WhatsApp';
+  const btn = document.getElementById('btnCopy');
+  btn.textContent = '📋 Copiar para WhatsApp';
+  btn.classList.remove('copied');
 
-  // Show result
   rc.style.display = 'block';
-  setTimeout(() => {
-    rc.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  }, 80);
+  setTimeout(() => rc.scrollIntoView({ behavior:'smooth', block:'start' }), 80);
 }
 
-// ── COPY ────────────────────────────────────────────
+// ── COPY ─────────────────────────────────────────────
 function copiarMensagem() {
-  const texto = document.getElementById('rMsg').textContent;
-  navigator.clipboard.writeText(texto).then(() => {
+  navigator.clipboard.writeText(document.getElementById('rMsg').textContent).then(() => {
     const btn = document.getElementById('btnCopy');
     btn.textContent = '✅ Copiado!';
     btn.classList.add('copied');
-    setTimeout(() => {
-      btn.textContent = '📋 Copiar para WhatsApp';
-      btn.classList.remove('copied');
-    }, 2500);
+    setTimeout(() => { btn.textContent = '📋 Copiar para WhatsApp'; btn.classList.remove('copied'); }, 2200);
   });
 }
 
-// ── REINICIAR ───────────────────────────────────────
+// ── REINICIAR ─────────────────────────────────────────
 function reiniciar() {
   document.getElementById('resultCard').style.display = 'none';
-  document.getElementById('pacienteNome').value = '';
   document.getElementById('intensidade').value = 5;
   document.getElementById('sliderVal').textContent = '5';
   updateSlider(document.getElementById('intensidade'));
   document.querySelectorAll('#checkFlog .check-item').forEach(el => {
-    el.classList.remove('checked');
-    el.querySelector('input').checked = false;
+    el.classList.remove('checked'); el.querySelector('input').checked = false;
   });
   document.querySelectorAll('.radio-pill').forEach(p => p.classList.remove('selected'));
   document.querySelector('.radio-pill:last-child').classList.add('selected');
   document.getElementById('medInfoExtra').classList.remove('open');
-  document.getElementById('formCard').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  document.getElementById('formCard').scrollIntoView({ behavior:'smooth', block:'start' });
 }
 </script>
 </body>

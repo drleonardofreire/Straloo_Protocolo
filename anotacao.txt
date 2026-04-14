@@ -24,6 +24,16 @@ Ponto Chave (Etapa 3): Em Sensação da Dor, selecione: "Fisgada ou pontada súb
 OU (Etapa 5): Selecione "Sem mudança / indiferente" tanto na Flexão quanto na Extensão.
 Contexto Geral: Se o paciente não tiver dor que irradia para o pé e não apresentar melhora/piora clara com os movimentos de inclinar para frente ou para trás.
 
+Etapa,Pergunta,Resposta Necessária PARA ACESSAR O GRUPO C
+Etapa 1,Todas as Red Flags,NÃO
+Etapa 2,Irradiação,"""Não irradia"" (Preferencialmente)"
+Etapa 3,Sensação da Dor,"""Fisgada ou pontada súbita"""
+Etapa 5,Teste de Flexão,"""Sem mudança / indiferente"""
+Etapa 5,Teste de Extensão,"""Sem mudança / indiferente"""
+Etapa 5,Alívio Postural,"""Ambos igualmente ruins / Sem padrão"""
+
+ENTENDENDO A DIVISÃO DOS GRUPOS:
+
 1. O seu Grupo 3 (Hérnia) virou o Grupo A (Extensão)
 No seu texto, você cita que a dor piora ao tossir ou sentar (flexão).
 No Código: Se o paciente responde "Pior ao sentar" e "Melhora ao inclinar para trás", o sistema entende que a Extensão é o remédio. Ele é classificado como Grupo A porque a conduta prioritária é o protocolo de extensão progressiva para reduzir a pressão discal.
@@ -35,3 +45,4 @@ No Código: O sistema agrupa esses pacientes no Grupo B. Se o paciente diz que p
 3. O seu Grupo 1 (Inespecífica) virou o Grupo C (Estabilização)
 Este é o grupo da "fisgada" ou do "cansaço" sem irradiação.
 No Código: Se os testes de inclinar para frente e para trás não mudam a dor (indiferente), o sistema joga para o Grupo C. O foco aqui é o fortalecimento do Core (Transverso/Multífidos) que você sugeriu, além de combater a cinesiofobia.
+
