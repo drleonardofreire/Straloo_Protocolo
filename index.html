@@ -1,157 +1,618 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Central de Protocolos Fisioterapêuticos</title>
-    <style>
-        :root {
-            --primary: #2563eb;
-            --bg: #f8fafc;
-            --card: #ffffff;
-            --text: #1e293b;
-            --accent: #3b82f6;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Straloo — Protocolos Clínicos</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0B1E26;
+    --surface: #112530;
+    --surface2: #162E38;
+    --primary: #0E4D5C;
+    --teal: #1A7A8C;
+    --accent: #E8A84C;
+    --accent2: #F0C070;
+    --text: #ECE8E0;
+    --text-muted: #7A9BA5;
+    --border: rgba(255,255,255,0.08);
+    --radius: 18px;
+    --radius-sm: 10px;
+    --transition: all 0.35s cubic-bezier(0.4,0,0.2,1);
 
-        body {
-            font-family: 'Segoe UI', system-ui, sans-serif;
-            background-color: var(--bg);
-            color: var(--text);
-            margin: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-        }
+    /* Category colors */
+    --cat-coluna: #1A7A8C;
+    --cat-mmii: #2A8C5A;
+    --cat-mmss: #7A5C2A;
+    --cat-quadril: #5C2A7A;
+    --cat-especial: #8C3A3A;
+    --cat-pos: #2A5C8C;
+  }
 
-        .main-container {
-            width: 100%;
-            max-width: 500px;
-            padding: 20px;
-            text-align: center;
-        }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-        .logo-area {
-            margin-bottom: 30px;
-        }
+  html { scroll-behavior: smooth; }
 
-        .logo-area h1 {
-            font-size: 1.8rem;
-            color: var(--primary);
-            margin-bottom: 5px;
-        }
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
 
-        .logo-area p {
-            color: #64748b;
-            margin: 0;
-        }
+  /* ─── BACKGROUND TEXTURE ─── */
+  body::before {
+    content: '';
+    position: fixed; inset: 0; z-index: 0;
+    background:
+      radial-gradient(ellipse 80% 60% at 10% 0%, rgba(14,77,92,0.35) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 40% at 90% 100%, rgba(26,122,140,0.2) 0%, transparent 55%),
+      radial-gradient(ellipse 40% 30% at 50% 50%, rgba(232,168,76,0.04) 0%, transparent 70%);
+    pointer-events: none;
+  }
 
-        .selection-card {
-            background: var(--card);
-            padding: 30px;
-            border-radius: 16px;
-            box-shadow: 0 10px 25px -5px rgba(0,0,0,0.1);
-        }
+  /* ─── HEADER ─── */
+  .header {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(11,30,38,0.85);
+    backdrop-filter: blur(18px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 40px;
+    display: flex; align-items: center; justify-content: space-between;
+    height: 68px;
+  }
 
-        label {
-            display: block;
-            font-weight: 600;
-            margin-bottom: 15px;
-            font-size: 1.1rem;
-        }
+  .logo-wrap { display: flex; align-items: center; gap: 14px; text-decoration: none; }
+  .logo-icon {
+    width: 38px; height: 38px; border-radius: 10px;
+    background: linear-gradient(135deg, var(--teal), var(--primary));
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.2rem; box-shadow: 0 4px 12px rgba(26,122,140,0.4);
+  }
+  .logo-text {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.5rem; color: var(--text); letter-spacing: 0.01em;
+  }
+  .logo-text span { color: var(--accent); }
 
-        /* Estilização do Combobox */
-        .custom-select {
-            width: 100%;
-            padding: 15px;
-            font-size: 1rem;
-            border: 2px solid #e2e8f0;
-            border-radius: 10px;
-            background-color: #fff;
-            cursor: pointer;
-            outline: none;
-            transition: border-color 0.2s;
-            margin-bottom: 20px;
-            appearance: none; /* Remove seta padrão */
-            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
-            background-repeat: no-repeat;
-            background-position: right 15px center;
-            background-size: 18px;
-        }
+  .header-right { display: flex; align-items: center; gap: 12px; }
+  .header-tag {
+    font-size: 0.7rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--accent); background: rgba(232,168,76,0.1);
+    border: 1px solid rgba(232,168,76,0.25); border-radius: 50px; padding: 5px 14px;
+  }
+  .header-version {
+    font-size: 0.72rem; color: var(--text-muted); font-weight: 500;
+  }
 
-        .custom-select:focus {
-            border-color: var(--primary);
-        }
+  /* ─── HERO ─── */
+  .hero {
+    position: relative; z-index: 1;
+    padding: 72px 40px 56px;
+    max-width: 1100px; margin: 0 auto;
+  }
 
-        .btn-go {
-            background: var(--primary);
-            color: white;
-            border: none;
-            padding: 15px 30px;
-            border-radius: 10px;
-            font-weight: bold;
-            width: 100%;
-            font-size: 1.1rem;
-            cursor: pointer;
-            transition: transform 0.2s, background 0.2s;
-        }
+  .hero-eyebrow {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-size: 0.72rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--teal); background: rgba(26,122,140,0.12);
+    border: 1px solid rgba(26,122,140,0.25); border-radius: 50px; padding: 5px 14px;
+    margin-bottom: 20px;
+    animation: fadeUp 0.5s ease both;
+  }
+  .hero-eyebrow::before { content: '●'; font-size: 0.5rem; animation: pulse 2s infinite; }
+  @keyframes pulse { 0%,100% { opacity:1; } 50% { opacity:0.3; } }
 
-        .btn-go:hover {
-            background: #1d4ed8;
-            transform: translateY(-2px);
-        }
+  .hero-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(2.2rem, 5vw, 3.4rem);
+    line-height: 1.12; color: var(--text);
+    margin-bottom: 16px;
+    animation: fadeUp 0.5s 0.1s ease both;
+  }
+  .hero-title em { color: var(--accent); font-style: italic; }
 
-        .btn-go:active {
-            transform: translateY(0);
-        }
+  .hero-sub {
+    font-size: 1rem; color: var(--text-muted); line-height: 1.7;
+    max-width: 560px; margin-bottom: 40px;
+    animation: fadeUp 0.5s 0.2s ease both;
+  }
 
-        .footer {
-            margin-top: 40px;
-            font-size: 0.85rem;
-            color: #94a3b8;
-        }
-    </style>
+  .hero-stats {
+    display: flex; gap: 32px; flex-wrap: wrap;
+    animation: fadeUp 0.5s 0.3s ease both;
+  }
+  .stat { display: flex; flex-direction: column; gap: 2px; }
+  .stat-num {
+    font-family: 'DM Serif Display', serif; font-size: 1.8rem; color: var(--accent); line-height: 1;
+  }
+  .stat-label { font-size: 0.75rem; color: var(--text-muted); font-weight: 500; letter-spacing: 0.04em; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ─── SEARCH + FILTER ─── */
+  .controls {
+    position: relative; z-index: 1;
+    max-width: 1100px; margin: 0 auto;
+    padding: 0 40px 28px;
+    display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+    animation: fadeUp 0.5s 0.35s ease both;
+  }
+
+  .search-wrap {
+    position: relative; flex: 1; min-width: 220px;
+  }
+  .search-icon {
+    position: absolute; left: 14px; top: 50%; transform: translateY(-50%);
+    color: var(--text-muted); font-size: 0.95rem; pointer-events: none;
+  }
+  .search-input {
+    width: 100%; background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--radius-sm); padding: 11px 16px 11px 40px;
+    color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 0.9rem;
+    outline: none; transition: var(--transition);
+  }
+  .search-input::placeholder { color: var(--text-muted); }
+  .search-input:focus { border-color: var(--teal); background: var(--surface2); box-shadow: 0 0 0 3px rgba(26,122,140,0.15); }
+
+  .filter-group { display: flex; gap: 8px; flex-wrap: wrap; }
+  .filter-btn {
+    font-family: 'DM Sans', sans-serif; font-size: 0.8rem; font-weight: 600;
+    padding: 9px 16px; border-radius: 50px;
+    border: 1px solid var(--border); background: transparent;
+    color: var(--text-muted); cursor: pointer; transition: var(--transition);
+    letter-spacing: 0.03em;
+  }
+  .filter-btn:hover { border-color: var(--teal); color: var(--text); }
+  .filter-btn.active { background: var(--teal); border-color: var(--teal); color: white; }
+
+  /* ─── PROTOCOL GRID ─── */
+  .grid-section {
+    position: relative; z-index: 1;
+    max-width: 1100px; margin: 0 auto;
+    padding: 0 40px 80px;
+  }
+
+  .section-label {
+    font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--text-muted); margin-bottom: 18px; padding-bottom: 10px;
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; gap: 10px;
+  }
+  .section-label span { color: var(--teal); }
+
+  .protocol-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 16px;
+    margin-bottom: 40px;
+  }
+
+  /* ─── PROTOCOL CARD ─── */
+  .proto-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 26px 28px;
+    cursor: pointer;
+    transition: var(--transition);
+    position: relative; overflow: hidden;
+    text-decoration: none; display: block;
+    animation: fadeUp 0.5s ease both;
+  }
+  .proto-card::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(135deg, rgba(255,255,255,0.03) 0%, transparent 60%);
+    pointer-events: none;
+  }
+  .proto-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 16px 48px rgba(0,0,0,0.35);
+    border-color: rgba(255,255,255,0.15);
+  }
+  .proto-card.available {
+    border-color: rgba(26,122,140,0.25);
+    background: linear-gradient(135deg, var(--surface2), var(--surface));
+  }
+  .proto-card.available:hover {
+    border-color: var(--teal);
+    box-shadow: 0 16px 48px rgba(26,122,140,0.2);
+  }
+  .proto-card.coming-soon {
+    opacity: 0.55; cursor: default;
+  }
+  .proto-card.coming-soon:hover { transform: none; box-shadow: none; }
+
+  /* Card accent stripe */
+  .proto-card .card-stripe {
+    position: absolute; left: 0; top: 0; bottom: 0;
+    width: 4px; border-radius: 18px 0 0 18px;
+    transition: var(--transition);
+  }
+  .proto-card:hover .card-stripe { width: 5px; }
+
+  .card-top { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 16px; }
+
+  .card-icon {
+    width: 46px; height: 46px; border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.4rem; flex-shrink: 0;
+    transition: var(--transition);
+  }
+  .proto-card:hover .card-icon { transform: scale(1.08); }
+
+  .card-status {
+    font-size: 0.68rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+    padding: 4px 10px; border-radius: 50px;
+  }
+  .status-active { background: rgba(26,122,140,0.15); color: var(--teal); border: 1px solid rgba(26,122,140,0.3); }
+  .status-soon { background: rgba(255,255,255,0.05); color: var(--text-muted); border: 1px solid var(--border); }
+  .status-new { background: rgba(232,168,76,0.15); color: var(--accent); border: 1px solid rgba(232,168,76,0.3); }
+
+  .card-body { margin-bottom: 18px; }
+  .card-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.2rem; color: var(--text); line-height: 1.25; margin-bottom: 5px;
+  }
+  .card-subtitle { font-size: 0.8rem; color: var(--text-muted); line-height: 1.55; }
+
+  .card-meta { display: flex; align-items: center; justify-content: space-between; }
+  .card-tags { display: flex; gap: 6px; flex-wrap: wrap; }
+  .card-tag {
+    font-size: 0.68rem; font-weight: 600; padding: 3px 9px; border-radius: 50px;
+    background: rgba(255,255,255,0.05); color: var(--text-muted); border: 1px solid var(--border);
+  }
+  .card-arrow {
+    color: var(--text-muted); font-size: 1rem; transition: var(--transition);
+    opacity: 0; transform: translateX(-6px);
+  }
+  .proto-card.available:hover .card-arrow { opacity: 1; transform: translateX(0); color: var(--teal); }
+
+  .card-steps {
+    font-size: 0.72rem; color: var(--text-muted); font-weight: 500;
+    display: flex; align-items: center; gap: 4px;
+  }
+
+  /* ─── ADD CARD ─── */
+  .add-card {
+    background: transparent;
+    border: 2px dashed rgba(255,255,255,0.1);
+    border-radius: var(--radius);
+    padding: 26px 28px;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 10px; min-height: 180px; cursor: default;
+    transition: var(--transition);
+  }
+  .add-card:hover { border-color: rgba(26,122,140,0.35); }
+  .add-icon { font-size: 1.6rem; color: var(--text-muted); opacity: 0.5; }
+  .add-text { font-size: 0.82rem; color: var(--text-muted); text-align: center; line-height: 1.55; opacity: 0.7; }
+
+  /* ─── FOOTER ─── */
+  .footer {
+    position: relative; z-index: 1;
+    border-top: 1px solid var(--border);
+    padding: 24px 40px;
+    display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px;
+    max-width: 1100px; margin: 0 auto;
+  }
+  .footer-brand {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1rem; color: var(--text-muted);
+  }
+  .footer-brand span { color: var(--accent); }
+  .footer-note { font-size: 0.75rem; color: var(--text-muted); opacity: 0.6; }
+
+  /* ─── RESPONSIVE ─── */
+  @media (max-width: 700px) {
+    .header { padding: 0 20px; }
+    .hero, .controls, .grid-section { padding-left: 20px; padding-right: 20px; }
+    .hero { padding-top: 48px; padding-bottom: 36px; }
+    .hero-stats { gap: 20px; }
+    .footer { padding: 20px; }
+    .header-version { display: none; }
+  }
+</style>
 </head>
 <body>
 
-<div class="main-container">
-    <div class="logo-area">
-        <h1>STRALOO - PROTOCOLOS</h1>
-        <p>Sistema de Apoio à Decisão Clínica</p>
+<!-- HEADER -->
+<header class="header">
+  <a class="logo-wrap" href="index.html">
+    <div class="logo-icon">🦴</div>
+    <div class="logo-text">Straloo<span>.</span></div>
+  </a>
+  <div class="header-right">
+    <span class="header-tag">Teleatendimento</span>
+    <span class="header-version">v1.0</span>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-eyebrow">Protocolos Clínicos</div>
+  <h1 class="hero-title">Ferramentas de suporte<br>para <em>fisioterapia remota</em></h1>
+  <p class="hero-sub">Selecione o protocolo de acordo com a queixa principal do paciente. Cada protocolo guia a triagem, estratificação clínica e plano terapêutico baseado em evidências.</p>
+  <div class="hero-stats">
+    <div class="stat"><span class="stat-num">1</span><span class="stat-label">Protocolo ativo</span></div>
+    <div class="stat"><span class="stat-num">7</span><span class="stat-label">Em desenvolvimento</span></div>
+    <div class="stat"><span class="stat-num">4</span><span class="stat-label">Etapas por protocolo</span></div>
+  </div>
+</section>
+
+<!-- CONTROLS -->
+<div class="controls">
+  <div class="search-wrap">
+    <span class="search-icon">🔍</span>
+    <input class="search-input" type="text" placeholder="Buscar protocolo..." oninput="filterCards(this.value)" />
+  </div>
+  <div class="filter-group">
+    <button class="filter-btn active" onclick="setFilter('todos',this)">Todos</button>
+    <button class="filter-btn" onclick="setFilter('coluna',this)">Coluna</button>
+    <button class="filter-btn" onclick="setFilter('mmii',this)">Membros Inf.</button>
+    <button class="filter-btn" onclick="setFilter('mmss',this)">Membros Sup.</button>
+    <button class="filter-btn" onclick="setFilter('especial',this)">Especiais</button>
+  </div>
+</div>
+
+<!-- GRID -->
+<div class="grid-section">
+
+  <!-- COLUNA -->
+  <div class="section-label"><span>///</span> Coluna Vertebral</div>
+  <div class="protocol-grid" id="grid-coluna">
+
+    <!-- links de cada aba de protocolo da tela inicial  -->
+    <a href="lombalgia1.html" class="proto-card available" data-cat="coluna" data-name="lombalgia dor lombar coluna">
+      <div class="card-stripe" style="background: var(--cat-coluna)"></div>
+      <div class="card-top">
+        <div class="card-icon" style="background:rgba(26,122,140,0.15)">🦴</div>
+        <span class="card-status status-active">● Ativo</span>
+      </div>
+      <div class="card-body">
+        <div class="card-title">Lombalgia</div>
+        <div class="card-subtitle">Dor lombar mecânica, radicular e não-específica. Red flags, estratificação em 3 grupos e protocolo terapêutico completo.</div>
+      </div>
+      <div class="card-meta">
+        <div class="card-tags">
+          <span class="card-tag">Red Flags</span>
+          <span class="card-tag">McKenzie</span>
+          <span class="card-tag">6 Etapas</span>
+        </div>
+        <span class="card-arrow">→</span>
+      </div>
+    </a>
+
+    <div class="proto-card coming-soon" data-cat="coluna" data-name="cervicalgia cervical pescoço">
+      <div class="card-stripe" style="background: var(--cat-coluna)"></div>
+      <div class="card-top">
+        <div class="card-icon" style="background:rgba(26,122,140,0.1)">🫀</div>
+        <span class="card-status status-soon">Em Breve</span>
+      </div>
+      <div class="card-body">
+        <div class="card-title">Cervicalgia</div>
+        <div class="card-subtitle">Dor cervical mecânica, radiculopatia cervical e síndrome do ombro-pescoço. Triagem neurológica e protocolo postural.</div>
+      </div>
+      <div class="card-meta">
+        <div class="card-tags"><span class="card-tag">Radiculopatia</span><span class="card-tag">Postural</span></div>
+      </div>
     </div>
 
-    <div class="selection-card">
-        <label for="protocoloSelect">Selecione o Protocolo:</label>
-        
-        <select id="protocoloSelect" class="custom-select">
-            <option value="" disabled selected>Escolha uma opção...</option>
-            <option value="dor_aguda.html">1. Protocolo de Dor Aguda (Triagem)</option>
-            <option value="coluna.html">2. Avaliação de Coluna Vertebral</option>
-            <option value="pos_operatorio.html">3. Pós-Operatório Geral</option>
-            <option value="neuro.html">4. Reabilitação Neurológica</option>
-        </select>
-
-        <button class="btn-go" onclick="navegar()">ACESSAR PROTOCOLO</button>
+    <div class="proto-card coming-soon" data-cat="coluna" data-name="torácica coluna torácica dor costas">
+      <div class="card-stripe" style="background: var(--cat-coluna)"></div>
+      <div class="card-top">
+        <div class="card-icon" style="background:rgba(26,122,140,0.1)">🫁</div>
+        <span class="card-status status-soon">Em Breve</span>
+      </div>
+      <div class="card-body">
+        <div class="card-title">Dor Torácica</div>
+        <div class="card-subtitle">Síndrome facetária torácica, costocondrite e disfunção postural. Diferenciação de causas cardíacas.</div>
+      </div>
+      <div class="card-meta">
+        <div class="card-tags"><span class="card-tag">Postural</span><span class="card-tag">Red Flags</span></div>
+      </div>
     </div>
 
-    <div class="footer">
-        Desenvolvido para uso profissional • 2026
+  </div>
+
+  <!-- MEMBROS INFERIORES -->
+  <div class="section-label"><span>///</span> Membros Inferiores</div>
+  <div class="protocol-grid" id="grid-mmii">
+
+    <div class="proto-card coming-soon" data-cat="mmii" data-name="joelho dor joelho gonalgia">
+      <div class="card-stripe" style="background: var(--cat-mmii)"></div>
+      <div class="card-top">
+        <div class="card-icon" style="background:rgba(42,140,90,0.1)">🦵</div>
+        <span class="card-status status-soon">Em Breve</span>
+      </div>
+      <div class="card-body">
+        <div class="card-title">Dor no Joelho</div>
+        <div class="card-subtitle">Gonalgia mecânica, síndrome patelofemoral, osteoartrite e lesões ligamentares. Estratificação funcional.</div>
+      </div>
+      <div class="card-meta">
+        <div class="card-tags"><span class="card-tag">Patelofemoral</span><span class="card-tag">OA</span></div>
+      </div>
     </div>
+
+    <div class="proto-card coming-soon" data-cat="mmii" data-name="quadril dor quadril coxalgia">
+      <div class="card-stripe" style="background: var(--cat-mmii)"></div>
+      <div class="card-top">
+        <div class="card-icon" style="background:rgba(42,140,90,0.1)">🦴</div>
+        <span class="card-status status-soon">Em Breve</span>
+      </div>
+      <div class="card-body">
+        <div class="card-title">Dor no Quadril</div>
+        <div class="card-subtitle">Coxartrose, síndrome do impacto femoroacetabular, bursites e tendinopatias do quadril.</div>
+      </div>
+      <div class="card-meta">
+        <div class="card-tags"><span class="card-tag">FAI</span><span class="card-tag">Bursite</span></div>
+      </div>
+    </div>
+
+    <div class="proto-card coming-soon" data-cat="mmii" data-name="tornozelo pé entorse tornozelo plantar">
+      <div class="card-stripe" style="background: var(--cat-mmii)"></div>
+      <div class="card-top">
+        <div class="card-icon" style="background:rgba(42,140,90,0.1)">🦶</div>
+        <span class="card-status status-soon">Em Breve</span>
+      </div>
+      <div class="card-body">
+        <div class="card-title">Tornozelo e Pé</div>
+        <div class="card-subtitle">Entorse, fascite plantar, tendinopatia do Aquiles e instabilidade crônica do tornozelo.</div>
+      </div>
+      <div class="card-meta">
+        <div class="card-tags"><span class="card-tag">Entorse</span><span class="card-tag">Aquiles</span></div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- MEMBROS SUPERIORES -->
+  <div class="section-label"><span>///</span> Membros Superiores</div>
+  <div class="protocol-grid" id="grid-mmss">
+
+    <div class="proto-card coming-soon" data-cat="mmss" data-name="ombro dor ombro síndrome manguito rotador">
+      <div class="card-stripe" style="background: var(--cat-mmss)"></div>
+      <div class="card-top">
+        <div class="card-icon" style="background:rgba(122,92,42,0.12)">💪</div>
+        <span class="card-status status-soon">Em Breve</span>
+      </div>
+      <div class="card-body">
+        <div class="card-title">Dor no Ombro</div>
+        <div class="card-subtitle">Síndrome do impacto, lesão do manguito rotador, capsulite adesiva e instabilidade glenoumeral.</div>
+      </div>
+      <div class="card-meta">
+        <div class="card-tags"><span class="card-tag">Manguito</span><span class="card-tag">Capsulite</span></div>
+      </div>
+    </div>
+
+    <div class="proto-card coming-soon" data-cat="mmss" data-name="cotovelo epicondilite tenista golfista">
+      <div class="card-stripe" style="background: var(--cat-mmss)"></div>
+      <div class="card-top">
+        <div class="card-icon" style="background:rgba(122,92,42,0.12)">🫱</div>
+        <span class="card-status status-soon">Em Breve</span>
+      </div>
+      <div class="card-body">
+        <div class="card-title">Cotovelo</div>
+        <div class="card-subtitle">Epicondilite lateral (tenista) e medial (golfista). Síndrome do túnel cubital. Protocolo de carga progressiva.</div>
+      </div>
+      <div class="card-meta">
+        <div class="card-tags"><span class="card-tag">Epicondilite</span><span class="card-tag">Tendinop.</span></div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ESPECIAIS -->
+  <div class="section-label"><span>///</span> Protocolos Especiais</div>
+  <div class="protocol-grid" id="grid-especial">
+
+    <div class="proto-card coming-soon" data-cat="especial" data-name="dor crônica fibromialgia sensitização central">
+      <div class="card-stripe" style="background: var(--cat-especial)"></div>
+      <div class="card-top">
+        <div class="card-icon" style="background:rgba(140,58,58,0.12)">🧠</div>
+        <span class="card-status status-soon">Em Breve</span>
+      </div>
+      <div class="card-body">
+        <div class="card-title">Dor Crônica / Nociplástica</div>
+        <div class="card-subtitle">Sensibilização central, fibromialgia e dor persistente. Educação em neurociência da dor e estratégias de modulação.</div>
+      </div>
+      <div class="card-meta">
+        <div class="card-tags"><span class="card-tag">Nociplástica</span><span class="card-tag">PNE</span></div>
+      </div>
+    </div>
+
+    <div class="proto-card coming-soon" data-cat="especial" data-name="pós operatório reabilitação cirurgia">
+      <div class="card-stripe" style="background: var(--cat-pos)"></div>
+      <div class="card-top">
+        <div class="card-icon" style="background:rgba(42,92,140,0.12)">🔬</div>
+        <span class="card-status status-soon">Em Breve</span>
+      </div>
+      <div class="card-body">
+        <div class="card-title">Pós-Operatório Geral</div>
+        <div class="card-subtitle">Reabilitação remota pós-cirúrgica. Monitoramento de sinais de alarme, progressão funcional e educação do paciente.</div>
+      </div>
+      <div class="card-meta">
+        <div class="card-tags"><span class="card-tag">Pós-op</span><span class="card-tag">Reabilitação</span></div>
+      </div>
+    </div>
+
+    <div class="add-card" id="add-card" data-cat="especial">
+      <div class="add-icon">＋</div>
+      <div class="add-text">Novo protocolo em desenvolvimento.<br>Em breve disponível para uso clínico.</div>
+    </div>
+
+  </div>
+
+  <!-- EMPTY STATE -->
+  <div id="empty-state" style="display:none; text-align:center; padding: 60px 0; color: var(--text-muted);">
+    <div style="font-size:2.5rem; margin-bottom:12px; opacity:0.4">🔍</div>
+    <p style="font-size:0.95rem;">Nenhum protocolo encontrado para "<span id="empty-query"></span>".</p>
+  </div>
+
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+  <div class="footer-brand">Straloo<span>.</span></div>
+  <div class="footer-note">Ferramenta de suporte clínico — não substitui avaliação presencial</div>
 </div>
 
 <script>
-    function navegar() {
-        const select = document.getElementById('protocoloSelect');
-        const url = select.value;
+  // ── FILTER BY CATEGORY ──
+  let currentFilter = 'todos';
 
-        if (url) {
-            // Se as páginas estiverem na mesma pasta, ele redireciona
-            window.location.href = url;
-        } else {
-            alert("Por favor, selecione um protocolo na lista.");
-        }
-    }
+  function setFilter(cat, btn) {
+    currentFilter = cat;
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    applyFilters();
+  }
+
+  function filterCards(query) {
+    applyFilters(query);
+  }
+
+  function applyFilters(query) {
+    const q = (query ?? document.querySelector('.search-input').value).toLowerCase().trim();
+    const cards = document.querySelectorAll('.proto-card');
+    let visible = 0;
+
+    cards.forEach(card => {
+      const cat = card.dataset.cat || '';
+      const name = card.dataset.name || '';
+      const title = card.querySelector('.card-title')?.textContent.toLowerCase() || '';
+      const sub = card.querySelector('.card-subtitle')?.textContent.toLowerCase() || '';
+
+      const matchCat = currentFilter === 'todos' || cat === currentFilter;
+      const matchQ = !q || name.includes(q) || title.includes(q) || sub.includes(q);
+
+      const show = matchCat && matchQ;
+      card.style.display = show ? '' : 'none';
+      if (show) visible++;
+    });
+
+    // Hide/show section labels based on visible cards
+    document.querySelectorAll('.section-label').forEach(label => {
+      const grid = label.nextElementSibling;
+      if (!grid) return;
+      const hasVisible = [...grid.querySelectorAll('.proto-card')].some(c => c.style.display !== 'none');
+      label.style.display = hasVisible ? '' : 'none';
+      grid.style.display = hasVisible ? '' : 'none';
+    });
+
+    document.getElementById('empty-state').style.display = visible === 0 ? 'block' : 'none';
+    if (visible === 0) document.getElementById('empty-query').textContent = q;
+  }
+
+  // ── STAGGER ANIMATION ──
+  document.querySelectorAll('.proto-card').forEach((card, i) => {
+    card.style.animationDelay = `${0.05 * i + 0.3}s`;
+  });
 </script>
-
 </body>
 </html>

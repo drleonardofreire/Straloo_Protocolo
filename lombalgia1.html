@@ -1,0 +1,1193 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Straloo — Protocolo de Lombalgia</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #F2EFE9;
+    --surface: #FFFFFF;
+    --primary: #0E4D5C;
+    --primary-light: #1A7A8C;
+    --accent: #E8A84C;
+    --accent-dark: #C8882C;
+    --danger: #C0392B;
+    --danger-light: #FDECEB;
+    --success: #1A7A5C;
+    --success-light: #E8F5F0;
+    --group-a: #1A4A8C;
+    --group-b: #1A7A5C;
+    --group-c: #7A3A8C;
+    --text: #1A2530;
+    --text-muted: #6B7A85;
+    --border: #DDD8CF;
+    --shadow: 0 4px 24px rgba(14,77,92,0.10);
+    --radius: 16px;
+    --radius-sm: 8px;
+    --transition: all 0.32s cubic-bezier(0.4,0,0.2,1);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ─── HEADER ─── */
+  .header {
+    background: var(--primary);
+    padding: 18px 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 16px rgba(0,0,0,0.18);
+  }
+  .logo {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.6rem;
+    color: #FFFFFF;
+    letter-spacing: 0.02em;
+  }
+  .logo span { color: var(--accent); }
+  .header-badge {
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: var(--accent);
+    background: rgba(232,168,76,0.15);
+    border: 1px solid rgba(232,168,76,0.35);
+    border-radius: 50px;
+    padding: 4px 12px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  /* ─── PROGRESS BAR ─── */
+  .progress-wrap {
+    background: var(--primary);
+    padding: 0 32px 16px;
+  }
+  .progress-steps {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    max-width: 760px;
+    margin: 0 auto;
+  }
+  .ps {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    flex: 1;
+  }
+  .ps-dot {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.15);
+    border: 2px solid rgba(255,255,255,0.25);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.72rem; font-weight: 700; color: rgba(255,255,255,0.5);
+    transition: var(--transition);
+    position: relative; z-index: 2;
+  }
+  .ps.active .ps-dot { background: var(--accent); border-color: var(--accent); color: var(--primary); }
+  .ps.done .ps-dot { background: var(--primary-light); border-color: var(--primary-light); color: #fff; }
+  .ps-label { font-size: 0.62rem; color: rgba(255,255,255,0.45); text-align: center; font-weight: 500; letter-spacing: 0.04em; transition: var(--transition); }
+  .ps.active .ps-label { color: var(--accent); }
+  .ps.done .ps-label { color: rgba(255,255,255,0.65); }
+  .ps-line { flex: 1; height: 2px; background: rgba(255,255,255,0.15); margin-bottom: 18px; transition: var(--transition); }
+  .ps-line.done { background: var(--primary-light); }
+
+  /* ─── MAIN CONTAINER ─── */
+  .main { max-width: 800px; margin: 0 auto; padding: 40px 20px 80px; }
+
+  /* ─── STEP CARD ─── */
+  .step-card {
+    display: none;
+    background: var(--surface);
+    border-radius: var(--radius);
+    padding: 40px 44px;
+    box-shadow: var(--shadow);
+    animation: fadeUp 0.4s ease both;
+  }
+  .step-card.active { display: block; }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(18px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ─── STEP HEADER ─── */
+  .step-tag {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--primary); background: rgba(14,77,92,0.08);
+    border-radius: 50px; padding: 4px 12px; margin-bottom: 12px;
+  }
+  .step-tag.danger { color: var(--danger); background: var(--danger-light); }
+  .step-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.7rem; color: var(--primary); line-height: 1.25;
+    margin-bottom: 8px;
+  }
+  .step-subtitle { font-size: 0.9rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 32px; }
+
+  /* ─── QUESTION ─── */
+  .question-block { margin-bottom: 28px; }
+  .question-label {
+    font-size: 0.95rem; font-weight: 600; color: var(--text);
+    margin-bottom: 10px; line-height: 1.5;
+  }
+  .question-label small { display: block; font-weight: 400; color: var(--text-muted); font-size: 0.82rem; margin-top: 3px; }
+
+  /* Note técnica */
+  .nota-btn {
+    display: inline-flex; align-items: center; gap: 5px;
+    font-size: 0.75rem; font-weight: 600; letter-spacing: 0.05em;
+    color: var(--primary-light); background: rgba(26,122,140,0.08);
+    border: 1px solid rgba(26,122,140,0.2);
+    border-radius: 50px; padding: 3px 10px; cursor: pointer;
+    margin-bottom: 10px; transition: var(--transition);
+    text-transform: uppercase;
+  }
+  .nota-btn:hover { background: rgba(26,122,140,0.15); }
+  .nota-box {
+    background: rgba(14,77,92,0.04); border-left: 3px solid var(--primary-light);
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+    padding: 12px 16px; font-size: 0.82rem; color: #34505A;
+    line-height: 1.65; margin-bottom: 12px;
+    display: none;
+  }
+  .nota-box.open { display: block; animation: fadeIn 0.25s ease; }
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+  /* ─── YES/NO BUTTONS ─── */
+  .yn-group { display: flex; gap: 12px; }
+  .yn-btn {
+    flex: 1; padding: 12px; border-radius: var(--radius-sm);
+    border: 2px solid var(--border); background: transparent;
+    font-family: 'DM Sans', sans-serif; font-size: 0.9rem; font-weight: 600;
+    cursor: pointer; transition: var(--transition); color: var(--text-muted);
+  }
+  .yn-btn:hover { border-color: var(--primary-light); color: var(--primary); background: rgba(26,122,140,0.05); }
+  .yn-btn.selected-yes { border-color: var(--danger); background: var(--danger-light); color: var(--danger); }
+  .yn-btn.selected-no { border-color: var(--success); background: var(--success-light); color: var(--success); }
+
+  /* ─── SCALE ─── */
+  .scale-wrap { margin: 8px 0 4px; }
+  .scale-track {
+    display: flex; gap: 6px; flex-wrap: wrap;
+  }
+  .scale-btn {
+    width: 44px; height: 44px; border-radius: var(--radius-sm);
+    border: 2px solid var(--border); background: transparent;
+    font-size: 0.95rem; font-weight: 700; cursor: pointer;
+    transition: var(--transition); color: var(--text-muted);
+    font-family: 'DM Sans', sans-serif;
+  }
+  .scale-btn:hover { border-color: var(--primary-light); color: var(--primary); }
+  .scale-btn.selected { border-color: var(--accent); background: var(--accent); color: #fff; }
+  .scale-labels { display: flex; justify-content: space-between; font-size: 0.7rem; color: var(--text-muted); margin-top: 4px; }
+
+  /* ─── RADIO OPTIONS ─── */
+  .radio-group { display: flex; flex-direction: column; gap: 10px; }
+  .radio-opt {
+    display: flex; align-items: flex-start; gap: 12px;
+    padding: 14px 18px; border-radius: var(--radius-sm);
+    border: 2px solid var(--border); cursor: pointer;
+    transition: var(--transition); background: transparent;
+  }
+  .radio-opt:hover { border-color: var(--primary-light); background: rgba(26,122,140,0.03); }
+  .radio-opt.selected { border-color: var(--primary); background: rgba(14,77,92,0.05); }
+  .radio-dot {
+    width: 18px; height: 18px; border-radius: 50%;
+    border: 2px solid var(--border); flex-shrink: 0; margin-top: 1px;
+    transition: var(--transition); background: white;
+  }
+  .radio-opt.selected .radio-dot { border-color: var(--primary); background: var(--primary); box-shadow: inset 0 0 0 3px white; }
+  .radio-text { font-size: 0.88rem; line-height: 1.5; color: var(--text); }
+  .radio-text strong { display: block; font-weight: 600; margin-bottom: 2px; }
+
+  /* ─── NAV BUTTONS ─── */
+  .step-nav { display: flex; justify-content: space-between; align-items: center; margin-top: 36px; padding-top: 24px; border-top: 1px solid var(--border); gap: 12px; }
+  .btn-back {
+    display: flex; align-items: center; gap: 6px;
+    background: transparent; border: 2px solid var(--border);
+    color: var(--text-muted); font-family: 'DM Sans', sans-serif;
+    font-size: 0.88rem; font-weight: 600; padding: 11px 22px;
+    border-radius: var(--radius-sm); cursor: pointer; transition: var(--transition);
+  }
+  .btn-back:hover { border-color: var(--text-muted); color: var(--text); }
+  .btn-next {
+    display: flex; align-items: center; gap: 8px;
+    background: var(--primary); border: none; color: white;
+    font-family: 'DM Sans', sans-serif; font-size: 0.92rem; font-weight: 600;
+    padding: 13px 28px; border-radius: var(--radius-sm); cursor: pointer;
+    transition: var(--transition); box-shadow: 0 4px 16px rgba(14,77,92,0.25);
+  }
+  .btn-next:hover { background: var(--primary-light); box-shadow: 0 6px 24px rgba(14,77,92,0.35); transform: translateY(-1px); }
+  .btn-next:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+  .btn-stratify {
+    background: var(--accent); box-shadow: 0 4px 16px rgba(232,168,76,0.35);
+    font-size: 1rem; padding: 15px 36px;
+  }
+  .btn-stratify:hover { background: var(--accent-dark); box-shadow: 0 6px 24px rgba(232,168,76,0.45); }
+
+  /* ─── EMERGENCY CARD ─── */
+  .emergency-card {
+    display: none; background: var(--surface);
+    border-radius: var(--radius); padding: 40px 44px;
+    box-shadow: var(--shadow); border-top: 5px solid var(--danger);
+    animation: fadeUp 0.4s ease both;
+  }
+  .emergency-card.active { display: block; }
+  .emergency-icon { font-size: 2.5rem; margin-bottom: 16px; }
+  .emergency-title { font-family: 'DM Serif Display', serif; font-size: 1.8rem; color: var(--danger); margin-bottom: 8px; }
+  .emergency-sub { font-size: 0.92rem; color: var(--text-muted); margin-bottom: 28px; line-height: 1.65; }
+  .emergency-reason {
+    background: var(--danger-light); border-radius: var(--radius-sm);
+    padding: 16px 20px; margin-bottom: 24px;
+    border-left: 4px solid var(--danger);
+  }
+  .emergency-reason strong { display: block; color: var(--danger); font-size: 0.8rem; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 4px; }
+  .emergency-reason p { font-size: 0.9rem; color: var(--text); line-height: 1.6; }
+  .emergency-actions { display: flex; flex-wrap: wrap; gap: 12px; }
+  .btn-emergency {
+    background: var(--danger); color: white; border: none;
+    font-family: 'DM Sans', sans-serif; font-size: 0.9rem; font-weight: 700;
+    padding: 13px 24px; border-radius: var(--radius-sm); cursor: pointer;
+    transition: var(--transition);
+  }
+  .btn-emergency:hover { background: #a03020; }
+  .btn-restart {
+    background: transparent; color: var(--text-muted); border: 2px solid var(--border);
+    font-family: 'DM Sans', sans-serif; font-size: 0.88rem; font-weight: 600;
+    padding: 12px 24px; border-radius: var(--radius-sm); cursor: pointer;
+    transition: var(--transition);
+  }
+  .btn-restart:hover { border-color: var(--text-muted); color: var(--text); }
+
+  /* ─── RESULT CARD ─── */
+  .result-card {
+    display: none; background: var(--surface);
+    border-radius: var(--radius); padding: 40px 44px;
+    box-shadow: var(--shadow);
+    animation: fadeUp 0.4s ease both;
+  }
+  .result-card.active { display: block; }
+  .result-header { margin-bottom: 32px; }
+  .result-badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+    border-radius: 50px; padding: 5px 14px; margin-bottom: 12px;
+  }
+  .result-badge.ga { background: rgba(26,74,140,0.1); color: var(--group-a); }
+  .result-badge.gb { background: rgba(26,122,92,0.1); color: var(--group-b); }
+  .result-badge.gc { background: rgba(122,58,140,0.1); color: var(--group-c); }
+  .result-title { font-family: 'DM Serif Display', serif; font-size: 2rem; line-height: 1.2; margin-bottom: 6px; }
+  .result-title.ga { color: var(--group-a); }
+  .result-title.gb { color: var(--group-b); }
+  .result-title.gc { color: var(--group-c); }
+  .result-subtitle { font-size: 0.92rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 28px; }
+
+  .result-section { margin-bottom: 24px; }
+  .result-section-title {
+    font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--text-muted); margin-bottom: 12px;
+  }
+  .pill-list { display: flex; flex-wrap: wrap; gap: 8px; }
+  .pill {
+    font-size: 0.82rem; font-weight: 500;
+    padding: 6px 14px; border-radius: 50px;
+    background: rgba(14,77,92,0.07); color: var(--primary);
+  }
+  .pill.warn { background: rgba(200,100,30,0.08); color: #A05020; }
+  .pill.ok { background: var(--success-light); color: var(--success); }
+
+  .exercise-list { display: flex; flex-direction: column; gap: 10px; }
+  .exercise-item {
+    display: flex; align-items: flex-start; gap: 12px;
+    padding: 14px 18px; border-radius: var(--radius-sm);
+    background: rgba(14,77,92,0.04); border: 1px solid rgba(14,77,92,0.1);
+  }
+  .exercise-num {
+    width: 24px; height: 24px; border-radius: 50%; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.75rem; font-weight: 700; color: white;
+    background: var(--primary);
+  }
+  .exercise-item p { font-size: 0.88rem; line-height: 1.55; color: var(--text); }
+  .exercise-item p strong { font-weight: 600; display: block; margin-bottom: 2px; }
+
+  .protocol-box {
+    border-radius: var(--radius-sm);
+    padding: 18px 22px; margin-bottom: 20px;
+    border-left: 4px solid;
+  }
+  .protocol-box.ga { border-color: var(--group-a); background: rgba(26,74,140,0.05); }
+  .protocol-box.gb { border-color: var(--group-b); background: rgba(26,122,92,0.05); }
+  .protocol-box.gc { border-color: var(--group-c); background: rgba(122,58,140,0.05); }
+  .protocol-box-title { font-size: 0.78rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 6px; }
+  .protocol-box-title.ga { color: var(--group-a); }
+  .protocol-box-title.gb { color: var(--group-b); }
+  .protocol-box-title.gc { color: var(--group-c); }
+  .protocol-box p { font-size: 0.88rem; color: var(--text); line-height: 1.65; }
+
+  .pain-score-display {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: rgba(14,77,92,0.06); border-radius: var(--radius-sm);
+    padding: 8px 16px; margin-bottom: 8px;
+  }
+  .pain-score-num { font-family: 'DM Serif Display', serif; font-size: 2rem; }
+  .pain-score-label { font-size: 0.78rem; color: var(--text-muted); font-weight: 500; }
+
+  .divider { height: 1px; background: var(--border); margin: 28px 0; }
+
+  .shared-decision {
+    background: linear-gradient(135deg, rgba(14,77,92,0.07), rgba(26,122,140,0.05));
+    border-radius: var(--radius-sm); padding: 20px 22px; margin-top: 20px;
+    border: 1px solid rgba(14,77,92,0.12);
+  }
+  .shared-decision-title { font-weight: 700; font-size: 0.82rem; letter-spacing: 0.07em; text-transform: uppercase; color: var(--primary); margin-bottom: 10px; }
+  .shared-decision ol { padding-left: 20px; display: flex; flex-direction: column; gap: 5px; }
+  .shared-decision li { font-size: 0.87rem; line-height: 1.55; color: var(--text); font-style: italic; }
+
+  .result-restart {
+    margin-top: 32px; padding-top: 24px; border-top: 1px solid var(--border);
+    display: flex; gap: 12px;
+  }
+  .btn-print {
+    background: var(--primary); color: white; border: none;
+    font-family: 'DM Sans', sans-serif; font-size: 0.88rem; font-weight: 600;
+    padding: 12px 24px; border-radius: var(--radius-sm); cursor: pointer;
+    transition: var(--transition);
+  }
+  .btn-print:hover { background: var(--primary-light); }
+
+  /* ─── WELCOME ─── */
+  .welcome-hero {
+    text-align: center; padding: 20px 0 36px;
+  }
+  .welcome-icon { font-size: 3.5rem; margin-bottom: 16px; display: block; }
+  .welcome-title { font-family: 'DM Serif Display', serif; font-size: 2.2rem; color: var(--primary); margin-bottom: 10px; }
+  .welcome-sub { font-size: 0.95rem; color: var(--text-muted); max-width: 480px; margin: 0 auto 32px; line-height: 1.7; }
+  .flow-list {
+    display: flex; flex-direction: column; gap: 12px; max-width: 500px; margin: 0 auto 36px; text-align: left;
+  }
+  .flow-item {
+    display: flex; align-items: center; gap: 14px;
+    background: rgba(14,77,92,0.04); border-radius: var(--radius-sm);
+    padding: 12px 16px; border: 1px solid rgba(14,77,92,0.08);
+  }
+  .flow-num {
+    width: 32px; height: 32px; border-radius: 50%; background: var(--primary); color: white;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 0.88rem; flex-shrink: 0;
+  }
+  .flow-text { font-size: 0.88rem; line-height: 1.5; color: var(--text); }
+  .flow-text strong { display: block; font-weight: 600; }
+
+  /* ─── IRRITABILITY ─── */
+  .irritability-section { margin-top: 24px; }
+  .irr-title { font-size: 0.75rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 12px; }
+
+  /* ─── RESPONSIVE ─── */
+  @media (max-width: 600px) {
+    .step-card, .emergency-card, .result-card { padding: 28px 20px; }
+    .step-title, .welcome-title, .result-title { font-size: 1.4rem; }
+    .progress-wrap { padding: 0 12px 14px; }
+    .ps-label { display: none; }
+    .main { padding: 24px 12px 60px; }
+    .scale-btn { width: 36px; height: 36px; font-size: 0.82rem; }
+  }
+
+  @media print {
+    .header, .progress-wrap, .step-nav, .result-restart, .btn-print { display: none !important; }
+    body { background: white; }
+    .result-card { box-shadow: none; border: 1px solid #ddd; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="logo">Straloo<span>.</span></div>
+  <div class="header-badge">Protocolo Lombalgia</div>
+</div>
+
+<!-- PROGRESS BAR -->
+<div class="progress-wrap">
+  <div class="progress-steps">
+    <div class="ps active" id="ps-0"><div class="ps-dot">✦</div><div class="ps-label">Início</div></div>
+    <div class="ps-line" id="pl-0"></div>
+    <div class="ps" id="ps-1"><div class="ps-dot">1</div><div class="ps-label">Red Flags</div></div>
+    <div class="ps-line" id="pl-1"></div>
+    <div class="ps" id="ps-2"><div class="ps-dot">2</div><div class="ps-label">Linha Base</div></div>
+    <div class="ps-line" id="pl-2"></div>
+    <div class="ps" id="ps-3"><div class="ps-dot">3</div><div class="ps-label">Qualidade</div></div>
+    <div class="ps-line" id="pl-3"></div>
+    <div class="ps" id="ps-4"><div class="ps-dot">4</div><div class="ps-label">Mecânica</div></div>
+    <div class="ps-line" id="pl-4"></div>
+    <div class="ps" id="ps-5"><div class="ps-dot">5</div><div class="ps-label">Direção</div></div>
+    <div class="ps-line" id="pl-5"></div>
+    <div class="ps" id="ps-6"><div class="ps-dot">★</div><div class="ps-label">Resultado</div></div>
+  </div>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+
+  <!-- ════════════════════════════════════════
+       STEP 0 — WELCOME
+  ══════════════════════════════════════════ -->
+  <div class="step-card active" id="step-0">
+    <div class="welcome-hero">
+      <span class="welcome-icon">🦴</span>
+      <h1 class="welcome-title">Protocolo de Avaliação de Lombalgia</h1>
+      <p class="welcome-sub">Ferramenta de suporte clínico para teleatendimento em fisioterapia. Estratifica o paciente em tempo real com base em evidências.</p>
+    </div>
+    <div class="flow-list">
+      <div class="flow-item">
+        <div class="flow-num">1</div>
+        <div class="flow-text"><strong>Triagem de Red Flags</strong>Descarta patologias graves antes de qualquer prescrição de exercício.</div>
+      </div>
+      <div class="flow-item">
+        <div class="flow-num">2</div>
+        <div class="flow-text"><strong>Linha de Base</strong>Intensidade da dor e irradiação para monitorar a evolução.</div>
+      </div>
+      <div class="flow-item">
+        <div class="flow-num">3</div>
+        <div class="flow-text"><strong>Qualidade e Mecânica da Dor</strong>Diferencia dor neuropática, nociceptiva e nociplástica.</div>
+      </div>
+      <div class="flow-item">
+        <div class="flow-num">4</div>
+        <div class="flow-text"><strong>Testes de Preferência Direcional</strong>Identifica se o paciente prefere flexão ou extensão.</div>
+      </div>
+      <div class="flow-item">
+        <div class="flow-num">5</div>
+        <div class="flow-text"><strong>Estratificação + Plano Terapêutico</strong>Gera o grupo clínico e o protocolo indicado.</div>
+      </div>
+    </div>
+    <div class="step-nav">
+      <div></div>
+      <button class="btn-next" onclick="goTo(1)">Iniciar Avaliação →</button>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════
+       STEP 1 — RED FLAGS
+  ══════════════════════════════════════════ -->
+  <div class="step-card" id="step-1">
+    <div class="step-tag danger">⚠ Etapa 1 · Triagem de Segurança</div>
+    <h2 class="step-title">Sinais de Alarme (Red Flags)</h2>
+    <p class="step-subtitle">Se o paciente responder <strong>SIM</strong> a qualquer pergunta abaixo, o teleatendimento deve ser direcionado ao encaminhamento médico imediato. Responda com base na anamnese do paciente.</p>
+
+    <!-- 1.1 Cauda Equina -->
+    <div class="question-block">
+      <div class="question-label">1.1 &nbsp;Risco Neurológico — Síndrome da Cauda Equina<small>Sintomas que indicam compressão severa das raízes sacrais (S2, S3, S4)</small></div>
+      <button class="nota-btn" onclick="toggleNota('n1a')">📋 Nota Técnica</button>
+      <div class="nota-box" id="n1a">A <strong>anestesia em sela</strong> é sintoma típico da Síndrome da Cauda Equina — compressão severa por hérnia discal maciça das raízes S2-S4. A <strong>retenção urinária</strong> é o sinal mais precoce: o paciente perde o reflexo de distensão da bexiga. A incontinência por transbordamento é fase tardia. Esta síndrome é urgência cirúrgica e a principal causa de processos ético-legais em análise de hérnias lombares.</div>
+      <p class="question-label" style="margin-top:10px">Você notou dormência ou dificuldade de sentir nas <strong>nádegas, virilha ou genitais</strong> (anestesia em sela)?</p>
+      <div class="yn-group">
+        <button class="yn-btn" onclick="setYN('q1a','sim',this,'cauda_equina','Anestesia em sela — Síndrome da Cauda Equina')">SIM</button>
+        <button class="yn-btn" onclick="setYN('q1a','nao',this)">NÃO</button>
+      </div>
+    </div>
+    <div class="question-block">
+      <p class="question-label">Houve dificuldade recente ou <strong>perda de controle para urinar ou evacuar</strong>?</p>
+      <div class="yn-group">
+        <button class="yn-btn" onclick="setYN('q1b','sim',this,'cauda_equina','Disfunção vesical/intestinal — Síndrome da Cauda Equina')">SIM</button>
+        <button class="yn-btn" onclick="setYN('q1b','nao',this)">NÃO</button>
+      </div>
+    </div>
+
+    <!-- 1.2 Fratura -->
+    <div class="question-block">
+      <div class="question-label">1.2 &nbsp;Risco de Fratura<small>Traumas diretos ou fragilidade óssea</small></div>
+      <button class="nota-btn" onclick="toggleNota('n1b')">📋 Nota Técnica</button>
+      <div class="nota-box" id="n1b">No teleatendimento não é possível palpar processos espinhosos. O relato de trauma é o principal indicador. Em pacientes idosos, usuários de corticoides (prednisona) ou com osteoporose, fraturas vertebrais podem ocorrer sem trauma de alta energia. A osteoporose secundária induzida por corticoides é silenciosa — muitos pacientes não sabem que têm. Prescrever extensões ou flexões em fratura não diagnosticada pode causar instabilidade óssea e lesão neurológica.</div>
+      <p class="question-label" style="margin-top:10px">A dor começou logo após uma <strong>queda, acidente ou trauma forte</strong>?</p>
+      <div class="yn-group">
+        <button class="yn-btn" onclick="setYN('q1c','sim',this,'fratura','Trauma recente — suspeita de fratura')">SIM</button>
+        <button class="yn-btn" onclick="setYN('q1c','nao',this)">NÃO</button>
+      </div>
+    </div>
+    <div class="question-block">
+      <p class="question-label">Tem <strong>mais de 65 anos, histórico de osteoporose</strong> ou faz <strong>uso frequente de corticoides</strong> (ex: prednisona)?</p>
+      <div class="yn-group">
+        <button class="yn-btn" onclick="setYN('q1d','sim',this,'fratura','Idoso/osteoporose/corticoide — risco de fratura por fragilidade')">SIM</button>
+        <button class="yn-btn" onclick="setYN('q1d','nao',this)">NÃO</button>
+      </div>
+    </div>
+
+    <!-- 1.3 Infecção/Tumor -->
+    <div class="question-block">
+      <div class="question-label">1.3 &nbsp;Risco de Infecção ou Tumor<small>Dor não-mecânica: não melhora com repouso</small></div>
+      <button class="nota-btn" onclick="toggleNota('n1c')">📋 Nota Técnica</button>
+      <div class="nota-box" id="n1c"><strong>Regra de Ouro:</strong> A dor lombar mecânica NÃO causa febre, calafrios ou emagrecimento. Dor constante com piora noturna (acorda o paciente) sem alívio ao repouso é padrão de processos tumorais (sarcoma) ou infecciosos (tuberculose vertebral, osteomielite). O histórico de câncer é o fator isolado mais importante para suspeitar de metástase óssea. Infecções recentes (urinária, respiratória) podem causar disseminação hematogênica para a coluna.</div>
+      <p class="question-label" style="margin-top:10px">A dor é <strong>constante, piora muito à noite</strong> a ponto de acordar e <strong>não alivia com o repouso</strong>?</p>
+      <div class="yn-group">
+        <button class="yn-btn" onclick="setYN('q1e','sim',this,'tumor_infeccao','Dor noturna constante sem alívio — suspeita de tumor ou infecção')">SIM</button>
+        <button class="yn-btn" onclick="setYN('q1e','nao',this)">NÃO</button>
+      </div>
+    </div>
+    <div class="question-block">
+      <p class="question-label">Teve <strong>febre, calafrios, perda de peso inexplicável</strong> ou tem <strong>histórico prévio de câncer</strong> ou infecção bacteriana recente?</p>
+      <div class="yn-group">
+        <button class="yn-btn" onclick="setYN('q1f','sim',this,'sistemico','Febre/calafrios/câncer — patologia sistêmica grave')">SIM</button>
+        <button class="yn-btn" onclick="setYN('q1f','nao',this)">NÃO</button>
+      </div>
+    </div>
+
+    <div class="step-nav">
+      <button class="btn-back" onclick="goTo(0)">← Voltar</button>
+      <button class="btn-next" id="btn-rf" onclick="checkRedFlags()" disabled>Confirmar →</button>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════
+       EMERGENCY
+  ══════════════════════════════════════════ -->
+  <div class="emergency-card" id="emergency">
+    <div class="emergency-icon">🚨</div>
+    <h2 class="emergency-title">Red Flag Detectada</h2>
+    <p class="emergency-sub">O paciente apresentou resposta positiva para um sinal de alarme. A fisioterapia por teleatendimento está <strong>contraindicada</strong> neste momento. Siga o protocolo de encaminhamento abaixo.</p>
+    <div class="emergency-reason" id="em-reason">
+      <strong>Motivo do Alerta</strong>
+      <p id="em-text"></p>
+    </div>
+    <div id="em-conduct"></div>
+    <div class="emergency-actions">
+      <button class="btn-emergency">📞 Registrar Encaminhamento Médico</button>
+      <button class="btn-restart" onclick="restart()">↺ Nova Avaliação</button>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════
+       STEP 2 — LINHA DE BASE
+  ══════════════════════════════════════════ -->
+  <div class="step-card" id="step-2">
+    <div class="step-tag">📊 Etapa 2 · Linha de Base</div>
+    <h2 class="step-title">Quantificação e Localização</h2>
+    <p class="step-subtitle">Estabelece o nível de irritabilidade e o padrão de irradiação para monitoramento da evolução nas próximas sessões.</p>
+
+    <div class="question-block">
+      <div class="question-label">De 0 a 10, qual a nota da dor <strong>agora</strong>?<small>0 = sem dor · 10 = pior dor já sentida</small></div>
+      <div class="scale-wrap">
+        <div class="scale-track" id="scale-now"></div>
+        <div class="scale-labels"><span>Sem dor</span><span>Pior dor</span></div>
+      </div>
+    </div>
+
+    <div class="question-block">
+      <div class="question-label">De 0 a 10, qual a nota da dor no <strong>pior momento do dia</strong>?</div>
+      <div class="scale-wrap">
+        <div class="scale-track" id="scale-worst"></div>
+        <div class="scale-labels"><span>Sem dor</span><span>Pior dor</span></div>
+      </div>
+    </div>
+
+    <div class="question-block">
+      <div class="question-label">2.2 &nbsp;A dor irradia para membros inferiores?</div>
+      <button class="nota-btn" onclick="toggleNota('n2')">📋 Nota Técnica</button>
+      <div class="nota-box" id="n2">Caracterizar se a dor é mais intensa na lombar (lombalgia) ou irradia para MMII (ciática) determina o componente principal: instabilidade lombar vs. compressão de raiz nervosa. Dor com parestesia acompanhando trajeto nervoso sugere compressão, hérnia ou estenose — muda completamente o protocolo de exercício.</div>
+      <div class="radio-group" style="margin-top:10px">
+        <div class="radio-opt" onclick="setRadio('q2_irrad','nao',this)">
+          <div class="radio-dot"></div>
+          <div class="radio-text"><strong>Não irradia</strong>Dor concentrada apenas na região lombar / coluna.</div>
+        </div>
+        <div class="radio-opt" onclick="setRadio('q2_irrad','nadegas',this)">
+          <div class="radio-dot"></div>
+          <div class="radio-text"><strong>Irradia até as nádegas / quadril</strong>Não ultrapassa o joelho.</div>
+        </div>
+        <div class="radio-opt" onclick="setRadio('q2_irrad','joelho',this)">
+          <div class="radio-dot"></div>
+          <div class="radio-text"><strong>Irradia até o joelho ou abaixo dele</strong>Segue trajeto dermatomal — sugestivo de ciatalgia.</div>
+        </div>
+        <div class="radio-opt" onclick="setRadio('q2_irrad','pe',this)">
+          <div class="radio-dot"></div>
+          <div class="radio-text"><strong>Irradia até o pé / dedos do pé</strong>Padrão radicular completo com possível déficit neurológico.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="step-nav">
+      <button class="btn-back" onclick="goTo(1)">← Voltar</button>
+      <button class="btn-next" id="btn-s2" onclick="goTo(3)" disabled>Continuar →</button>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════
+       STEP 3 — QUALIDADE DA DOR
+  ══════════════════════════════════════════ -->
+  <div class="step-card" id="step-3">
+    <div class="step-tag">🔬 Etapa 3 · Qualidade da Dor</div>
+    <h2 class="step-title">Natureza e Sensação</h2>
+    <p class="step-subtitle">Diferencia se a dor tem característica neuropática (compressão de nervo) ou nociceptiva/mecânica. Determina o mecanismo principal.</p>
+
+    <div class="question-block">
+      <div class="question-label">3.1 &nbsp;Como você descreveria a <strong>sensação da dor</strong>?</div>
+      <button class="nota-btn" onclick="toggleNota('n3')">📋 Nota Técnica</button>
+      <div class="nota-box" id="n3">"Choque" e "queimação" = dor neuropática/radicular, pode piorar à noite e não responde bem ao movimento. "Fisgada" e "pontada" com sensação de insegurança = instabilidade lombar degenerativa. "Peso" e "cansaço" = origem muscular ou mecânica. Essa diferenciação guia a farmacologia (gabapentinoides para neuropática) e a escolha de exercícios.</div>
+      <div class="radio-group" style="margin-top:10px">
+        <div class="radio-opt" onclick="setRadio('q3_qual','neuropatica',this)">
+          <div class="radio-dot"></div>
+          <div class="radio-text"><strong>Queimação, choque ou formigamento</strong>Sugere dor neuropática / compressão radicular</div>
+        </div>
+        <div class="radio-opt" onclick="setRadio('q3_qual','instabilidade',this)">
+          <div class="radio-dot"></div>
+          <div class="radio-text"><strong>Fisgada ou pontada súbita</strong>Sugere instabilidade lombar — "prendeu as costas"</div>
+        </div>
+        <div class="radio-opt" onclick="setRadio('q3_qual','mecanica',this)">
+          <div class="radio-dot"></div>
+          <div class="radio-text"><strong>Peso, cansaço ou pressão</strong>Sugere dor mecânica / muscular</div>
+        </div>
+        <div class="radio-opt" onclick="setRadio('q3_qual','mista',this)">
+          <div class="radio-dot"></div>
+          <div class="radio-text"><strong>Mista / varia conforme o momento</strong>Pode indicar componente nociplástico</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="step-nav">
+      <button class="btn-back" onclick="goTo(2)">← Voltar</button>
+      <button class="btn-next" id="btn-s3" onclick="goTo(4)" disabled>Continuar →</button>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════
+       STEP 4 — COMPORTAMENTO MECÂNICO
+  ══════════════════════════════════════════ -->
+  <div class="step-card" id="step-4">
+    <div class="step-tag">⚙ Etapa 4 · Comportamento Mecânico</div>
+    <h2 class="step-title">Fatores de Agravo e Alívio</h2>
+    <p class="step-subtitle">Confirma a natureza mecânica da dor e direciona os testes ativos de preferência direcional.</p>
+
+    <div class="question-block">
+      <div class="question-label">4.1 &nbsp;A dor <strong>piora com movimento/esforço</strong> (final do dia) e <strong>melhora ao repousar ou deitar</strong>?</div>
+      <button class="nota-btn" onclick="toggleNota('n4a')">📋 Nota Técnica</button>
+      <div class="nota-box" id="n4a">Confirmação da característica mecânica da dor: repouso alivia, esforço piora. Isso libera a progressão para testes ativos de flexão e extensão com segurança. Caso o paciente negue qualquer relação com carga ou movimento, reavalie se há componente não-mecânico residual.</div>
+      <div class="yn-group" style="margin-top:10px">
+        <button class="yn-btn" onclick="setYNSimple('q4a','sim',this)">SIM — padrão mecânico</button>
+        <button class="yn-btn" onclick="setYNSimple('q4a','nao',this)">NÃO — não tem relação com esforço</button>
+      </div>
+    </div>
+
+    <div class="question-block">
+      <div class="question-label">Há <strong>fraqueza ou incapacidade de mover o pé / dedos</strong>?</div>
+      <div class="yn-group">
+        <button class="yn-btn" onclick="setYNSimple('q4b','sim',this)">SIM — déficit motor</button>
+        <button class="yn-btn" onclick="setYNSimple('q4b','nao',this)">NÃO</button>
+      </div>
+    </div>
+
+    <div class="question-block">
+      <div class="question-label">A dor <strong>piora ao tossir</strong> ou ao sentar por tempo prolongado?</div>
+      <div class="yn-group">
+        <button class="yn-btn" onclick="setYNSimple('q4c','sim',this)">SIM</button>
+        <button class="yn-btn" onclick="setYNSimple('q4c','nao',this)">NÃO</button>
+      </div>
+    </div>
+
+    <div class="step-nav">
+      <button class="btn-back" onclick="goTo(3)">← Voltar</button>
+      <button class="btn-next" id="btn-s4" onclick="goTo(5)" disabled>Continuar →</button>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════
+       STEP 5 — PREFERÊNCIA DIRECIONAL
+  ══════════════════════════════════════════ -->
+  <div class="step-card" id="step-5">
+    <div class="step-tag">🧭 Etapa 5 · Preferência Direcional</div>
+    <h2 class="step-title">Testes de Direção</h2>
+    <p class="step-subtitle">O objetivo é descobrir qual movimento <em>"abre"</em> ou <em>"fecha"</em> a janela de tratamento. Estes são os testes do coração do protocolo.</p>
+
+    <div class="question-block">
+      <div class="question-label">Teste de Flexão<small>Ao se curvar para frente (como amarrar o sapato), o que acontece com a dor?</small></div>
+      <button class="nota-btn" onclick="toggleNota('n5a')">📋 Nota Técnica</button>
+      <div class="nota-box" id="n5a"><strong>Centralização</strong> = a dor "sobe" para a coluna ao flexionar → flexão é o tratamento indicado. <strong>Periferização</strong> = a dor "desce" para o pé ao flexionar → flexão PROIBIDA (disco sendo empurrado contra o nervo). Esta distinção é fundamental para McKenzie e guia o tipo de exercício prescrito remotamente.</div>
+      <div class="radio-group" style="margin-top:10px">
+        <div class="radio-opt" onclick="setRadio('q5_flex','centraliza',this)">
+          <div class="radio-dot"></div>
+          <div class="radio-text"><strong>A dor "sobe" para o centro das costas (centraliza)</strong>Indica preferência por flexão</div>
+        </div>
+        <div class="radio-opt" onclick="setRadio('q5_flex','periferiza',this)">
+          <div class="radio-dot"></div>
+          <div class="radio-text"><strong>A dor "desce" para a perna ou pé (periferiza)</strong>Flexão contraindicada — disco pressionando nervo</div>
+        </div>
+        <div class="radio-opt" onclick="setRadio('q5_flex','igual',this)">
+          <div class="radio-dot"></div>
+          <div class="radio-text"><strong>Sem mudança / indiferente</strong></div>
+        </div>
+        <div class="radio-opt" onclick="setRadio('q5_flex','pior_sem_irrad',this)">
+          <div class="radio-dot"></div>
+          <div class="radio-text"><strong>Piora localmente mas sem irradiação</strong>Possível componente facetário</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="question-block">
+      <div class="question-label">Teste de Extensão<small>Ao colocar as mãos na cintura e inclinar para trás, o que acontece?</small></div>
+      <button class="nota-btn" onclick="toggleNota('n5b')">📋 Nota Técnica</button>
+      <div class="nota-box" id="n5b">Centralização na extensão = hérnia discal posterior típica. O objetivo será prescrever extensões para "empurrar" o conteúdo discal de volta ao centro. Se a extensão piora muito, pode indicar estenose ou síndrome facetária — nesses casos, exercícios de flexão e abertura de canal são mais eficazes.</div>
+      <div class="radio-group" style="margin-top:10px">
+        <div class="radio-opt" onclick="setRadio('q5_ext','centraliza',this)">
+          <div class="radio-dot"></div>
+          <div class="radio-text"><strong>A dor fica mais "curta"/centraliza</strong>Indica preferência por extensão — padrão discal</div>
+        </div>
+        <div class="radio-opt" onclick="setRadio('q5_ext','piora',this)">
+          <div class="radio-dot"></div>
+          <div class="radio-text"><strong>Piora ou irradia mais na extensão</strong>Extensão contraindicada — possível estenose ou facetário</div>
+        </div>
+        <div class="radio-opt" onclick="setRadio('q5_ext','igual',this)">
+          <div class="radio-dot"></div>
+          <div class="radio-text"><strong>Sem mudança / indiferente</strong></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="question-block">
+      <div class="question-label">Teste de Alívio Postural<small>O que é pior: sentar longamente ou caminhar?</small></div>
+      <button class="nota-btn" onclick="toggleNota('n5c')">📋 Nota Técnica</button>
+      <div class="nota-box" id="n5c"><strong>Piora sentado / Melhora caminhando</strong> = padrão discal (hérnia) — foco em extensão. <strong>Melhora sentado / Piora caminhando</strong> = padrão de estenose ou facetário — o canal fecha ao caminhar (extensão) e abre ao sentar (flexão). Esse é o clássico "sinal do carrinho de supermercado" da estenose vertebral.</div>
+      <div class="radio-group" style="margin-top:10px">
+        <div class="radio-opt" onclick="setRadio('q5_pos','pior_sentado',this)">
+          <div class="radio-dot"></div>
+          <div class="radio-text"><strong>Pior ao sentar / Melhor caminhando</strong>Padrão discal (hérnia) — indica foco em extensão</div>
+        </div>
+        <div class="radio-opt" onclick="setRadio('q5_pos','pior_caminhando',this)">
+          <div class="radio-dot"></div>
+          <div class="radio-text"><strong>Melhor sentado / Pior caminhando (para ao caminhar)</strong>Padrão de estenose ou facetário — indica flexão</div>
+        </div>
+        <div class="radio-opt" onclick="setRadio('q5_pos','igual',this)">
+          <div class="radio-dot"></div>
+          <div class="radio-text"><strong>Ambos igualmente ruins / Sem padrão claro</strong></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="step-nav">
+      <button class="btn-back" onclick="goTo(4)">← Voltar</button>
+      <button class="btn-next btn-stratify" id="btn-s5" onclick="stratify()" disabled>🎯 Estratificar Paciente</button>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════
+       RESULT
+  ══════════════════════════════════════════ -->
+  <div class="result-card" id="result">
+    <div class="result-header">
+      <div class="result-badge" id="r-badge"></div>
+      <h2 class="result-title" id="r-title"></h2>
+      <p class="result-subtitle" id="r-subtitle"></p>
+    </div>
+
+    <div id="r-pain-display"></div>
+
+    <div class="divider"></div>
+
+    <div class="result-section" id="r-profile-section">
+      <div class="result-section-title">Perfil Clínico do Paciente</div>
+      <div class="pill-list" id="r-pills"></div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="protocol-box" id="r-protocol-box">
+      <div class="protocol-box-title" id="r-pbox-title"></div>
+      <p id="r-pbox-text"></p>
+    </div>
+
+    <div class="result-section">
+      <div class="result-section-title">Exercícios Indicados</div>
+      <div class="exercise-list" id="r-exercises"></div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="result-section" id="r-avoid-section">
+      <div class="result-section-title">Exercícios / Posições a Evitar</div>
+      <div class="pill-list" id="r-avoid-pills"></div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="result-section">
+      <div class="result-section-title">Farmacologia de Suporte</div>
+      <div class="pill-list" id="r-pharma-pills"></div>
+    </div>
+
+    <div class="shared-decision">
+      <div class="shared-decision-title">📌 Decisão Compartilhada com o Paciente</div>
+      <ol>
+        <li>Decida o que mais você deseja fazer (melhor desfecho clínico pessoal).</li>
+        <li>Planeje sua progressão gradualmente.</li>
+        <li>Não desencadeie a dor, mas não se assuste se desencadeá-la.</li>
+        <li>Siga o planejado fazendo um pouco mais, conforme combinado (mas não muito a mais!).</li>
+      </ol>
+    </div>
+
+    <div class="result-restart">
+      <button class="btn-print" onclick="window.print()">🖨 Imprimir Protocolo</button>
+      <button class="btn-restart" onclick="restart()">↺ Nova Avaliação</button>
+    </div>
+  </div>
+
+</div><!-- /main -->
+
+<script>
+// ══════════════════════════════════════════
+// STATE
+// ══════════════════════════════════════════
+const state = {
+  redFlagReason: null,
+  redFlagType: null,
+  answers: {},
+  painNow: null,
+  painWorst: null,
+  currentStep: 0,
+};
+
+// ══════════════════════════════════════════
+// NAVIGATION
+// ══════════════════════════════════════════
+function goTo(step) {
+  document.querySelectorAll('.step-card').forEach(c => c.classList.remove('active'));
+  document.querySelectorAll('.emergency-card, .result-card').forEach(c => c.classList.remove('active'));
+  const el = document.getElementById('step-' + step);
+  if (el) el.classList.add('active');
+  state.currentStep = step;
+  updateProgress(step);
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function updateProgress(step) {
+  for (let i = 0; i <= 6; i++) {
+    const ps = document.getElementById('ps-' + i);
+    if (!ps) continue;
+    ps.classList.remove('active', 'done');
+    if (i < step) ps.classList.add('done');
+    else if (i === step) ps.classList.add('active');
+  }
+  for (let i = 0; i <= 5; i++) {
+    const pl = document.getElementById('pl-' + i);
+    if (!pl) continue;
+    pl.classList.toggle('done', i < step);
+  }
+}
+
+function restart() {
+  Object.keys(state.answers).forEach(k => delete state.answers[k]);
+  state.redFlagReason = null;
+  state.redFlagType = null;
+  state.painNow = null;
+  state.painWorst = null;
+  document.querySelectorAll('.yn-btn').forEach(b => b.classList.remove('selected-yes','selected-no'));
+  document.querySelectorAll('.radio-opt').forEach(b => b.classList.remove('selected'));
+  document.querySelectorAll('.scale-btn').forEach(b => b.classList.remove('selected'));
+  document.querySelectorAll('.btn-next[disabled]').forEach(b => b.disabled = true);
+  buildScales();
+  goTo(0);
+}
+
+// ══════════════════════════════════════════
+// NOTA TÉCNICA TOGGLE
+// ══════════════════════════════════════════
+function toggleNota(id) {
+  const box = document.getElementById(id);
+  box.classList.toggle('open');
+}
+
+// ══════════════════════════════════════════
+// YES/NO (RED FLAGS)
+// ══════════════════════════════════════════
+function setYN(key, val, btn, flagType, flagReason) {
+  state.answers[key] = val;
+  const group = btn.parentElement;
+  group.querySelectorAll('.yn-btn').forEach(b => b.classList.remove('selected-yes','selected-no'));
+  btn.classList.add(val === 'sim' ? 'selected-yes' : 'selected-no');
+  if (val === 'sim' && flagType) {
+    state.redFlagType = flagType;
+    state.redFlagReason = flagReason;
+  }
+  checkRFBtn();
+}
+
+function setYNSimple(key, val, btn) {
+  state.answers[key] = val;
+  const group = btn.parentElement;
+  group.querySelectorAll('.yn-btn').forEach(b => b.classList.remove('selected-yes','selected-no'));
+  btn.classList.add(val === 'sim' ? 'selected-yes' : 'selected-no');
+  checkS4Btn();
+}
+
+function checkRFBtn() {
+  const keys = ['q1a','q1b','q1c','q1d','q1e','q1f'];
+  const allAnswered = keys.every(k => state.answers[k]);
+  document.getElementById('btn-rf').disabled = !allAnswered;
+}
+
+function checkRedFlags() {
+  const keys = ['q1a','q1b','q1c','q1d','q1e','q1f'];
+  const hasFlag = keys.some(k => state.answers[k] === 'sim');
+  if (hasFlag) showEmergency();
+  else goTo(2);
+}
+
+function showEmergency() {
+  document.querySelectorAll('.step-card').forEach(c => c.classList.remove('active'));
+  document.getElementById('emergency').classList.add('active');
+  updateProgress(99);
+  document.getElementById('em-text').textContent = state.redFlagReason || 'Resposta positiva para sinal de alarme.';
+
+  const conductMap = {
+    cauda_equina: `<div class="emergency-reason"><strong>Conduta Imediata</strong><p>Encaminhe o paciente para a EMERGÊNCIA CIRÚRGICA imediatamente. Síndrome da Cauda Equina é urgência — o atraso pode causar incontinência esfincteriana e disfunção sexual permanentes. Não prescreva nenhum exercício. Oriente o paciente a buscar atendimento de emergência agora.</p></div>`,
+    fratura: `<div class="emergency-reason"><strong>Conduta Imediata</strong><p>Suspenda todos os testes de movimento. Encaminhe para avaliação médica presencial e realização de imagem (RX ou TC) para verificar integridade óssea. Prescrever exercícios em fratura não diagnosticada pode gerar instabilidade e lesão neurológica grave.</p></div>`,
+    tumor_infeccao: `<div class="emergency-reason"><strong>Conduta Imediata</strong><p>Contraindique a fisioterapia mecânica remota. Explique ao paciente que o padrão da dor foge do padrão ortopédico e encaminhe-o com urgência para avaliação médica, RM e exames laboratoriais.</p></div>`,
+    sistemico: `<div class="emergency-reason"><strong>Conduta Imediata</strong><p>Suspenda a avaliação de movimento. O paciente precisa de avaliação médica presencial, exames de sangue e imagem com urgência. Se histórico de câncer + dor nova: encaminhe ao oncologista/ortopedista antes de qualquer exercício de sobrecarga.</p></div>`,
+  };
+  document.getElementById('em-conduct').innerHTML = conductMap[state.redFlagType] || '';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ══════════════════════════════════════════
+// RADIO
+// ══════════════════════════════════════════
+function setRadio(key, val, el) {
+  state.answers[key] = val;
+  const group = el.parentElement;
+  group.querySelectorAll('.radio-opt').forEach(o => o.classList.remove('selected'));
+  el.classList.add('selected');
+  checkStepBtns();
+}
+
+// ══════════════════════════════════════════
+// SCALES
+// ══════════════════════════════════════════
+function buildScales() {
+  ['scale-now','scale-worst'].forEach(id => {
+    const wrap = document.getElementById(id);
+    wrap.innerHTML = '';
+    const isNow = id === 'scale-now';
+    for (let i = 0; i <= 10; i++) {
+      const btn = document.createElement('button');
+      btn.className = 'scale-btn';
+      btn.textContent = i;
+      btn.onclick = () => {
+        wrap.querySelectorAll('.scale-btn').forEach(b => b.classList.remove('selected'));
+        btn.classList.add('selected');
+        if (isNow) state.painNow = i;
+        else state.painWorst = i;
+        checkS2Btn();
+      };
+      wrap.appendChild(btn);
+    }
+  });
+}
+
+function checkS2Btn() {
+  const ok = state.painNow !== null && state.painWorst !== null && state.answers.q2_irrad;
+  document.getElementById('btn-s2').disabled = !ok;
+}
+
+function checkS4Btn() {
+  const ok = state.answers.q4a && state.answers.q4b && state.answers.q4c;
+  document.getElementById('btn-s4').disabled = !ok;
+}
+
+function checkStepBtns() {
+  if (state.answers.q2_irrad && state.painNow !== null && state.painWorst !== null)
+    document.getElementById('btn-s2').disabled = false;
+  if (state.answers.q3_qual)
+    document.getElementById('btn-s3').disabled = false;
+  if (state.answers.q4a && state.answers.q4b && state.answers.q4c)
+    document.getElementById('btn-s4').disabled = false;
+  if (state.answers.q5_flex && state.answers.q5_ext && state.answers.q5_pos)
+    document.getElementById('btn-s5').disabled = false;
+}
+
+// ══════════════════════════════════════════
+// STRATIFICATION ENGINE
+// ══════════════════════════════════════════
+function stratify() {
+  const a = state.answers;
+  let group = determineGroup(a);
+  renderResult(group);
+}
+
+function determineGroup(a) {
+  // Check for radicular/stenosis signals
+  const hasRadicular = a.q2_irrad === 'joelho' || a.q2_irrad === 'pe';
+  const deficitMotor = a.q4b === 'sim';
+  const piorTossir = a.q4c === 'sim';
+  const neuropatica = a.q3_qual === 'neuropatica';
+
+  // Directional preference
+  const flexCentraliza = a.q5_flex === 'centraliza';
+  const extCentraliza = a.q5_ext === 'centraliza';
+  const extPiora = a.q5_ext === 'piora';
+  const piorSentado = a.q5_pos === 'pior_sentado';
+  const piorCaminhando = a.q5_pos === 'pior_caminhando';
+
+  const instabilidade = a.q3_qual === 'instabilidade';
+  const semPref = (a.q5_flex === 'igual' && a.q5_ext === 'igual');
+
+  // GROUP A: Extension preference (Disc/Hernia)
+  if (extCentraliza || (piorSentado && !piorCaminhando) || (hasRadicular && !extPiora && !piorCaminhando)) {
+    return 'A';
+  }
+  // GROUP B: Flexion preference (Stenosis/Facet)
+  if (flexCentraliza || extPiora || piorCaminhando) {
+    return 'B';
+  }
+  // GROUP C: Motor instability
+  if (instabilidade || semPref) {
+    return 'C';
+  }
+  // Default by irradiation
+  if (hasRadicular || neuropatica || deficitMotor || piorTossir) return 'A';
+  return 'C';
+}
+
+function renderResult(group) {
+  const a = state.answers;
+  document.querySelectorAll('.step-card').forEach(c => c.classList.remove('active'));
+  const rc = document.getElementById('result');
+  rc.classList.add('active');
+  updateProgress(6);
+
+  const config = {
+    A: {
+      badge: 'Grupo A — Preferência por Extensão',
+      badgeClass: 'ga',
+      title: 'Padrão Discal / Hérnia',
+      titleClass: 'ga',
+      subtitle: 'Paciente com hérnia discal posterior típica ou compressão radicular. Centraliza os sintomas com extensão. Protocolo McKenzie com foco em extensão progressiva.',
+      protocolClass: 'ga',
+      protocolTitle: 'Protocolo: Extensão Progressiva (McKenzie)',
+      protocolText: 'Fase aguda: evitar carga axial e posições que aumentam pressão intradiscal (sentar, flexão do tronco). Priorizar postura de inclinação posterior. Educação sobre postura sentada correta e progressão gradual.',
+      exercises: [
+        { name: 'Prótese em esfinge (Cobra)', desc: 'Deitado em prono, apoiar nos cotovelos progredindo para extensão nos braços. Centraliza o conteúdo discal.' },
+        { name: 'Extensão de tronco em pé', desc: 'Mãos na cintura, inclinação posterior controlada. 10 repetições, 3-4x ao dia na fase aguda.' },
+        { name: 'Decúbito prono passivo', desc: 'Deitar de bruços com travesseiro sob o abdômen por 5-10 min. Reduz pressão discal posterior.' },
+        { name: 'Caminhada em terreno plano', desc: 'Mantém mobilidade sem carga em flexão. Preferível a ficar sentado.' },
+      ],
+      avoid: ['Flexão do tronco repetida', 'Sentar por >20min sem pausa', 'Amarrar sapatos com flexão lombar', 'Rotação combinada com flexão'],
+      pharma: a.q3_qual === 'neuropatica'
+        ? ['AINEs (se não houver CI)', 'Gabapentinoides (Gabapentina / Pregabalina)', 'Corticoide oral curto prazo', 'Infiltração epidural (casos refratários)']
+        : ['AINEs por curto período', 'Paracetamol / Dipirona', 'Relaxante muscular (se espasmo)'],
+    },
+    B: {
+      badge: 'Grupo B — Preferência por Flexão',
+      badgeClass: 'gb',
+      title: 'Padrão de Estenose / Facetário',
+      titleClass: 'gb',
+      subtitle: 'Paciente com estenose vertebral ou síndrome facetária/sacroilíaca. Piora ao caminhar/estender. Melhora ao sentar ou inclinar para frente. "Sinal do carrinho de supermercado".',
+      protocolClass: 'gb',
+      protocolTitle: 'Protocolo: Flexão e Abertura de Canal',
+      protocolText: 'Evitar extensão e rotação de carga inicialmente. Foco em abertura do canal vertebral, flexibilidade e fortalecimento do core em posições neutras. Se falha conservadora em 6-8 semanas, considerar bloqueio diagnóstico de facetas / ramos mediais.',
+      exercises: [
+        { name: 'Abraçar joelhos (knee-to-chest)', desc: 'Deitado em supino, trazer ambos os joelhos ao peito por 30s. Abre o canal e alivia compressão facetária.' },
+        { name: 'Rotações lombo-pélvicas', desc: 'Supino, joelhos fletidos, tombar para os lados suavemente. Mobiliza articulações facetárias.' },
+        { name: 'Fortalecimento abdominal em neutro', desc: 'Crunch curto sem flexão lombar excessiva. Suporte anterior para o canal.' },
+        { name: 'Ciclismo estacionário / bicicleta', desc: 'Postura em flexão de tronco aumenta diâmetro do canal. Excelente para estenose.' },
+        { name: 'Caminhada inclinada para frente', desc: 'Andar apoiado (carrinho, andador) abre o canal. Estratégia de alívio rápido.' },
+      ],
+      avoid: ['Hiperextensão lombar', 'Caminhar longas distâncias sem apoio', 'Ficar em pé parado por longos períodos', 'Extensão com carga'],
+      pharma: ['AINEs (se não houver CI)', 'Paracetamol / Dipirona', 'Bloqueio facetário diagnóstico/terapêutico (6-8 sem)', 'Radiofrequência (após bloqueio positivo)'],
+    },
+    C: {
+      badge: 'Grupo C — Instabilidade / Controle Motor',
+      badgeClass: 'gc',
+      title: 'Falha de Controle Motor',
+      titleClass: 'gc',
+      subtitle: 'Paciente com instabilidade lombar degenerativa ou lombalgia inespecífica mecânica. Sem preferência direcional clara. Dor tipo "fisgada" em movimentos banais. Medo do movimento (cinesiofobia).',
+      protocolClass: 'gc',
+      protocolTitle: 'Protocolo: Estabilização Segmentar e Educação em Dor',
+      protocolText: 'Prioridade: manter atividade e confiança na melhora. Educação sobre cinesiofobia e catastrofização. Exercícios de controle motor e fortalecimento progressivo do core. Não reforce a dor — foque no que o paciente valoriza como melhor desfecho.',
+      exercises: [
+        { name: 'Bracing abdominal (ativação do transverso)', desc: 'Recolher levemente o abdômen baixo sem prender a respiração. Base de todos os outros exercícios.' },
+        { name: 'Bird-dog adaptado', desc: 'Em quatro apoios, estender braço e perna opostos com coluna neutra. Ativa multífidos e transverso simultaneamente.' },
+        { name: 'Ponte de glúteos (bridge)', desc: 'Supino, elevar quadril com contração glútea. Progressão: unipodal, com carga.' },
+        { name: 'Pilates / Yoga adaptado', desc: 'Exercícios de controle motor e flexibilidade em intensidade baixa a moderada.' },
+        { name: 'Caminhada graduada', desc: 'Estimular movimento sem medo. Iniciar com distâncias confortáveis e progredir a cada sessão.' },
+      ],
+      avoid: ['Repouso prolongado no leito', 'Evitar todos os movimentos (cinesiofobia)', 'Exercícios de alta carga na fase inicial'],
+      pharma: ['Paracetamol / Dipirona (analgesia basal)', 'Relaxante muscular por curto período (se espasmo)', 'Evitar AINEs para uso crônico'],
+    },
+  };
+
+  const cfg = config[group];
+  document.getElementById('r-badge').textContent = cfg.badge;
+  document.getElementById('r-badge').className = 'result-badge ' + cfg.badgeClass;
+  document.getElementById('r-title').textContent = cfg.title;
+  document.getElementById('r-title').className = 'result-title ' + cfg.titleClass;
+  document.getElementById('r-subtitle').textContent = cfg.subtitle;
+
+  // Pain score
+  const irradLabels = { nao:'Sem irradiação', nadegas:'Irradia até nádegas', joelho:'Irradia até o joelho', pe:'Irradia até o pé' };
+  const qualLabels = { neuropatica:'Neuropática (queimação/choque)', instabilidade:'Instabilidade (fisgada)', mecanica:'Mecânica (peso/cansaço)', mista:'Mista/nociplástica' };
+  document.getElementById('r-pain-display').innerHTML = `
+    <div style="display:flex;gap:16px;flex-wrap:wrap;margin-bottom:8px">
+      <div class="pain-score-display"><span class="pain-score-num">${state.painNow ?? '—'}</span><span class="pain-score-label">Dor Atual</span></div>
+      <div class="pain-score-display"><span class="pain-score-num">${state.painWorst ?? '—'}</span><span class="pain-score-label">Pior Momento</span></div>
+    </div>`;
+
+  // Pills
+  const pills = [];
+  pills.push({ text: irradLabels[a.q2_irrad] || a.q2_irrad, cls: (a.q2_irrad === 'pe' || a.q2_irrad === 'joelho') ? 'warn' : '' });
+  pills.push({ text: qualLabels[a.q3_qual] || a.q3_qual, cls: a.q3_qual === 'neuropatica' ? 'warn' : '' });
+  if (a.q4b === 'sim') pills.push({ text: 'Déficit motor presente', cls: 'warn' });
+  if (a.q4c === 'sim') pills.push({ text: 'Piora ao tossir/sentar', cls: '' });
+  if (a.q4a === 'sim') pills.push({ text: 'Padrão mecânico confirmado', cls: 'ok' });
+  const irritability = (state.painWorst ?? 0) >= 7 ? 'Alta irritabilidade' : (state.painNow ?? 0) >= 4 ? 'Irritabilidade moderada' : 'Baixa irritabilidade';
+  pills.push({ text: irritability, cls: (state.painWorst ?? 0) >= 7 ? 'warn' : '' });
+
+  document.getElementById('r-pills').innerHTML = pills.map(p => `<span class="pill ${p.cls}">${p.text}</span>`).join('');
+
+  // Protocol box
+  const pb = document.getElementById('r-protocol-box');
+  pb.className = 'protocol-box ' + cfg.protocolClass;
+  document.getElementById('r-pbox-title').className = 'protocol-box-title ' + cfg.protocolClass;
+  document.getElementById('r-pbox-title').textContent = cfg.protocolTitle;
+  document.getElementById('r-pbox-text').textContent = cfg.protocolText;
+
+  // Exercises
+  document.getElementById('r-exercises').innerHTML = cfg.exercises.map((e, i) => `
+    <div class="exercise-item">
+      <div class="exercise-num">${i+1}</div>
+      <p><strong>${e.name}</strong>${e.desc}</p>
+    </div>`).join('');
+
+  // Avoid
+  document.getElementById('r-avoid-pills').innerHTML = cfg.avoid.map(t => `<span class="pill warn">✕ ${t}</span>`).join('');
+
+  // Pharma
+  document.getElementById('r-pharma-pills').innerHTML = cfg.pharma.map(t => `<span class="pill">${t}</span>`).join('');
+
+  // Irritability note
+  const irritNote = (state.painWorst ?? 0) >= 7
+    ? '<div style="background:#fff3e0;border-left:3px solid #e67e22;border-radius:4px;padding:12px 16px;margin-top:16px;font-size:0.85rem;color:#7d4c00"><strong>⚡ Alta Irritabilidade:</strong> A dor demora a reduzir após os testes. Prescreva poucas repetições, muita educação e progressão lenta.</div>'
+    : '<div style="background:#e8f5e9;border-left:3px solid #27ae60;border-radius:4px;padding:12px 16px;margin-top:16px;font-size:0.85rem;color:#1a5c30"><strong>✓ Baixa/Moderada Irritabilidade:</strong> A dor aparece apenas no fim do movimento. Pode progredir para carga e exercícios funcionais (agachamentos, pontes) conforme tolerância.</div>';
+  document.getElementById('r-avoid-section').insertAdjacentHTML('afterend', irritNote);
+
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ══════════════════════════════════════════
+// INIT
+// ══════════════════════════════════════════
+buildScales();
+</script>
+</body>
+</html>

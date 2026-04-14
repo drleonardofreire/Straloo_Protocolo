@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Central de Protocolos Fisioterapêuticos</title>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --bg: #f8fafc;
+            --card: #ffffff;
+            --text: #1e293b;
+            --accent: #3b82f6;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .main-container {
+            width: 100%;
+            max-width: 500px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .logo-area {
+            margin-bottom: 30px;
+        }
+
+        .logo-area h1 {
+            font-size: 1.8rem;
+            color: var(--primary);
+            margin-bottom: 5px;
+        }
+
+        .logo-area p {
+            color: #64748b;
+            margin: 0;
+        }
+
+        .selection-card {
+            background: var(--card);
+            padding: 30px;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px -5px rgba(0,0,0,0.1);
+        }
+
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+        }
+
+        /* Estilização do Combobox */
+        .custom-select {
+            width: 100%;
+            padding: 15px;
+            font-size: 1rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            background-color: #fff;
+            cursor: pointer;
+            outline: none;
+            transition: border-color 0.2s;
+            margin-bottom: 20px;
+            appearance: none; /* Remove seta padrão */
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 15px center;
+            background-size: 18px;
+        }
+
+        .custom-select:focus {
+            border-color: var(--primary);
+        }
+
+        .btn-go {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 10px;
+            font-weight: bold;
+            width: 100%;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: transform 0.2s, background 0.2s;
+        }
+
+        .btn-go:hover {
+            background: #1d4ed8;
+            transform: translateY(-2px);
+        }
+
+        .btn-go:active {
+            transform: translateY(0);
+        }
+
+        .footer {
+            margin-top: 40px;
+            font-size: 0.85rem;
+            color: #94a3b8;
+        }
+    </style>
+</head>
+<body>
+
+<div class="main-container">
+    <div class="logo-area">
+        <h1>STRALOO - PROTOCOLOS</h1>
+        <p>Sistema de Apoio à Decisão Clínica</p>
+    </div>
+
+    <div class="selection-card">
+        <label for="protocoloSelect">Selecione o Protocolo:</label>
+        
+        <select id="protocoloSelect" class="custom-select">
+            <option value="" disabled selected>Escolha uma opção...</option>
+            <option value="dor_aguda.html">1. Protocolo de Dor Aguda (Triagem)</option>
+            <option value="LOMBAR\lombalgia.html">2. Lombalgia</option>
+            <option value="pos_operatorio.html">3. Pós-Operatório Geral</option>
+            <option value="neuro.html">4. Reabilitação Neurológica</option>
+        </select>
+
+        <button class="btn-go" onclick="navegar()">ACESSAR PROTOCOLO</button>
+    </div>
+
+    <div class="footer">
+        Desenvolvido para uso profissional • 2026
+    </div>
+</div>
+
+<script>
+    function navegar() {
+        const select = document.getElementById('protocoloSelect');
+        const url = select.value;
+
+        if (url) {
+            // Se as páginas estiverem na mesma pasta, ele redireciona
+            window.location.href = url;
+        } else {
+            alert("Por favor, selecione um protocolo na lista.");
+        }
+    }
+</script>
+
+</body>
+</html>
