@@ -1,0 +1,1036 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Straloo — Protocolo Oncologia</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #F2EFE9;
+    --surface: #FFFFFF;
+    --surface2: #F8F6F2;
+    --primary: #0E4D5C;
+    --primary-light: #1A7A8C;
+    --accent: #E8A84C;
+    --accent-dark: #C8882C;
+    --danger: #C0392B;
+    --danger-light: #FDECEB;
+    --warning: #D68910;
+    --warning-light: #FEF9EC;
+    --warning-mid: #F39C12;
+    --success: #1A7A5C;
+    --success-light: #E8F5F0;
+    --success-mid: #27AE60;
+    --purple: #6C3A8C;
+    --purple-light: #E8D8F5;
+    --text: #1A2530;
+    --text-muted: #6B7A85;
+    --border: #DDD8CF;
+    --shadow: 0 4px 24px rgba(14,77,92,0.10);
+    --radius: 16px;
+    --radius-sm: 8px;
+    --transition: all 0.32s cubic-bezier(0.4,0,0.2,1);
+
+    /* Group colors */
+    --g1: #1A7A5C; --g1-bg: #E8F5F0; --g1-border: rgba(26,122,92,0.25);
+    --g2: #D68910; --g2-bg: #FEF9EC; --g2-border: rgba(214,137,16,0.3);
+    --g3: #6C3A8C; --g3-bg: #F0E8F8; --g3-border: rgba(108,58,140,0.25);
+    --g4: #C0392B; --g4-bg: #FDECEB; --g4-border: rgba(192,57,43,0.25);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; overflow-x: hidden; }
+
+  /* ─── HEADER ─── */
+  .header { background: var(--primary); padding: 18px 32px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 16px rgba(0,0,0,0.18); }
+  .header-left { display: flex; align-items: center; gap: 18px; }
+  .btn-home { display: inline-flex; align-items: center; gap: 6px; font-family: 'DM Sans', sans-serif; font-size: 0.78rem; font-weight: 600; color: rgba(255,255,255,0.6); background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); border-radius: 50px; padding: 5px 14px; text-decoration: none; transition: var(--transition); letter-spacing: 0.03em; }
+  .btn-home:hover { color: white; background: rgba(255,255,255,0.14); border-color: rgba(255,255,255,0.3); }
+  .logo { font-family: 'DM Serif Display', serif; font-size: 1.6rem; color: #FFF; letter-spacing: 0.02em; }
+  .logo span { color: var(--accent); }
+  .header-badge { font-size: 0.72rem; font-weight: 600; color: var(--accent); background: rgba(232,168,76,0.15); border: 1px solid rgba(232,168,76,0.35); border-radius: 50px; padding: 4px 12px; letter-spacing: 0.08em; text-transform: uppercase; }
+
+  /* ─── MAIN ─── */
+  .main { max-width: 820px; margin: 0 auto; padding: 40px 20px 80px; }
+
+  /* ─── CARDS ─── */
+  .section-card { background: var(--surface); border-radius: var(--radius); padding: 40px 44px; box-shadow: var(--shadow); margin-bottom: 24px; animation: fadeUp 0.4s ease both; }
+  @keyframes fadeUp { from { opacity:0; transform:translateY(16px); } to { opacity:1; transform:translateY(0); } }
+
+  .section-tag { display: inline-flex; align-items: center; gap: 6px; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--primary); background: rgba(14,77,92,0.08); border-radius: 50px; padding: 4px 12px; margin-bottom: 12px; }
+  .section-tag.danger-tag { color: var(--danger); background: rgba(192,57,43,0.08); }
+  .section-title { font-family: 'DM Serif Display', serif; font-size: 1.7rem; color: var(--primary); line-height: 1.25; margin-bottom: 6px; }
+  .section-subtitle { font-size: 0.88rem; color: var(--text-muted); line-height: 1.65; margin-bottom: 28px; }
+
+  .intro-msg { background: rgba(14,77,92,0.04); border-left: 3px solid var(--primary-light); border-radius: 0 var(--radius-sm) var(--radius-sm) 0; padding: 12px 16px; font-size: 0.85rem; color: #34505A; line-height: 1.65; margin-bottom: 24px; font-style: italic; }
+  .intro-msg strong { font-style: normal; font-size: 0.72rem; letter-spacing: 0.07em; text-transform: uppercase; display: block; margin-bottom: 4px; color: var(--primary-light); }
+
+  /* ─── GROUP DIVIDER ─── */
+  .group-divider { background: var(--surface2); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 20px 22px; margin: 24px 0; }
+  .group-title { font-size: 0.75rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 16px; padding-bottom: 8px; border-bottom: 1px solid var(--border); }
+
+  /* ─── FORM ─── */
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px; }
+  .form-row-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; margin-bottom: 20px; }
+  .form-group { margin-bottom: 20px; }
+  .form-label { display: block; font-size: 0.88rem; font-weight: 600; color: var(--text); margin-bottom: 7px; line-height: 1.45; }
+  .form-label small { display: block; font-weight: 400; color: var(--text-muted); font-size: 0.8rem; margin-top: 2px; }
+
+  .form-input, .form-select { width: 100%; padding: 11px 14px; border: 2px solid var(--border); border-radius: var(--radius-sm); background: var(--surface); color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 0.9rem; outline: none; transition: var(--transition); appearance: none; }
+  .form-select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%236B7A85' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 14px center; padding-right: 36px; }
+  .form-input:focus, .form-select:focus { border-color: var(--primary-light); box-shadow: 0 0 0 3px rgba(26,122,140,0.12); }
+  .form-input::placeholder { color: var(--text-muted); }
+
+  /* ─── YES/NO ─── */
+  .yn-group { display: flex; gap: 10px; }
+  .yn-btn { flex: 1; padding: 11px; border-radius: var(--radius-sm); border: 2px solid var(--border); background: transparent; font-family: 'DM Sans', sans-serif; font-size: 0.88rem; font-weight: 600; cursor: pointer; transition: var(--transition); color: var(--text-muted); }
+  .yn-btn:hover { border-color: var(--primary-light); color: var(--primary); }
+  .yn-btn.sel-sim { border-color: var(--danger); background: var(--danger-light); color: var(--danger); }
+  .yn-btn.sel-nao { border-color: var(--success); background: var(--success-light); color: var(--success); }
+
+  /* ─── CHECK PILLS ─── */
+  .check-grid { display: flex; flex-wrap: wrap; gap: 9px; background: var(--surface2); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 14px 16px; }
+  .check-item { display: flex; align-items: center; gap: 7px; padding: 6px 13px; border-radius: 50px; border: 2px solid var(--border); background: var(--surface); cursor: pointer; transition: var(--transition); user-select: none; font-size: 0.84rem; font-weight: 500; color: var(--text-muted); }
+  .check-item:hover { border-color: var(--primary-light); color: var(--text); }
+  .check-item.checked { border-color: var(--primary); background: rgba(14,77,92,0.07); color: var(--primary); font-weight: 600; }
+  .check-item input { display: none; }
+
+  /* ─── RADIO PILLS ─── */
+  .radio-inline { display: flex; gap: 9px; flex-wrap: wrap; }
+  .radio-pill { display: flex; align-items: center; gap: 7px; padding: 9px 18px; border-radius: 50px; border: 2px solid var(--border); background: transparent; cursor: pointer; transition: var(--transition); user-select: none; font-size: 0.84rem; font-weight: 500; color: var(--text-muted); }
+  .radio-pill:hover { border-color: var(--primary-light); color: var(--text); }
+  .radio-pill.selected { border-color: var(--primary); background: rgba(14,77,92,0.07); color: var(--primary); font-weight: 600; }
+  .radio-pill input { display: none; }
+
+  /* ─── PAIN SLIDER ─── */
+  .slider-wrap { background: var(--surface2); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 16px 18px; }
+  .slider-track { display: flex; align-items: center; gap: 16px; margin-bottom: 10px; }
+  .slider-track input[type="range"] { flex: 1; -webkit-appearance: none; appearance: none; height: 6px; border-radius: 3px; outline: none; cursor: pointer; }
+  .slider-track input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 22px; height: 22px; border-radius: 50%; background: var(--primary); border: 3px solid white; box-shadow: 0 2px 8px rgba(14,77,92,0.3); cursor: pointer; transition: var(--transition); }
+  .slider-track input[type="range"]::-webkit-slider-thumb:hover { background: var(--primary-light); transform: scale(1.15); }
+  .slider-value { font-family: 'DM Serif Display', serif; font-size: 2rem; color: var(--primary); min-width: 40px; text-align: center; line-height: 1; }
+  .slider-labels { display: flex; justify-content: space-between; font-size: 0.72rem; color: var(--text-muted); }
+
+  /* ─── NOTA TÉCNICA ─── */
+  .nota-btn { display: inline-flex; align-items: center; gap: 5px; font-size: 0.74rem; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; color: var(--primary-light); background: rgba(26,122,140,0.08); border: 1px solid rgba(26,122,140,0.2); border-radius: 50px; padding: 3px 10px; cursor: pointer; transition: var(--transition); margin-bottom: 10px; }
+  .nota-btn:hover { background: rgba(26,122,140,0.15); }
+  .nota-box { background: rgba(14,77,92,0.04); border-left: 3px solid var(--primary-light); border-radius: 0 var(--radius-sm) var(--radius-sm) 0; padding: 12px 16px; font-size: 0.82rem; color: #34505A; line-height: 1.65; margin-bottom: 12px; display: none; }
+  .nota-box.open { display: block; animation: fadeUp 0.25s ease; }
+
+  .extra-info { display: none; margin-top: 14px; }
+  .extra-info.open { display: block; animation: fadeUp 0.3s ease both; }
+
+  /* ─── HEMOGRAM INPUT ─── */
+  .hemo-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 8px; }
+  .hemo-field label { font-size: 0.82rem; font-weight: 600; color: var(--text-muted); display: block; margin-bottom: 5px; }
+  .hemo-field .unit { font-size: 0.72rem; color: var(--text-muted); margin-top: 3px; }
+  .hemo-ref { font-size: 0.75rem; color: var(--text-muted); margin-top: 4px; font-style: italic; }
+
+  /* ─── GENERATE BTN ─── */
+  .btn-generate { width: 100%; padding: 17px 32px; margin-top: 8px; background: var(--primary); color: white; border: none; font-family: 'DM Serif Display', serif; font-size: 1.15rem; border-radius: var(--radius-sm); cursor: pointer; transition: var(--transition); letter-spacing: 0.02em; box-shadow: 0 4px 20px rgba(14,77,92,0.3); display: flex; align-items: center; justify-content: center; gap: 10px; }
+  .btn-generate:hover { background: var(--primary-light); transform: translateY(-2px); box-shadow: 0 8px 28px rgba(14,77,92,0.35); }
+
+  /* ─── EMERGENCY ─── */
+  .emergency-card { background: var(--surface); border-radius: var(--radius); padding: 40px 44px; box-shadow: var(--shadow); border-top: 5px solid var(--danger); animation: fadeUp 0.4s ease both; }
+  .em-icon { font-size: 2.8rem; margin-bottom: 14px; }
+  .em-title { font-family: 'DM Serif Display', serif; font-size: 1.9rem; color: var(--danger); margin-bottom: 8px; }
+  .em-sub { font-size: 0.9rem; color: var(--text-muted); line-height: 1.65; margin-bottom: 24px; }
+  .em-flags { display: flex; flex-direction: column; gap: 10px; margin-bottom: 24px; }
+  .em-flag { display: flex; align-items: flex-start; gap: 10px; padding: 12px 16px; background: var(--danger-light); border-left: 4px solid var(--danger); border-radius: var(--radius-sm); font-size: 0.87rem; line-height: 1.55; color: #7A1A1A; }
+  .em-flag strong { display: block; font-weight: 700; margin-bottom: 2px; }
+  .em-actions { display: flex; gap: 12px; flex-wrap: wrap; }
+  .btn-danger { background: var(--danger); color: white; border: none; font-family: 'DM Sans', sans-serif; font-size: 0.9rem; font-weight: 700; padding: 13px 24px; border-radius: var(--radius-sm); cursor: pointer; transition: var(--transition); }
+  .btn-danger:hover { background: #a03020; }
+
+  /* ─── RESULT ─── */
+  .result-section-title { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 12px; }
+  .divider { height: 1px; background: var(--border); margin: 24px 0; }
+
+  .result-badge { display: inline-flex; align-items: center; gap: 8px; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; border-radius: 50px; padding: 5px 16px; margin-bottom: 12px; }
+  .result-title { font-family: 'DM Serif Display', serif; font-size: 2rem; line-height: 1.15; margin-bottom: 8px; }
+  .result-subtitle { font-size: 0.9rem; color: var(--text-muted); line-height: 1.65; margin-bottom: 4px; }
+
+  /* group color variants */
+  .g1 .result-badge { background: var(--g1-bg); color: var(--g1); }
+  .g1 .result-title { color: var(--g1); }
+  .g2 .result-badge { background: var(--g2-bg); color: var(--g2); }
+  .g2 .result-title { color: var(--g2); }
+  .g3 .result-badge { background: var(--g3-bg); color: var(--g3); }
+  .g3 .result-title { color: var(--g3); }
+  .g4 .result-badge { background: var(--g4-bg); color: var(--g4); }
+  .g4 .result-title { color: var(--g4); }
+
+  /* protocol box */
+  .protocol-box { border-radius: var(--radius-sm); padding: 18px 22px; margin-bottom: 20px; border-left: 4px solid; }
+  .protocol-box.g1 { border-color: var(--g1); background: var(--g1-bg); }
+  .protocol-box.g2 { border-color: var(--g2); background: var(--g2-bg); }
+  .protocol-box.g3 { border-color: var(--g3); background: var(--g3-bg); }
+  .protocol-box.g4 { border-color: var(--g4); background: var(--g4-bg); }
+  .protocol-box-title { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 6px; }
+  .g1 .protocol-box-title { color: var(--g1); }
+  .g2 .protocol-box-title { color: var(--g2); }
+  .g3 .protocol-box-title { color: var(--g3); }
+  .g4 .protocol-box-title { color: var(--g4); }
+  .protocol-box p { font-size: 0.87rem; color: var(--text); line-height: 1.65; }
+
+  /* conduct */
+  .conduct-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
+  .conduct-item { display: flex; align-items: flex-start; gap: 12px; padding: 13px 16px; border-radius: var(--radius-sm); background: var(--surface2); border: 1px solid var(--border); }
+  .conduct-icon { font-size: 1rem; flex-shrink: 0; margin-top: 1px; }
+  .conduct-text { font-size: 0.87rem; line-height: 1.55; color: var(--text); }
+  .conduct-text strong { font-weight: 600; display: block; margin-bottom: 2px; }
+
+  /* exercises */
+  .exercise-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
+  .exercise-item { display: flex; align-items: flex-start; gap: 12px; padding: 13px 16px; border-radius: var(--radius-sm); background: var(--surface2); border: 1px solid var(--border); }
+  .ex-num { width: 26px; height: 26px; border-radius: 50%; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; font-weight: 700; color: white; background: var(--primary); }
+  .exercise-item p { font-size: 0.87rem; line-height: 1.55; color: var(--text); }
+  .exercise-item p strong { font-weight: 600; display: block; margin-bottom: 2px; }
+
+  /* pill list */
+  .pill-list { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
+  .pill { font-size: 0.8rem; font-weight: 500; padding: 5px 13px; border-radius: 50px; background: rgba(14,77,92,0.07); color: var(--primary); }
+  .pill.warn { background: rgba(214,137,16,0.1); color: #8C5A10; }
+  .pill.ok { background: var(--success-light); color: var(--success); }
+  .pill.block { background: var(--danger-light); color: var(--danger); }
+
+  /* ─── FUNCTIONAL LIMITATION BLOCK ─── */
+  .func-block { border-radius: var(--radius-sm); overflow: hidden; border: 1px solid var(--border); margin-bottom: 20px; }
+  .func-header { padding: 16px 22px; display: flex; align-items: center; gap: 14px; }
+  .func-header.preservada   { background: #E8F5F0; border-bottom: 1px solid rgba(26,122,92,0.18); }
+  .func-header.parcial      { background: #FEF9EC; border-bottom: 1px solid rgba(214,137,16,0.2); }
+  .func-header.severa       { background: #F0E8F8; border-bottom: 1px solid rgba(108,58,140,0.2); }
+  .func-header.dependente   { background: #FDECEB; border-bottom: 1px solid rgba(192,57,43,0.18); }
+  .func-icon { font-size: 1.6rem; flex-shrink: 0; }
+  .func-label { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 2px; }
+  .preservada .func-label { color: var(--g1); }
+  .parcial    .func-label { color: var(--g2); }
+  .severa     .func-label { color: var(--g3); }
+  .dependente .func-label { color: var(--g4); }
+  .func-title { font-family: 'DM Serif Display', serif; font-size: 1.15rem; line-height: 1.2; }
+  .preservada .func-title { color: var(--g1); }
+  .parcial    .func-title { color: var(--g2); }
+  .severa     .func-title { color: var(--g3); }
+  .dependente .func-title { color: var(--g4); }
+  .func-body { padding: 16px 20px; display: flex; flex-direction: column; gap: 10px; }
+  .func-item { display: flex; align-items: flex-start; gap: 10px; }
+  .func-item-icon { flex-shrink: 0; font-size: 1rem; margin-top: 2px; }
+  .func-item-text { font-size: 0.87rem; line-height: 1.6; color: var(--text); }
+  .func-item-text strong { display: block; font-weight: 600; font-size: 0.84rem; margin-bottom: 1px; }
+  .func-reeval { margin-top: 4px; padding: 12px 20px; border-top: 1px dashed var(--border); font-size: 0.82rem; color: var(--text-muted); display: flex; align-items: flex-start; gap: 8px; line-height: 1.55; }
+
+  /* alert boxes */
+  .alert-box { border-radius: var(--radius-sm); padding: 14px 18px; margin-bottom: 14px; border-left: 4px solid; font-size: 0.84rem; line-height: 1.65; }
+  .alert-box.warning { border-color: var(--warning-mid); background: var(--warning-light); color: #7A5010; }
+  .alert-box.danger  { border-color: var(--danger); background: var(--danger-light); color: #8C2020; }
+  .alert-box.info    { border-color: var(--primary-light); background: rgba(14,77,92,0.05); color: #1A3D4A; }
+  .alert-box.purple  { border-color: var(--purple); background: var(--purple-light); color: #4A1A6A; }
+  .alert-box strong  { font-weight: 700; }
+
+  /* message */
+  .msg-box { background: var(--surface2); border: 1px dashed var(--primary-light); border-radius: var(--radius-sm); padding: 18px 20px; font-size: 0.87rem; color: var(--text); line-height: 1.7; white-space: pre-line; margin-bottom: 12px; }
+  .btn-copy { display: inline-flex; align-items: center; gap: 7px; background: transparent; border: 2px solid var(--primary-light); color: var(--primary); font-family: 'DM Sans', sans-serif; font-size: 0.83rem; font-weight: 600; padding: 9px 20px; border-radius: var(--radius-sm); cursor: pointer; transition: var(--transition); }
+  .btn-copy:hover { background: var(--primary); color: white; border-color: var(--primary); }
+  .btn-copy.copied { background: var(--success-light); border-color: var(--success); color: var(--success); }
+
+  /* shared decision */
+  .shared-decision { background: linear-gradient(135deg, rgba(14,77,92,0.07), rgba(26,122,140,0.04)); border-radius: var(--radius-sm); padding: 18px 22px; margin-top: 16px; border: 1px solid rgba(14,77,92,0.1); }
+  .shared-title { font-weight: 700; font-size: 0.8rem; letter-spacing: 0.07em; text-transform: uppercase; color: var(--primary); margin-bottom: 10px; }
+  .shared-decision ol { padding-left: 18px; display: flex; flex-direction: column; gap: 4px; }
+  .shared-decision li { font-size: 0.86rem; line-height: 1.55; color: var(--text); font-style: italic; }
+
+  .result-actions { display: flex; gap: 12px; margin-top: 32px; padding-top: 24px; border-top: 1px solid var(--border); }
+  .btn-restart { background: transparent; border: 2px solid var(--border); color: var(--text-muted); font-family: 'DM Sans', sans-serif; font-size: 0.88rem; font-weight: 600; padding: 12px 24px; border-radius: var(--radius-sm); cursor: pointer; transition: var(--transition); }
+  .btn-restart:hover { border-color: var(--text-muted); color: var(--text); }
+  .btn-print { background: var(--primary); color: white; border: none; font-family: 'DM Sans', sans-serif; font-size: 0.88rem; font-weight: 600; padding: 12px 24px; border-radius: var(--radius-sm); cursor: pointer; transition: var(--transition); }
+  .btn-print:hover { background: var(--primary-light); }
+
+  /* WHATSAPP MSG TABS */
+  .msg-tabs { display: flex; gap: 8px; margin-bottom: 12px; flex-wrap: wrap; }
+  .msg-tab { font-size: 0.78rem; font-weight: 600; padding: 6px 14px; border-radius: 50px; border: 2px solid var(--border); background: transparent; cursor: pointer; transition: var(--transition); color: var(--text-muted); }
+  .msg-tab:hover { border-color: var(--primary-light); color: var(--text); }
+  .msg-tab.active { border-color: var(--primary); background: rgba(14,77,92,0.07); color: var(--primary); }
+
+  @media (max-width: 600px) {
+    .section-card, .emergency-card { padding: 28px 20px; }
+    .form-row, .form-row-3, .hemo-grid { grid-template-columns: 1fr; }
+    .section-title { font-size: 1.4rem; }
+    .main { padding: 24px 12px 60px; }
+    .result-title { font-size: 1.5rem; }
+  }
+  @media print {
+    .header, .btn-generate, .result-actions, .btn-copy, .msg-tabs, #formCard { display: none !important; }
+    body { background: white; }
+    #resultCard, .emergency-card { box-shadow: none; border: 1px solid #ddd; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="header-left">
+    <a class="btn-home" href="index.html">← Protocolos</a>
+    <div class="logo">Straloo<span>.</span></div>
+  </div>
+  <div class="header-badge">Fisioterapia Oncológica</div>
+</div>
+
+<div class="main">
+
+<!-- ═══════════════════════════════════
+     FORM CARD
+═══════════════════════════════════ -->
+<div class="section-card" id="formCard">
+  <div class="section-tag">🎗 Protocolo · Oncologia do Trabalho</div>
+  <h2 class="section-title">Triagem e Estratificação Oncológica</h2>
+  <p class="section-subtitle">Avaliação sistemática para teleatendimento fisioterapêutico em pacientes oncológicos. Preencha todas as etapas para gerar a conduta baseada em evidências.</p>
+
+  <div class="intro-msg">
+    <strong>Mensagem de boas-vindas (enviar antes da consulta)</strong>
+    "Olá! Somos da equipe de fisioterapia. Nosso objetivo é ajudar você a manter bem-estar, controlar sintomas como cansaço e dores, e auxiliar em sua rotina durante ou após o tratamento. Para que nossa consulta seja segura e personalizada, por favor envie uma foto do seu hemograma mais recente e, se tiver, dos seus exames de imagem. Até breve!"
+  </div>
+
+  <!-- ══ ETAPA 1: RED FLAGS ══ -->
+  <div class="group-divider" style="border-left: 4px solid var(--danger);">
+    <div class="group-title" style="color: var(--danger);">⚠ Etapa 1 — Triagem de Red Flags</div>
+    <p style="font-size:0.84rem; color:var(--text-muted); margin-bottom:16px; line-height:1.6">Responda SIM ou NÃO para cada pergunta. Qualquer SIM indica emergência e contraindicação à fisioterapia remota.</p>
+
+    <div class="form-group">
+      <div class="form-label">Febre acima de 37,8°C ou calafrios nas últimas 24h?<small>Risco de neutropenia febril — emergência médica</small></div>
+      <button class="nota-btn" onclick="toggleNota('n_rf1')">📋 Nota Técnica</button>
+      <div class="nota-box" id="n_rf1">Neutropenia febril é uma das mais graves emergências em oncologia. Leucócitos muito baixos tornam o paciente incapaz de combater infecções. Febre + quimioterapia recente é urgência: risco de sepse. Encaminhamento imediato para pronto-atendimento oncológico. Não realizar qualquer exercício.</div>
+      <div class="yn-group"><button class="yn-btn" onclick="setRF('rf1','sim',this,'Febre / neutropenia febril')">SIM</button><button class="yn-btn" onclick="setRF('rf1','nao',this)">NÃO</button></div>
+    </div>
+
+    <div class="form-group">
+      <div class="form-label">Dor nas costas de início súbito + fraqueza progressiva nas pernas ou perda do controle de urina/fezes?<small>Sinais de compressão da medula espinhal</small></div>
+      <button class="nota-btn" onclick="toggleNota('n_rf2')">📋 Nota Técnica</button>
+      <div class="nota-box" id="n_rf2">Compressão medular é urgência oncológica cirúrgica. Metástases vertebrais podem colapsar sobre a medula. A janela terapêutica é estreita: demora no encaminhamento pode resultar em paraplegia permanente. Suspender qualquer mobilização e encaminhar à emergência imediatamente.</div>
+      <div class="yn-group"><button class="yn-btn" onclick="setRF('rf2','sim',this,'Suspeita de compressão medular')">SIM</button><button class="yn-btn" onclick="setRF('rf2','nao',this)">NÃO</button></div>
+    </div>
+
+    <div class="form-group">
+      <div class="form-label">Inchaço súbito em um dos membros + dor, vermelhidão ou falta de ar repentina?<small>Risco de TVP ou Embolia Pulmonar</small></div>
+      <button class="nota-btn" onclick="toggleNota('n_rf3')">📋 Nota Técnica</button>
+      <div class="nota-box" id="n_rf3">Pacientes oncológicos têm risco de trombose até 4-7x maior que a população geral (estado hipercoagulável pelo câncer e quimioterapia). TVP com falta de ar súbita pode indicar embolia pulmonar — risco de morte. Encaminhar imediatamente. Exercícios contraindicados até avaliação médica e anticoagulação estabelecida.</div>
+      <div class="yn-group"><button class="yn-btn" onclick="setRF('rf3','sim',this,'Suspeita de TVP ou Embolia Pulmonar')">SIM</button><button class="yn-btn" onclick="setRF('rf3','nao',this)">NÃO</button></div>
+    </div>
+
+    <div class="form-group">
+      <div class="form-label">Dor óssea forte que piora com movimento ou ao sustentar o peso do corpo?<small>Risco de fratura patológica por metástase óssea</small></div>
+      <button class="nota-btn" onclick="toggleNota('n_rf4')">📋 Nota Técnica</button>
+      <div class="nota-box" id="n_rf4">Metástases ósseas enfraquecem a estrutura do osso. Exercícios sem avaliação de imagem podem causar fratura patológica espontânea. Antes de qualquer mobilização, é obrigatório saber o percentual de comprometimento cortical por exame de imagem (RX, TC ou cintilografia). Suspender exercícios até avaliação médica.</div>
+      <div class="yn-group"><button class="yn-btn" onclick="setRF('rf4','sim',this,'Dor óssea intensa — suspeita de metástase / fratura patológica')">SIM</button><button class="yn-btn" onclick="setRF('rf4','nao',this)">NÃO</button></div>
+    </div>
+
+    <div class="form-group" style="margin-bottom:0">
+      <div class="form-label">Exames recentes mostram plaquetas abaixo de 10.000 ou leucócitos abaixo de 500 com febre?<small>Contraindicação absoluta a exercícios ativos</small></div>
+      <button class="nota-btn" onclick="toggleNota('n_rf5')">📋 Nota Técnica</button>
+      <div class="nota-box" id="n_rf5">Plaquetas < 10.000/mm³ representam risco de sangramento espontâneo grave (hemorragia intracraniana, pulmonar). Leucócitos < 500/mm³ com febre = neutropenia febril. Em ambos, qualquer exercício que aumente pressão intrabdominal, impacto ou esforço está absolutamente contraindicado. O paciente deve ser monitorado em ambiente hospitalar.</div>
+      <div class="yn-group"><button class="yn-btn" onclick="setRF('rf5','sim',this,'Valores hematológicos críticos — contraindicação absoluta')">SIM</button><button class="yn-btn" onclick="setRF('rf5','nao',this)">NÃO</button></div>
+    </div>
+  </div>
+
+  <!-- ══ ETAPA 2: ANAMNESE ══ -->
+  <div class="group-divider">
+    <div class="group-title">📋 Etapa 2 — Diagnóstico e Tratamento</div>
+
+    <div class="form-row">
+      <div>
+        <label class="form-label">Tipo de câncer<small>Localização primária do tumor</small></label>
+        <select class="form-select" id="tipoCancer">
+          <option value="mama">Câncer de Mama</option>
+          <option value="prostata">Câncer de Próstata</option>
+          <option value="pulmao">Câncer de Pulmão</option>
+          <option value="ginecologico">Câncer Ginecológico</option>
+          <option value="coloretal">Câncer Colorretal</option>
+          <option value="hematologico">Hematológico (leucemia/linfoma)</option>
+          <option value="outro">Outro tipo</option>
+        </select>
+      </div>
+      <div>
+        <label class="form-label">Fase atual do tratamento</label>
+        <select class="form-select" id="faseTratamento">
+          <option value="diagnostico">Diagnóstico inicial / pré-tratamento</option>
+          <option value="cirurgia_recente">Pós-cirúrgico recente (< 30 dias)</option>
+          <option value="quimio">Quimioterapia em curso</option>
+          <option value="radio">Radioterapia em curso</option>
+          <option value="hormonio">Hormonioterapia</option>
+          <option value="imuno">Imunoterapia</option>
+          <option value="pos_tratamento">Pós-tratamento (remissão)</option>
+          <option value="paliativo">Cuidados paliativos</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Complicações presentes<small>Selecione todos que se aplicam</small></label>
+      <div class="check-grid" id="checkComplicacoes">
+        <label class="check-item" onclick="toggleCheck(this)"><input type="checkbox" value="linfedema"> <span>💧 Linfedema</span></label>
+        <label class="check-item" onclick="toggleCheck(this)"><input type="checkbox" value="neuropatia"> <span>⚡ Neuropatia periférica</span></label>
+        <label class="check-item" onclick="toggleCheck(this)"><input type="checkbox" value="adm_ombro"> <span>🦾 Limitação ADM ombro</span></label>
+        <label class="check-item" onclick="toggleCheck(this)"><input type="checkbox" value="incontinencia"> <span>💦 Incontinência urinária</span></label>
+        <label class="check-item" onclick="toggleCheck(this)"><input type="checkbox" value="disfuncao_pelvica"> <span>🩺 Disfunção pélvica</span></label>
+        <label class="check-item" onclick="toggleCheck(this)"><input type="checkbox" value="metastase_ossea"> <span>🦴 Metástase óssea confirmada</span></label>
+        <label class="check-item" onclick="toggleCheck(this)"><input type="checkbox" value="fibrose"> <span>🔒 Fibrose / aderência pós-radio</span></label>
+        <label class="check-item" onclick="toggleCheck(this)"><input type="checkbox" value="respiratorio"> <span>🫁 Comprometimento respiratório</span></label>
+      </div>
+    </div>
+
+    <!-- Metástase óssea — extra info -->
+    <div class="form-group" id="metastaseOsseaExtra" style="display:none">
+      <label class="form-label">Comprometimento cortical do osso afetado<small>Informado por RX, TC ou cintilografia — necessário para liberar exercícios</small></label>
+      <button class="nota-btn" onclick="toggleNota('n_met')">📋 Nota Técnica</button>
+      <div class="nota-box" id="n_met">O percentual de comprometimento cortical determina diretamente quais exercícios são seguros. Até 25%: maioria dos exercícios liberados. 25-50%: permitida descarga parcial, sem alongamentos nem isométricos. Acima de 50%: nenhum exercício e nenhuma descarga de peso no membro afetado. Esta informação deve ser obtida junto ao oncologista antes da consulta.</div>
+      <div class="radio-inline">
+        <label class="radio-pill selected" onclick="selectPill(this,'cortex')"><input type="radio" name="cortex" value="25" checked> Até 25%</label>
+        <label class="radio-pill" onclick="selectPill(this,'cortex')"><input type="radio" name="cortex" value="25-50"> 25% a 50%</label>
+        <label class="radio-pill" onclick="selectPill(this,'cortex')"><input type="radio" name="cortex" value="50+"> Acima de 50%</label>
+        <label class="radio-pill" onclick="selectPill(this,'cortex')"><input type="radio" name="cortex" value="nao_sabe"> Não informado</label>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ ETAPA 3: SINTOMAS ══ -->
+  <div class="group-divider">
+    <div class="group-title">🩻 Etapa 3 — Sintomas Atuais</div>
+
+    <div class="form-group">
+      <label class="form-label">Intensidade da dor atual<small>Escala de 0 a 10 — Escala Visual Analógica</small></label>
+      <div class="slider-wrap">
+        <div class="slider-track">
+          <input type="range" id="dorAtual" min="0" max="10" value="3" oninput="updateSlider(this,'sliderDor')">
+          <span class="slider-value" id="sliderDor">3</span>
+        </div>
+        <div class="slider-labels"><span>0 — Sem dor</span><span>10 — Pior dor</span></div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Tipo de dor<small>Pode selecionar mais de um</small></label>
+      <div class="check-grid" id="checkDor">
+        <label class="check-item" onclick="toggleCheck(this)"><input type="checkbox" value="continua"> <span>🔁 Contínua / constante</span></label>
+        <label class="check-item" onclick="toggleCheck(this)"><input type="checkbox" value="queimacao"> <span>🔥 Queimação / choque (neuropática)</span></label>
+        <label class="check-item" onclick="toggleCheck(this)"><input type="checkbox" value="ossea"> <span>🦴 Óssea profunda</span></label>
+        <label class="check-item" onclick="toggleCheck(this)"><input type="checkbox" value="articular"> <span>🦿 Articular (hormonioterapia)</span></label>
+        <label class="check-item" onclick="toggleCheck(this)"><input type="checkbox" value="muscular"> <span>💪 Muscular / mialgia</span></label>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Fadiga oncológica<small>Como você avalia seu cansaço e falta de energia no dia a dia?</small></label>
+      <button class="nota-btn" onclick="toggleNota('n_fadiga')">📋 Nota Técnica</button>
+      <div class="nota-box" id="n_fadiga">A fadiga oncológica é o efeito colateral mais prevalente do tratamento do câncer (70-80% dos pacientes). Difere da fadiga comum: não melhora com repouso. Exercício aeróbico de baixa a moderada intensidade (45-70% da FC máx.) é a intervenção mais eficaz para reduzir fadiga oncológica — superior à própria farmacologia. A Escala de Borg pode ser usada para monitorar esforço percebido durante a sessão.</div>
+      <select class="form-select" id="fadiga">
+        <option value="ausente">Ausente — sem cansaço incomum</option>
+        <option value="leve">Leve — cansaço presente, mas não interfere nas atividades</option>
+        <option value="moderada">Moderada — interfere nas atividades, precisa de pausas frequentes</option>
+        <option value="severa">Severa — impossibilitado de realizar atividades habituais</option>
+      </select>
+    </div>
+
+    <div class="form-group" style="margin-bottom:0">
+      <label class="form-label">Neuropatia periférica<small>Formigamento, dormência ou fraqueza em mãos e pés?</small></label>
+      <div class="radio-inline">
+        <label class="radio-pill selected" onclick="selectPill(this,'neuropatia')"><input type="radio" name="neuropatia" value="ausente" checked> Ausente</label>
+        <label class="radio-pill" onclick="selectPill(this,'neuropatia')"><input type="radio" name="neuropatia" value="leve"> Leve (formigamento)</label>
+        <label class="radio-pill" onclick="selectPill(this,'neuropatia')"><input type="radio" name="neuropatia" value="moderada"> Moderada (afeta equilíbrio)</label>
+        <label class="radio-pill" onclick="selectPill(this,'neuropatia')"><input type="radio" name="neuropatia" value="severa"> Severa (fraqueza / queda)</label>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ ETAPA 4: HEMOGRAMA ══ -->
+  <div class="group-divider">
+    <div class="group-title">🔬 Etapa 4 — Exames Laboratoriais (Hemograma)</div>
+    <p style="font-size:0.83rem; color:var(--text-muted); margin-bottom:16px; line-height:1.6">Informe os valores mais recentes. Se não disponível, selecione "Não informado".</p>
+    <button class="nota-btn" onclick="toggleNota('n_hemo')">📋 Nota Técnica — Critérios de Mobilização</button>
+    <div class="nota-box" id="n_hemo">Os critérios laboratoriais são um guia, mas a sintomatologia clínica deve prevalecer. Um paciente com Hb=6 sem sintomas pode ser mobilizado com cautela; outro com exames normais mas extremamente fatigado não realizará exercícios. <strong>Plaquetas < 10.000:</strong> apenas passivos e isométricos muito leves. <strong>10.000–20.000:</strong> ativos, isométricos e isotônicos leves, sem alongamentos prolongados. <strong>> 20.000:</strong> maioria dos programas permitida. <strong>Leucócitos > 500 sem febre:</strong> pode exercitar. <strong>< 500 com febre:</strong> apenas passivos.</div>
+    <div class="hemo-grid">
+      <div class="hemo-field">
+        <label>Plaquetas</label>
+        <select class="form-select" id="plaquetas">
+          <option value="nao_sabe">Não informado</option>
+          <option value="critico">Abaixo de 5.000</option>
+          <option value="muito_baixo">5.000 a 10.000</option>
+          <option value="baixo">10.000 a 20.000</option>
+          <option value="moderado">20.000 a 50.000</option>
+          <option value="normal">Acima de 50.000 (normal/aceitável)</option>
+        </select>
+        <div class="hemo-ref">Referência: 150.000–400.000/mm³</div>
+      </div>
+      <div class="hemo-field">
+        <label>Leucócitos</label>
+        <select class="form-select" id="leucocitos">
+          <option value="nao_sabe">Não informado</option>
+          <option value="critico_febre">Abaixo de 500 com febre</option>
+          <option value="critico_sem">Abaixo de 500 sem febre</option>
+          <option value="baixo">500 a 2.000</option>
+          <option value="normal">Acima de 2.000 (aceitável)</option>
+        </select>
+        <div class="hemo-ref">Referência: 4.000–11.000/mm³</div>
+      </div>
+      <div class="hemo-field">
+        <label>Hemoglobina</label>
+        <select class="form-select" id="hemoglobina">
+          <option value="nao_sabe">Não informado</option>
+          <option value="muito_baixa">Abaixo de 8 g/dL</option>
+          <option value="baixa">8 a 10 g/dL (anemia moderada)</option>
+          <option value="limite">10 a 12 g/dL (anemia leve)</option>
+          <option value="normal">Acima de 12 g/dL</option>
+        </select>
+        <div class="hemo-ref">Referência: ♀ 12–16 / ♂ 13–17 g/dL</div>
+      </div>
+      <div class="hemo-field">
+        <label>Situação geral do hemograma</label>
+        <select class="form-select" id="hemoGeral">
+          <option value="estavel">Estável — dentro dos limites seguros</option>
+          <option value="limitado">Com limitações — valores reduzidos</option>
+          <option value="critico">Crítico — contraindicação relativa</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ ETAPA 5: LIMITAÇÃO FUNCIONAL ══ -->
+  <div class="group-divider">
+    <div class="group-title">🏃 Etapa 5 — Limitação Funcional e Trabalho</div>
+
+    <div class="form-group">
+      <label class="form-label">Capacidade funcional atual<small>ECOG adaptado — como está o dia a dia do paciente?</small></label>
+      <button class="nota-btn" onclick="toggleNota('n_ecog')">📋 Nota Técnica — ECOG/PPS</button>
+      <div class="nota-box" id="n_ecog">As escalas ECOG (Eastern Cooperative Oncology Group) e PPS (Palliative Performance Scale) são utilizadas para estratificar a capacidade funcional de pacientes oncológicos. ECOG 0: totalmente ativo. ECOG 1: restrição em atividade física intensa. ECOG 2: capaz de se autocuidar, fora do leito >50% do tempo. ECOG 3: autocuidado limitado, leito >50% do tempo. ECOG 4: completamente incapacitado. A conduta fisioterapêutica deve ser sempre guiada pela performance funcional real do paciente.</div>
+      <select class="form-select" id="limitacaoFuncional">
+        <option value="preservada">Preservada — trabalha normalmente, independente nas AVDs</option>
+        <option value="parcial">Parcial — trabalha com dificuldade, precisa de adaptações</option>
+        <option value="severa">Severa — afastado do trabalho, limitado em AVDs</option>
+        <option value="dependente">Dependente — necessita de cuidador, cuidados paliativos</option>
+      </select>
+    </div>
+
+    <div class="form-group" style="margin-bottom:0">
+      <label class="form-label">O tratamento impacta a rotina de trabalho?<small>Considerar absenteísmo, presenteísmo e necessidade de adaptações</small></label>
+      <div class="radio-inline">
+        <label class="radio-pill selected" onclick="selectPill(this,'impactoTrab')"><input type="radio" name="impactoTrab" value="nao" checked> Não impacta</label>
+        <label class="radio-pill" onclick="selectPill(this,'impactoTrab')"><input type="radio" name="impactoTrab" value="parcial"> Parcialmente</label>
+        <label class="radio-pill" onclick="selectPill(this,'impactoTrab')"><input type="radio" name="impactoTrab" value="total"> Afastado do trabalho</label>
+      </div>
+    </div>
+  </div>
+
+  <button class="btn-generate" onclick="estratificar()">
+    <span>🎯</span> Estratificar e Gerar Conduta Clínica
+  </button>
+</div>
+
+<!-- ═══════════════════════════════════
+     EMERGENCY CARD
+═══════════════════════════════════ -->
+<div class="emergency-card" id="emergencyCard" style="display:none">
+  <div class="em-icon">🚨</div>
+  <h2 class="em-title">Red Flag Oncológica Detectada</h2>
+  <p class="em-sub">O paciente apresentou resposta positiva para sinal de alerta oncológico. A fisioterapia por teleatendimento está <strong>contraindicada</strong> neste momento. Siga o protocolo de encaminhamento abaixo.</p>
+  <div class="em-flags" id="emFlagsList"></div>
+  <div id="emConduct"></div>
+  <div class="em-actions">
+    <button class="btn-danger">📞 Registrar Encaminhamento Urgente</button>
+    <button class="btn-restart" onclick="reiniciar()">↺ Nova Avaliação</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════
+     RESULT CARD
+═══════════════════════════════════ -->
+<div class="section-card" id="resultCard" style="display:none">
+
+  <div id="resultHeader">
+    <div class="result-badge" id="rBadge"></div>
+    <h2 class="result-title" id="rTitle"></h2>
+    <p class="result-subtitle" id="rSubtitle"></p>
+    <div class="pill-list" id="rContextPills" style="margin-top:12px"></div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- Hemogram alert -->
+  <div id="rHemoAlert"></div>
+
+  <!-- Protocol -->
+  <div class="protocol-box" id="rProtocolBox">
+    <div class="protocol-box-title" id="rProtocolTitle"></div>
+    <p id="rProtocolText"></p>
+  </div>
+
+  <!-- Conduct -->
+  <div class="result-section-title">Conduta Fisioterapêutica</div>
+  <div class="conduct-list" id="rConductList"></div>
+
+  <!-- Exercises -->
+  <div class="result-section-title" id="rExTitle" style="display:none">Exercícios Indicados para Casa</div>
+  <div class="exercise-list" id="rExList"></div>
+
+  <div id="rAlertsArea"></div>
+
+  <div class="divider"></div>
+
+  <!-- FUNCTIONAL LIMITATION -->
+  <div class="result-section-title">📍 Limitação Funcional e Cuidados Associados</div>
+  <div class="func-block" id="rFuncBlock">
+    <div class="func-header" id="rFuncHeader">
+      <span class="func-icon" id="rFuncIcon"></span>
+      <div>
+        <div class="func-label" id="rFuncLabel"></div>
+        <div class="func-title" id="rFuncTitle"></div>
+      </div>
+    </div>
+    <div class="func-body" id="rFuncBody"></div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- WhatsApp messages -->
+  <div class="result-section-title">💬 Mensagens para o Paciente (WhatsApp)</div>
+  <div class="msg-tabs">
+    <button class="msg-tab active" onclick="showMsg(0,this)">Pré-consulta</button>
+    <button class="msg-tab" onclick="showMsg(1,this)">Red Flag (24h antes)</button>
+    <button class="msg-tab" onclick="showMsg(2,this)">Pós-consulta</button>
+    <button class="msg-tab" onclick="showMsg(3,this)">Monitoramento</button>
+  </div>
+  <div class="msg-box" id="rMsg"></div>
+  <button class="btn-copy" id="btnCopy" onclick="copiarMsg()">📋 Copiar para WhatsApp</button>
+
+  <div class="shared-decision">
+    <div class="shared-title">📌 Abordagem Centrada no Paciente</div>
+    <ol>
+      <li>Acompanhamento sempre multidisciplinar — comunicar equipe oncológica antes de iniciar protocolo.</li>
+      <li>Exercícios de acordo com a tolerância do paciente — não guiar apenas pelo exame, mas pela sintomatologia.</li>
+      <li>Entender qual o melhor desfecho para o paciente: aquilo que ele valoriza como resultado do tratamento.</li>
+      <li>Não reforçar sempre sobre a dor — usar o acompanhamento para gerar boas informações.</li>
+    </ol>
+  </div>
+
+  <div class="result-actions">
+    <button class="btn-print" onclick="window.print()">🖨 Imprimir</button>
+    <button class="btn-restart" onclick="reiniciar()">↺ Nova Avaliação</button>
+  </div>
+
+</div>
+</div><!-- /main -->
+
+<script>
+// ══════════════════════════════════════════
+// STATE
+// ══════════════════════════════════════════
+const rfState = {};
+let currentMsgs = [];
+
+// ══════════════════════════════════════════
+// UTILS
+// ══════════════════════════════════════════
+function toggleNota(id) { document.getElementById(id).classList.toggle('open'); }
+
+function updateSlider(input, valId) {
+  const val = input.value;
+  document.getElementById(valId).textContent = val;
+  const pct = (val / 10) * 100;
+  input.style.background = `linear-gradient(to right,#1A7A8C 0%,#1A7A8C ${pct}%,#DDD8CF ${pct}%,#DDD8CF 100%)`;
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  updateSlider(document.getElementById('dorAtual'), 'sliderDor');
+  // Watch for metástase óssea checkbox
+  document.querySelectorAll('#checkComplicacoes .check-item').forEach(item => {
+    item.addEventListener('click', () => {
+      setTimeout(() => {
+        const checked = [...document.querySelectorAll('#checkComplicacoes input:checked')].map(i => i.value);
+        document.getElementById('metastaseOsseaExtra').style.display =
+          checked.includes('metastase_ossea') ? 'block' : 'none';
+      }, 20);
+    });
+  });
+});
+
+function toggleCheck(label) {
+  setTimeout(() => label.classList.toggle('checked', label.querySelector('input').checked), 10);
+}
+
+function selectPill(el, name) {
+  document.querySelectorAll('.radio-pill').forEach(p => {
+    if (p.querySelector(`input[name="${name}"]`)) p.classList.remove('selected');
+  });
+  el.classList.add('selected');
+  const r = el.querySelector('input'); if (r) r.checked = true;
+}
+
+function setRF(key, val, btn, reason) {
+  rfState[key] = { val, reason };
+  const group = btn.parentElement;
+  group.querySelectorAll('.yn-btn').forEach(b => b.classList.remove('sel-sim','sel-nao'));
+  btn.classList.add(val === 'sim' ? 'sel-sim' : 'sel-nao');
+}
+
+// ══════════════════════════════════════════
+// FUNCTIONAL LIMITATION DATABASE
+// ══════════════════════════════════════════
+const FUNC_DATA = {
+  preservada: {
+    css: 'preservada', icon: '🟢',
+    label: 'Limitação Funcional Preservada',
+    title: 'Independente — trabalha e realiza AVDs sem restrição',
+    items: [
+      { icon: '💼', title: 'Manutenção da capacidade laboral', text: 'Orientar sobre pausas ativas durante o trabalho. Prevenir complicações futuras com exercícios regulares mesmo durante o tratamento.' },
+      { icon: '🏃', title: 'Exercício como prioridade terapêutica', text: 'Exercício aeróbico de baixa a média intensidade (45-70% da FC máx) é a intervenção mais eficaz para controle da fadiga oncológica.' },
+      { icon: '📚', title: 'Educação e empoderamento', text: 'Informar que manter-se ativo durante o tratamento melhora o prognóstico, reduz efeitos adversos e favorece melhor tolerância à quimio/radioterapia.' },
+      { icon: '💤', title: 'Higiene do sono e energia', text: 'Orientar rotina de sono regular. A fadiga oncológica, mesmo leve, pode impactar progressivamente. Monitorar com Escala de Borg nas sessões.' },
+    ],
+    reeval: 'Manter contato quinzenal. Reavaliar se surgir fadiga moderada ou novos sintomas.'
+  },
+  parcial: {
+    css: 'parcial', icon: '🟡',
+    label: 'Limitação Funcional Parcial',
+    title: 'Trabalha com dificuldade — adaptações necessárias',
+    items: [
+      { icon: '🪑', title: 'Adaptações ergonômicas no trabalho', text: 'Ajustar altura de cadeira, mesa e monitor. Orientar pausas programadas a cada 45-60 min. Avaliar possibilidade de trabalho remoto nas fases críticas do tratamento.' },
+      { icon: '⚡', title: 'Técnicas de conservação de energia', text: 'Ensinar estratégias de conservação: priorizar tarefas, delegar atividades de alto custo energético, respeitar ciclos de energia ao longo do dia (pico matinal).' },
+      { icon: '🧠', title: 'Gestão do "chemo brain"', text: 'Neblina cognitiva é frequente. Orientar uso de agenda, listas de tarefas curtas, evitar multitarefas. Comunicar empregador sobre necessidade de adaptações se necessário.' },
+      { icon: '🤝', title: 'Rede de suporte', text: 'Identificar rede de apoio familiar e social. Atendimento multidisciplinar — avaliar necessidade de suporte psicológico e serviço social.' },
+      { icon: '💼', title: 'Avaliação de afastamento parcial', text: 'Discutir com médico do trabalho e oncologista necessidade de redução de jornada, home office ou afastamento temporário durante fases de maior toxicidade.' },
+    ],
+    reeval: 'Reavaliar semanalmente durante tratamento ativo. Monitorar fadiga, dor e tolerância aos exercícios.'
+  },
+  severa: {
+    css: 'severa', icon: '🔴',
+    label: 'Limitação Funcional Severa',
+    title: 'Afastado do trabalho — limitado nas AVDs',
+    items: [
+      { icon: '🏠', title: 'Adaptação do ambiente domiciliar', text: 'Avaliar segurança em casa: risco de queda com neuropatia ou fraqueza. Orientar uso de apoios, remoção de tapetes, barras no banheiro.' },
+      { icon: '⚙️', title: 'Exercício mínimo viável', text: 'Foco em exercícios passivos, isométricos leves e respiratórios. Mesmo mobilidade mínima tem impacto positivo em qualidade de vida e fadiga.' },
+      { icon: '🫁', title: 'Treinamento respiratório', text: 'Exercícios respiratórios são fundamentais: melhoram tolerância à quimio, condicionamento cardiorrespiratório e reduzem risco de complicações pós-operatórias.' },
+      { icon: '😟', title: 'Saúde mental — atenção especial', text: 'Afastamento laboral + limitação funcional = alto risco de depressão e ansiedade. Encaminhamento para psicologia oncológica deve ser considerado ativamente.' },
+      { icon: '💼', title: 'Documentação para INSS / benefícios', text: 'Comunicar ao médico assistente para documentação adequada. Orientar sobre benefícios previdenciários disponíveis durante o afastamento.' },
+      { icon: '👨‍👩‍👧', title: 'Cuidador e rede de suporte', text: 'Orientar e treinar cuidador principal. Identificar serviços de apoio (CAPS, assistência social, grupos de apoio ao câncer).' },
+    ],
+    reeval: 'Acompanhamento semanal. Monitorar evolução funcional e necessidade de ajuste na conduta.'
+  },
+  dependente: {
+    css: 'dependente', icon: '⚫',
+    label: 'Dependente — Cuidados Paliativos',
+    title: 'Necessita de cuidador — foco em conforto e qualidade de vida',
+    items: [
+      { icon: '🕊️', title: 'Objetivo: conforto e autonomia mínima', text: 'O foco deixa de ser condicionamento e passa a ser dignidade, alívio da dor e manutenção de função residual. Cada conquista de autonomia tem valor imenso.' },
+      { icon: '💊', title: 'Controle da dor oncológica', text: 'Dor oncológica paliativa é complexa. Acupuntura, auriculoterapia, exercícios leves e TENS podem oferecer analgesia adjuvante. Integrar com equipe de cuidados paliativos.' },
+      { icon: '🫁', title: 'Exercícios respiratórios para dispneia', text: 'Técnicas de respiração diafragmática e pursed-lip breathing aliviam dispneia. Posicionamento adequado (decúbito semi-sentado) facilita o conforto respiratório.' },
+      { icon: '🛏️', title: 'Posicionamento e prevenção de LPP', text: 'Orientar cuidador sobre mudança de decúbito a cada 2h, uso de coxins, hidratação da pele e sinais precoces de lesão por pressão.' },
+      { icon: '🤝', title: 'Suporte à família e cuidador', text: 'Treinar cuidador em técnicas de transferência segura, higiene e mobilização passiva. A sobrecarga do cuidador é real — oferecer suporte emocional à família.' },
+      { icon: '🧘', title: 'Relaxamento e bem-estar', text: 'Técnicas de relaxamento, massagem suave, musicoterapia e toque terapêutico contribuem para conforto e qualidade de vida nos cuidados paliativos.' },
+    ],
+    reeval: 'Acompanhamento conforme necessidade — priorizar conforto e comunicação próxima com equipe paliativa.'
+  }
+};
+
+// ══════════════════════════════════════════
+// EXERCISE DATABASE BY TREATMENT + GROUP
+// ══════════════════════════════════════════
+function getExercises(group, fase, complicacoes) {
+  const base = {
+    G1: [
+      { name: 'Caminhada aeróbica', desc: '20-30 min, 5x/semana, intensidade 45-70% FC máx. (conversa possível). Usar Borg 3-5. Reduz fadiga e melhora prognóstico.' },
+      { name: 'Exercícios de resistência progressiva', desc: '2-3x/semana com faixas elásticas ou pesos leves. Foco nos grandes grupos musculares. Preserva massa magra durante quimioterapia.' },
+      { name: 'Alongamento global', desc: '10-15 min diários. Manutenção da flexibilidade, prevenção de fibroses e aderências pós-radioterapia.' },
+      { name: 'Exercícios respiratórios', desc: 'Respiração diafragmática e expansão torácica 2x/dia. Fundamentais para tolerância ao tratamento e pós-operatório.' },
+    ],
+    G2: [
+      { name: 'Exercícios ativos e isométricos leves', desc: 'Contrações sustentadas 6s, pausa 10s, 10 repetições. Seguros com plaquetas entre 10.000-20.000/mm³.' },
+      { name: 'Mobilidade articular suave', desc: 'Movimentos ativos livres dentro do conforto. Evitar alongamentos prolongados com plaquetopenia. 2x/dia por 10-15 min.' },
+      { name: 'Conservação de energia', desc: 'Técnica ABC: Agendar tarefas no pico de energia, Balancear atividade-repouso, Conforto postural. Ensinar ao paciente e cuidador.' },
+      { name: 'Exercícios respiratórios', desc: 'Treinamento muscular inspiratório com threshold. Peça ao paciente respirar profundo 10x de hora em hora durante o dia.' },
+    ],
+    G3: [
+      { name: 'Exercícios passivos e AAROM', desc: 'Mobilização passiva e ativo-assistida com mínimo esforço. Manter amplitude articular e circulação periférica.' },
+      { name: 'Respiração diafragmática', desc: 'Inspiração nasal lenta (4s) + expiração oral com lábios franzidos (6s). 10 repetições, 3x/dia. Alivia dispneia e promove relaxamento.' },
+      { name: 'Posicionamento terapêutico', desc: 'Orientar posições de conforto que aliviem dor e melhorem respiração. Muda de decúbito programada a cada 2h se acamado.' },
+      { name: 'Relaxamento muscular progressivo', desc: 'Tensão e relaxamento suave de grupos musculares. Associar a respiração. Reduz dor por tensão muscular e melhora qualidade do sono.' },
+    ],
+    G4: [],
+  };
+
+  let exList = [...(base[group] || [])];
+
+  // Specific by cancer type / complications
+  if (complicacoes.includes('linfedema')) {
+    exList.push({ name: 'Drenagem linfática por exercício', desc: 'Movimentos de bombeamento distal → proximal com enfaixamento compressivo. Elevar membro 30-40cm. Usar meia compressiva conforme prescrição.' });
+  }
+  if (complicacoes.includes('adm_ombro')) {
+    exList.push({ name: 'Ganho de ADM de ombro (pós-mastectomia)', desc: 'Pêndulo de Codman, escalada de parede, roda de ombro. Iniciar suavemente — pós 15 dias sem dreno e sem ferida aberta.' });
+  }
+  if (complicacoes.includes('incontinencia') || complicacoes.includes('disfuncao_pelvica')) {
+    exList.push({ name: 'Exercícios de assoalho pélvico (Kegel)', desc: 'Contração de 5-10s + relaxamento. 10 repetições, 3 séries, 3x/dia. Fundamental no pós-prostatectomia e pós-tratamento ginecológico.' });
+  }
+  if (complicacoes.includes('respiratorio') || fase === 'radio') {
+    exList.push({ name: 'Treinamento muscular inspiratório (TMI)', desc: 'Com dispositivo threshold ou coach2 inspiratório. 30 repetições, 2x/dia. Melhora tolerância ao esforço e condicionamento cardiorrespiratório.' });
+  }
+
+  return exList;
+}
+
+// ══════════════════════════════════════════
+// WHATSAPP MESSAGES
+// ══════════════════════════════════════════
+function getMsgs(group) {
+  const msgs = [
+    `Olá! Somos da equipe de fisioterapia. Nossa consulta está agendada e queremos que ela seja segura e personalizada. Por favor, envie uma foto do seu hemograma mais recente e, se tiver, dos seus exames de imagem. Qualquer dúvida, estou aqui!`,
+    `Oi! Nossa teleconsulta é amanhã. Para a sua segurança: você teve febre acima de 37,8°C, falta de ar repentina, inchaço súbito em um membro, ou dor muito forte nos ossos nas últimas 24 horas? Se sim, me avise imediatamente antes de nossa consulta.`,
+    {
+      G1: `Foi ótimo conversar com você hoje! Manter-se ativo ajuda a reduzir a fadiga do tratamento e melhora o prognóstico. Enviei os exercícios que combinamos. Lembre-se: use a escala de 0 a 10 de cansaço. Se sentir tontura, dor forte ou cansaço excessivo, pare e me mande mensagem.`,
+      G2: `Foi ótimo conversar com você hoje! Vamos ser cuidadosos com a intensidade dos exercícios enquanto seus exames estiverem alterados. Enviei atividades seguras para o seu quadro atual. Qualquer sintoma novo — febre, tontura ou piora da dor — me avise imediatamente.`,
+      G3: `Obrigado pela nossa conversa hoje. Neste momento, nosso foco é o seu conforto e qualidade de vida. As orientações que enviei são suaves e podem ser feitas no seu ritmo, sem forçar. Qualquer desconforto, pare. Estou aqui para o que precisar.`,
+      G4: `Obrigado pela nossa conversa hoje. Enviando as orientações de posicionamento e os exercícios respiratórios que conversamos. Faça com calma, sem dor. Qualquer dúvida sua ou do seu cuidador, podem me chamar.`,
+    }[group] || '',
+    `Olá! Passando para nosso acompanhamento. De 0 a 10: como está o cansaço nesta semana? E a dor? Conseguiu fazer as atividades que combinamos? Está conseguindo fazer as pausas durante o trabalho? Qualquer dúvida, estou por aqui!`,
+  ];
+  return msgs;
+}
+
+// ══════════════════════════════════════════
+// STRATIFICATION ENGINE
+// ══════════════════════════════════════════
+function estratificar() {
+  // 1. Check red flags
+  const flags = Object.entries(rfState).filter(([k,v]) => v.val === 'sim');
+  if (flags.length > 0) { showEmergency(flags); return; }
+
+  // Gather values
+  const fase          = document.getElementById('faseTratamento').value;
+  const complicacoes  = [...document.querySelectorAll('#checkComplicacoes input:checked')].map(i => i.value);
+  const plaquetas     = document.getElementById('plaquetas').value;
+  const leucocitos    = document.getElementById('leucocitos').value;
+  const hemoglobina   = document.getElementById('hemoglobina').value;
+  const hemoGeral     = document.getElementById('hemoGeral').value;
+  const fadiga        = document.getElementById('fadiga').value;
+  const neuropatia    = document.querySelector('input[name="neuropatia"]:checked')?.value || 'ausente';
+  const limitacao     = document.getElementById('limitacaoFuncional').value;
+  const cortex        = document.querySelector('input[name="cortex"]:checked')?.value || '25';
+  const dor           = parseInt(document.getElementById('dorAtual').value);
+
+  let group;
+
+  // G4: bone metastasis
+  if (complicacoes.includes('metastase_ossea')) {
+    group = 'G4';
+  }
+  // G3: palliative or critical labs or severely limited
+  else if (fase === 'paliativo' || plaquetas === 'critico' || plaquetas === 'muito_baixo' ||
+           leucocitos === 'critico_febre' || limitacao === 'dependente') {
+    group = 'G3';
+  }
+  // G2: hematologic limitations or moderate fatigue or partial limitation
+  else if (plaquetas === 'baixo' || hemoGeral === 'limitado' || hemoGeral === 'critico' ||
+           fadiga === 'moderada' || fadiga === 'severa' || limitacao === 'severa' ||
+           hemoglobina === 'muito_baixa') {
+    group = 'G2';
+  }
+  // G1: default — stable, restorative
+  else {
+    group = 'G1';
+  }
+
+  renderResult({ group, fase, complicacoes, plaquetas, leucocitos, hemoglobina, fadiga, neuropatia, limitacao, cortex, dor });
+}
+
+// ══════════════════════════════════════════
+// SHOW EMERGENCY
+// ══════════════════════════════════════════
+function showEmergency(flags) {
+  document.getElementById('formCard').style.display = 'none';
+  const ec = document.getElementById('emergencyCard');
+  ec.style.display = 'block';
+
+  document.getElementById('emFlagsList').innerHTML = flags.map(([k,v]) => `
+    <div class="em-flag">
+      <span>⚠</span>
+      <div><strong>Red Flag ativa:</strong> ${v.reason}</div>
+    </div>`).join('');
+
+  const conductMap = {
+    rf1: '<div class="alert-box danger"><strong>Neutropenia Febril:</strong> Encaminhar imediatamente para emergência oncológica. Paciente com febre + baixa imunidade = risco de sepse. Qualquer exercício contraindicado.</div>',
+    rf2: '<div class="alert-box danger"><strong>Compressão Medular:</strong> Urgência cirúrgica. Janela terapêutica estreita. Suspender toda mobilização. Encaminhar à emergência imediatamente para RM de coluna.</div>',
+    rf3: '<div class="alert-box danger"><strong>TVP / Embolia Pulmonar:</strong> Paciente oncológico tem risco de trombose 4-7x maior. Com falta de ar: risco de morte iminente. Chamar SAMU / encaminhar à emergência com urgência.</div>',
+    rf4: '<div class="alert-box danger"><strong>Fratura Patológica:</strong> Metástase óssea pode ter comprometido a integridade estrutural. Nenhum exercício sem imagem confirmando cortical > 50% íntegra. Encaminhar para oncologista.</div>',
+    rf5: '<div class="alert-box danger"><strong>Valores Hematológicos Críticos:</strong> Plaquetas < 10.000 = risco de hemorragia espontânea. Leucócitos < 500 com febre = neutropenia febril. Qualquer exercício absolutamente contraindicado.</div>',
+  };
+
+  const activeKeys = Object.entries(rfState).filter(([k,v]) => v.val === 'sim').map(([k]) => k);
+  document.getElementById('emConduct').innerHTML = activeKeys.map(k => conductMap[k] || '').join('');
+
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ══════════════════════════════════════════
+// RENDER RESULT
+// ══════════════════════════════════════════
+function renderResult({ group, fase, complicacoes, plaquetas, leucocitos, hemoglobina, fadiga, neuropatia, limitacao, cortex, dor }) {
+  const rc = document.getElementById('resultCard');
+  rc.style.display = 'block';
+  rc.className = 'section-card ' + group.toLowerCase();
+
+  // Group config
+  const GC = {
+    G1: { badge: '✅ Grupo 1 — Reabilitação Preventiva e Restauradora', title: 'Conduta Ativa — Exercício Terapêutico', subtitle: 'Exames estáveis. Paciente apto para programa completo de exercícios. Objetivo: minimizar fadiga, manter capacidade cardiovascular e força muscular.', pboxTitle: 'Protocolo: Reabilitação Preventiva / Restauradora', pboxText: 'Atividades aeróbicas de baixa a média intensidade (45-70% da FC máx.), resistência progressiva e alongamentos. Para mastectomizadas: mobilidade de ombro e prevenção de linfedema. Para prostatectomizados: fortalecimento do assoalho pélvico. Acompanhamento multidisciplinar.' },
+    G2: { badge: '⚠ Grupo 2 — Reabilitação de Suporte', title: 'Conduta Adaptada — Limitações Hematológicas', subtitle: 'Doença controlada com limitações derivadas do tratamento. Adaptar intensidade conforme hemograma. Técnicas de conservação de energia são prioritárias.', pboxTitle: 'Protocolo: Reabilitação de Suporte', pboxText: 'Plaquetas 10.000-20.000/mm³: exercícios ativos, isométricos e isotônicos com leve resistência — sem alongamentos prolongados. Leucócitos > 500 sem febre: maioria dos programas permitida. Fadiga moderada/severa: técnicas de conservação de energia são prioridade no trabalho e AVDs.' },
+    G3: { badge: '🕊️ Grupo 3 — Reabilitação Paliativa', title: 'Conduta de Conforto — Foco em Qualidade de Vida', subtitle: 'Doença avançada ou limitação crítica. O foco é conforto, autonomia mínima e alívio da dor. O exercício é coadjuvante da analgesia e não objetivo em si.', pboxTitle: 'Protocolo: Reabilitação Paliativa', pboxText: 'Plaquetas < 10.000/mm³: apenas passivos e isométricos muito leves. Leucócitos < 500 com febre: apenas passivos. Priorizar exercícios respiratórios, alongamentos suaves para conforto, posicionamento e relaxamento para controle da dor. Acupuntura e auriculoterapia como adjuvantes analgésicos.' },
+    G4: { badge: '🦴 Grupo 4 — Metástases Ósseas', title: 'Conduta com Liberação Médica — Risco de Fratura', subtitle: 'Tumores disseminados para os ossos. Protocolo de exercício determinado pelo percentual de comprometimento cortical confirmado em imagem.', pboxTitle: 'Protocolo: Metástases Ósseas (requer liberação médica)', pboxText: cortex === '25' ? 'Comprometimento ≤ 25%: pode realizar a maioria dos exercícios com cuidado. Evitar impacto.' : cortex === '25-50' ? 'Comprometimento 25-50%: descarga de peso parcial ou total permitida. PROIBIDOS: alongamentos e exercícios isométricos de alta intensidade. Risco de fratura elevado.' : 'Comprometimento > 50%: NENHUM exercício e NENHUMA descarga de peso no membro afetado. Apenas passivos e posicionamento de conforto.' },
+  };
+
+  const cfg = GC[group];
+  document.getElementById('rBadge').textContent    = cfg.badge;
+  document.getElementById('rTitle').textContent    = cfg.title;
+  document.getElementById('rSubtitle').textContent = cfg.subtitle;
+
+  // Context pills
+  const faseLabels = { diagnostico:'Diagnóstico inicial', cirurgia_recente:'Pós-cirúrgico recente', quimio:'Em quimioterapia', radio:'Em radioterapia', hormonio:'Hormonioterapia', imuno:'Imunoterapia', pos_tratamento:'Pós-tratamento', paliativo:'Cuidados paliativos' };
+  const fadigaLabels = { ausente:'Sem fadiga', leve:'Fadiga leve', moderada:'Fadiga moderada ⚠', severa:'Fadiga severa ⚠' };
+  const pills = [ faseLabels[fase] || fase, fadigaLabels[fadiga] ];
+  if (dor > 0) pills.push(`Dor ${dor}/10`);
+  if (neuropatia !== 'ausente') pills.push(`Neuropatia ${neuropatia}`);
+  document.getElementById('rContextPills').innerHTML = pills.map(p => `<span class="pill">${p}</span>`).join('');
+
+  // Hemo alert
+  let hemoAlerts = [];
+  if (plaquetas === 'critico' || plaquetas === 'muito_baixo') hemoAlerts.push('<div class="alert-box danger">🔴 <strong>Plaquetas críticas (< 10.000):</strong> Apenas exercícios passivos e isométricos muito leves. Risco de hemorragia espontânea.</div>');
+  else if (plaquetas === 'baixo') hemoAlerts.push('<div class="alert-box warning">🟡 <strong>Plaquetas entre 10.000-20.000/mm³:</strong> Exercícios ativos e leve resistência permitidos. Proibidos alongamentos prolongados.</div>');
+  if (leucocitos === 'critico_sem') hemoAlerts.push('<div class="alert-box warning">⚠ <strong>Leucócitos < 500 sem febre:</strong> Exercícios leves permitidos. Monitorar temperatura a cada sessão.</div>');
+  if (hemoglobina === 'muito_baixa') hemoAlerts.push('<div class="alert-box warning">⚠ <strong>Hemoglobina < 8 g/dL:</strong> Ajustar intensidade do exercício aeróbico. Guiar pelo sintoma (tontura, palpitação) mais do que pelo exame.</div>');
+  document.getElementById('rHemoAlert').innerHTML = hemoAlerts.join('');
+
+  // Protocol box
+  const pb = document.getElementById('rProtocolBox');
+  pb.className = 'protocol-box ' + group.toLowerCase();
+  document.getElementById('rProtocolTitle').textContent = cfg.pboxTitle;
+  document.getElementById('rProtocolText').textContent  = cfg.pboxText;
+
+  // Conduct
+  const conductMap = {
+    G1: [
+      { icon:'🏃', title:'Exercício aeróbico supervisionado', text:'45-70% da FC máx. (conversa possível), Borg 3-5. Iniciar com 10-15 min e progredir para 30-45 min conforme tolerância.' },
+      { icon:'💪', title:'Resistência muscular progressiva', text:'2-3x/semana. Bandas elásticas ou halteres leves. Foco em grandes grupos musculares. Preserve massa magra durante quimio.' },
+      { icon:'📚', title:'Educação oncológica', text:'Exercício melhora prognóstico e tolerância ao tratamento. Desmistificar o repouso total. Informar sobre sintomas de alerta durante o exercício.' },
+      { icon:'🤝', title:'Suporte multidisciplinar', text:'Comunicar oncologista antes de iniciar. Integrar com nutricionista e psicologia. Roda de conversa (20-30 min) para compartilhamento de experiências.' },
+    ],
+    G2: [
+      { icon:'⚙️', title:'Adaptar conforme hemograma atual', text:'Solicitar hemograma antes de cada fase de exercícios. Guia primário: sintomatologia. Guia secundário: valores laboratoriais.' },
+      { icon:'🧩', title:'Técnicas de conservação de energia', text:'Ensinar método ABC: Agendar tarefas no pico de energia, Balancear atividade-repouso, Conforto postural. Aplicar no trabalho e AVDs.' },
+      { icon:'🛑', title:'Evitar exercícios contraindicados', text:'Com plaquetas baixas: sem impacto, sem Valsalva, sem alongamentos prolongados. Preferir isométricos e isotônicos leves.' },
+      { icon:'📈', title:'Monitoramento semanal', text:'Reavaliar fadiga (Borg), dor, exames e tolerância semanalmente. Ajustar programa conforme ciclos de quimioterapia.' },
+    ],
+    G3: [
+      { icon:'🕊️', title:'Conforto como objetivo principal', text:'Exercícios leves de relaxamento, respiração e mobilidade passiva. Analgesia adjuvante com acupuntura, auriculoterapia e posicionamento.' },
+      { icon:'🫁', title:'Exercícios respiratórios para dispneia', text:'Respiração com lábios franzidos, posição de cocheiro. Reduzem percepção de dispneia e promovem conforto mesmo em estágios avançados.' },
+      { icon:'🙏', title:'Qualidade de vida como desfecho', text:'Entender o que o paciente valoriza como melhor resultado. Não impor metas funcionais. Cada pequena conquista de autonomia tem valor terapêutico.' },
+      { icon:'🤝', title:'Suporte ao cuidador', text:'Treinar cuidador em transferências seguras, posicionamento e higiene. Oferecer suporte emocional — sobrecarga do cuidador é real.' },
+    ],
+    G4: [
+      { icon:'🦴', title:`Conduta por comprometimento cortical: ${cortex === '25' ? '≤ 25%' : cortex === '25-50' ? '25-50%' : '> 50%'}`, text: cortex === '25' ? 'Maioria dos exercícios permitidos com cautela. Evitar impacto. Monitorar dor óssea constantemente.' : cortex === '25-50' ? 'Descarga de peso parcial/total permitida. Exercícios isométricos e alongamentos PROIBIDOS. Risco de fratura elevado.' : 'NENHUM exercício. NENHUMA descarga de peso no membro afetado. Apenas passivos e posicionamento de conforto.' },
+      { icon:'🏥', title:'Liberação médica obrigatória', text:'Toda e qualquer intervenção fisioterapêutica em metástase óssea requer confirmação do oncologista com laudo de imagem atualizado.' },
+      { icon:'💊', title:'Analgesia multimodal', text:'Integrar com equipe: analgésicos, bifosfonados, radioterapia paliativa óssea. A fisioterapia é adjuvante — não o tratamento principal da dor óssea metastática.' },
+      { icon:'📋', title:'Monitoramento rigoroso', text:'Qualquer piora da dor óssea, nova limitação de movimento ou sinais neurológicos: suspender exercícios imediatamente e comunicar oncologista.' },
+    ],
+  };
+  document.getElementById('rConductList').innerHTML =
+    (conductMap[group] || []).map(c => `
+      <div class="conduct-item">
+        <span class="conduct-icon">${c.icon}</span>
+        <div class="conduct-text"><strong>${c.title}</strong>${c.text}</div>
+      </div>`).join('');
+
+  // Exercises
+  const exercises = getExercises(group, fase, complicacoes);
+  const exTitle = document.getElementById('rExTitle');
+  const exList  = document.getElementById('rExList');
+  if (exercises.length > 0 && group !== 'G4') {
+    exTitle.style.display = 'block';
+    exList.innerHTML = exercises.map((e, i) => `
+      <div class="exercise-item">
+        <div class="ex-num">${i+1}</div>
+        <p><strong>${e.name}</strong>${e.desc}</p>
+      </div>`).join('');
+  } else {
+    exTitle.style.display = 'none';
+    exList.innerHTML = '';
+  }
+
+  // Specific alerts
+  let alerts = [];
+  if (neuropatia === 'moderada' || neuropatia === 'severa') alerts.push({ type:'warning', text:'⚠ <strong>Neuropatia periférica:</strong> Risco de queda aumentado. Evitar exercícios de equilíbrio sem supervisão. Orientar uso de calçados adequados e superfícies estáveis.' });
+  if (fase === 'radio') alerts.push({ type:'info', text:'ℹ <strong>Radioterapia em curso:</strong> Atenção à radiodermite — evitar pressão na área irradiada. Laser e LED podem ser indicados para cicatrização. Atenção à estenose vaginal/anal em pelve.' });
+  if (fase === 'imuno') alerts.push({ type:'info', text:'ℹ <strong>Imunoterapia:</strong> Pode causar mialgia, artralgia e complicações respiratórias. Monitorar dor muscular e articular. Suspender exercício se dispneia surge.' });
+  if (fase === 'hormonio') alerts.push({ type:'info', text:'ℹ <strong>Hormonioterapia:</strong> Prevenir e tratar dor articular, fadiga, tendinites e disfunções pélvicas. Exercícios de resistência são especialmente importantes para preservar massa óssea.' });
+  if (complicacoes.includes('linfedema')) alerts.push({ type:'purple', text:'💜 <strong>Linfedema:</strong> Tratamento é para a vida toda. Enfaixamento compressivo + drenagem linfática manual + exercícios + meia compressiva. Conscientizar paciente sobre adesão ao longo prazo.' });
+  if (fase === 'cirurgia_recente') alerts.push({ type:'warning', text:'⚠ <strong>Pós-operatório recente:</strong> Ca de mama: iniciar ADM de ombro após 15 dias sem dreno e sem ferida aberta. Quanto antes iniciar, melhor o prognóstico funcional.' });
+
+  document.getElementById('rAlertsArea').innerHTML = alerts.map(a => `<div class="alert-box ${a.type}">${a.text}</div>`).join('');
+
+  // Functional limitation
+  const fd = FUNC_DATA[limitacao];
+  const fhdr = document.getElementById('rFuncHeader');
+  fhdr.className = 'func-header ' + fd.css;
+  document.getElementById('rFuncIcon').textContent  = fd.icon;
+  document.getElementById('rFuncLabel').textContent = fd.label;
+  document.getElementById('rFuncTitle').textContent = fd.title;
+  document.getElementById('rFuncLabel').className   = 'func-label';
+  document.getElementById('rFuncTitle').className   = 'func-title';
+  document.getElementById('rFuncBody').innerHTML =
+    fd.items.map(item => `
+      <div class="func-item">
+        <span class="func-item-icon">${item.icon}</span>
+        <div class="func-item-text"><strong>${item.title}</strong>${item.text}</div>
+      </div>`).join('')
+    + `<div class="func-reeval"><span>⏱</span><span>${fd.reeval}</span></div>`;
+
+  // Messages
+  currentMsgs = getMsgs(group);
+  showMsg(0, document.querySelector('.msg-tab'));
+
+  rc.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+// ══════════════════════════════════════════
+// MESSAGE TABS
+// ══════════════════════════════════════════
+function showMsg(idx, btn) {
+  document.querySelectorAll('.msg-tab').forEach(t => t.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  const msg = currentMsgs[idx];
+  document.getElementById('rMsg').textContent = typeof msg === 'string' ? msg : '';
+  document.getElementById('btnCopy').textContent = '📋 Copiar para WhatsApp';
+  document.getElementById('btnCopy').classList.remove('copied');
+}
+
+function copiarMsg() {
+  navigator.clipboard.writeText(document.getElementById('rMsg').textContent).then(() => {
+    const btn = document.getElementById('btnCopy');
+    btn.textContent = '✅ Copiado!';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = '📋 Copiar para WhatsApp'; btn.classList.remove('copied'); }, 2200);
+  });
+}
+
+// ══════════════════════════════════════════
+// REINICIAR
+// ══════════════════════════════════════════
+function reiniciar() {
+  document.getElementById('resultCard').style.display = 'none';
+  document.getElementById('emergencyCard').style.display = 'none';
+  document.getElementById('formCard').style.display = 'block';
+  Object.keys(rfState).forEach(k => delete rfState[k]);
+  document.querySelectorAll('.yn-btn').forEach(b => b.classList.remove('sel-sim','sel-nao'));
+  document.querySelectorAll('.check-item').forEach(el => { el.classList.remove('checked'); el.querySelector('input').checked = false; });
+  document.getElementById('dorAtual').value = 3;
+  updateSlider(document.getElementById('dorAtual'), 'sliderDor');
+  document.getElementById('metastaseOsseaExtra').style.display = 'none';
+  document.getElementById('formCard').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+</script>
+</body>
+</html>

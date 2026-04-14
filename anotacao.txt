@@ -46,3 +46,84 @@ No Código: O sistema agrupa esses pacientes no Grupo B. Se o paciente diz que p
 Este é o grupo da "fisgada" ou do "cansaço" sem irradiação.
 No Código: Se os testes de inclinar para frente e para trás não mudam a dor (indiferente), o sistema joga para o Grupo C. O foco aqui é o fortalecimento do Core (Transverso/Multífidos) que você sugeriu, além de combater a cinesiofobia.
 
+=====================================================================
+ONCOLOGIA
+=====================================================================
+
+---
+
+**PROTOCOLO DE ONCOLOGIA — CRITÉRIOS DE ESTRATIFICAÇÃO**
+*Referência para anotações clínicas*
+
+---
+
+**LÓGICA DE PRIORIDADE**
+O sistema verifica os grupos nesta ordem: Emergência → G4 → G3 → G2 → G1. O paciente é classificado no primeiro grupo cujos critérios forem atendidos.
+
+---
+
+**🚨 EMERGÊNCIA — Red Flags (qualquer SIM suspende o teleatendimento)**
+
+Resposta SIM em qualquer uma das perguntas abaixo = encaminhamento imediato, sem estratificação de grupo:
+
+- Febre acima de 37,8°C ou calafrios nas últimas 24h → risco de neutropenia febril
+- Dor nas costas súbita + fraqueza nas pernas ou perda de controle urinário/fecal → suspeita de compressão medular
+- Inchaço súbito em um membro + dor, vermelhidão ou falta de ar repentina → risco de TVP ou Embolia Pulmonar
+- Dor óssea forte que piora com movimento ou ao sustentar o peso → risco de fratura patológica
+- Plaquetas abaixo de 10.000 ou leucócitos abaixo de 500 com febre → contraindicação absoluta
+
+---
+
+**🦴 GRUPO 4 — Metástases Ósseas**
+*(verificado primeiro, após red flags)*
+
+Ativado por uma única condição:
+- Complicações: "Metástase óssea confirmada" marcada na Etapa 2
+
+Sub-estratificação por comprometimento cortical (informado por imagem):
+- Até 25%: maioria dos exercícios permitidos, evitar impacto
+- 25% a 50%: descarga de peso permitida, proibidos alongamentos e isométricos
+- Acima de 50%: nenhum exercício e nenhuma descarga de peso no membro afetado
+- Não informado: solicitar imagem antes de liberar qualquer exercício
+
+---
+
+**🕊️ GRUPO 3 — Reabilitação Paliativa**
+*(verificado após G4 — basta uma das condições abaixo)*
+
+- Fase do tratamento: "Cuidados paliativos" selecionado na Etapa 2
+- Plaquetas: "Abaixo de 5.000" (crítico) na Etapa 4
+- Plaquetas: "5.000 a 10.000" (muito baixo) na Etapa 4
+- Leucócitos: "Abaixo de 500 com febre" na Etapa 4
+- Limitação funcional: "Dependente — necessita de cuidador" na Etapa 5
+
+---
+
+**⚠ GRUPO 2 — Reabilitação de Suporte**
+*(verificado após G4 e G3 — basta uma das condições abaixo)*
+
+- Plaquetas: "10.000 a 20.000" (baixo) na Etapa 4
+- Hemoglobina: "Abaixo de 8 g/dL" (muito baixa) na Etapa 4
+- Hemograma geral: "Com limitações" ou "Crítico" na Etapa 4
+- Fadiga: "Moderada" ou "Severa" na Etapa 3
+- Limitação funcional: "Severa — afastado do trabalho" na Etapa 5
+
+---
+
+**✅ GRUPO 1 — Reabilitação Preventiva e Restauradora**
+*(padrão — ativado quando nenhum dos grupos anteriores for acionado)*
+
+Todos os critérios abaixo devem ser verdadeiros simultaneamente:
+- Todos os red flags respondidos com NÃO
+- Metástase óssea não marcada nas complicações
+- Fase: qualquer exceto "Cuidados paliativos" (diagnóstico inicial, quimio, radio, hormônio, imuno, pós-tratamento ou pós-cirúrgico)
+- Plaquetas: 20.000 a 50.000 ou acima de 50.000 (normal/aceitável)
+- Leucócitos: acima de 2.000 (aceitável)
+- Hemoglobina: 8 g/dL ou acima
+- Hemograma geral: "Estável — dentro dos limites seguros"
+- Fadiga: "Ausente" ou "Leve"
+- Limitação funcional: "Preservada" ou "Parcial"
+
+---
+
+**REGRA GERAL:** Uma única condição de G3 prevalece sobre qualquer combinação de condições de G1. Sempre guiar a conduta pela sintomatologia do paciente — os exames são orientativos, não absolutos.
