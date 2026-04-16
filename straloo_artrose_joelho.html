@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Straloo — Artrose de Joelho</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #F2EFE9;
+    --surface: #FFFFFF;
+    --surface2: #F8F6F2;
+    --primary: #0E4D5C;
+    --primary-light: #1A7A8C;
+    --accent: #E8A84C;
+    --accent-dark: #C8882C;
+    --danger: #C0392B;
+    --danger-light: #FDECEB;
+    --warning: #D68910;
+    --warning-light: #FEF9EC;
+    --warning-mid: #F39C12;
+    --success: #1A7A5C;
+    --success-light: #E8F5F0;
+    --success-mid: #27AE60;
+    --g1: #C0392B; --g1-bg: #FDECEB;
+    --g2: #1A7A5C; --g2-bg: #E8F5F0;
+    --phase1: #C0392B; --phase1-bg: #FDECEB;
+    --phase2: #D68910; --phase2-bg: #FEF9EC;
+    --phase3: #1A7A5C; --phase3-bg: #E8F5F0;
+    --text: #1A2530;
+    --text-muted: #6B7A85;
+    --border: #DDD8CF;
+    --shadow: 0 4px 24px rgba(14,77,92,0.10);
+    --radius: 16px;
+    --radius-sm: 8px;
+    --transition: all 0.32s cubic-bezier(0.4,0,0.2,1);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; overflow-x: hidden; }
+
+  /* ─── HEADER ─── */
+  .header { background: var(--primary); padding: 18px 32px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 16px rgba(0,0,0,0.18); }
+  .header-left { display: flex; align-items: center; gap: 18px; }
+  .btn-home { display: inline-flex; align-items: center; gap: 6px; font-family: 'DM Sans', sans-serif; font-size: 0.78rem; font-weight: 600; color: rgba(255,255,255,0.6); background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); border-radius: 50px; padding: 5px 14px; text-decoration: none; transition: var(--transition); letter-spacing: 0.03em; }
+  .btn-home:hover { color: white; background: rgba(255,255,255,0.14); border-color: rgba(255,255,255,0.3); }
+  .logo { font-family: 'DM Serif Display', serif; font-size: 1.6rem; color: #FFF; letter-spacing: 0.02em; }
+  .logo span { color: var(--accent); }
+  .header-badge { font-size: 0.72rem; font-weight: 600; color: var(--accent); background: rgba(232,168,76,0.15); border: 1px solid rgba(232,168,76,0.35); border-radius: 50px; padding: 4px 12px; letter-spacing: 0.08em; text-transform: uppercase; }
+
+  /* ─── MAIN ─── */
+  .main { max-width: 820px; margin: 0 auto; padding: 40px 20px 80px; }
+
+  /* ─── CARDS ─── */
+  .section-card { background: var(--surface); border-radius: var(--radius); padding: 40px 44px; box-shadow: var(--shadow); margin-bottom: 24px; animation: fadeUp 0.4s ease both; }
+  @keyframes fadeUp { from { opacity:0; transform:translateY(16px); } to { opacity:1; transform:translateY(0); } }
+  .section-tag { display: inline-flex; align-items: center; gap: 6px; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--primary); background: rgba(14,77,92,0.08); border-radius: 50px; padding: 4px 12px; margin-bottom: 12px; }
+  .section-title { font-family: 'DM Serif Display', serif; font-size: 1.7rem; color: var(--primary); line-height: 1.25; margin-bottom: 6px; }
+  .section-subtitle { font-size: 0.88rem; color: var(--text-muted); line-height: 1.65; margin-bottom: 28px; }
+  .intro-msg { background: rgba(14,77,92,0.04); border-left: 3px solid var(--primary-light); border-radius: 0 var(--radius-sm) var(--radius-sm) 0; padding: 12px 16px; font-size: 0.85rem; color: #34505A; line-height: 1.65; margin-bottom: 24px; font-style: italic; }
+  .intro-msg strong { font-style: normal; font-size: 0.72rem; letter-spacing: 0.07em; text-transform: uppercase; display: block; margin-bottom: 4px; color: var(--primary-light); }
+
+  /* ─── GROUP DIVIDER ─── */
+  .group-divider { background: var(--surface2); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 20px 22px; margin: 24px 0; }
+  .group-title { font-size: 0.75rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 16px; padding-bottom: 8px; border-bottom: 1px solid var(--border); }
+
+  /* ─── FORM ─── */
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px; }
+  .form-group { margin-bottom: 20px; }
+  .form-label { display: block; font-size: 0.88rem; font-weight: 600; color: var(--text); margin-bottom: 7px; line-height: 1.45; }
+  .form-label small { display: block; font-weight: 400; color: var(--text-muted); font-size: 0.8rem; margin-top: 2px; }
+  .form-select { width: 100%; padding: 11px 14px; border: 2px solid var(--border); border-radius: var(--radius-sm); background: var(--surface); color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 0.9rem; outline: none; transition: var(--transition); appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%236B7A85' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 14px center; padding-right: 36px; }
+  .form-select:focus { border-color: var(--primary-light); box-shadow: 0 0 0 3px rgba(26,122,140,0.12); }
+
+  /* ─── YES/NO ─── */
+  .yn-group { display: flex; gap: 10px; }
+  .yn-btn { flex: 1; padding: 11px; border-radius: var(--radius-sm); border: 2px solid var(--border); background: transparent; font-family: 'DM Sans', sans-serif; font-size: 0.88rem; font-weight: 600; cursor: pointer; transition: var(--transition); color: var(--text-muted); }
+  .yn-btn:hover { border-color: var(--primary-light); color: var(--primary); }
+  .yn-btn.sel-sim { border-color: var(--danger); background: var(--danger-light); color: var(--danger); }
+  .yn-btn.sel-nao { border-color: var(--success); background: var(--success-light); color: var(--success); }
+
+  /* ─── RADIO OPTIONS ─── */
+  .radio-group { display: flex; flex-direction: column; gap: 10px; }
+  .radio-opt { display: flex; align-items: flex-start; gap: 12px; padding: 14px 18px; border-radius: var(--radius-sm); border: 2px solid var(--border); cursor: pointer; transition: var(--transition); background: transparent; }
+  .radio-opt:hover { border-color: var(--primary-light); background: rgba(26,122,140,0.03); }
+  .radio-opt.selected { border-color: var(--primary); background: rgba(14,77,92,0.05); }
+  .radio-dot { width: 18px; height: 18px; border-radius: 50%; border: 2px solid var(--border); flex-shrink: 0; margin-top: 2px; transition: var(--transition); background: white; }
+  .radio-opt.selected .radio-dot { border-color: var(--primary); background: var(--primary); box-shadow: inset 0 0 0 3px white; }
+  .radio-text { font-size: 0.88rem; line-height: 1.55; color: var(--text); }
+  .radio-text strong { display: block; font-weight: 600; margin-bottom: 3px; font-size: 0.9rem; }
+
+  /* ─── SLIDER ─── */
+  .slider-wrap { background: var(--surface2); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 16px 18px; }
+  .slider-track { display: flex; align-items: center; gap: 16px; margin-bottom: 10px; }
+  .slider-track input[type="range"] { flex: 1; -webkit-appearance: none; appearance: none; height: 6px; border-radius: 3px; outline: none; cursor: pointer; }
+  .slider-track input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 22px; height: 22px; border-radius: 50%; background: var(--primary); border: 3px solid white; box-shadow: 0 2px 8px rgba(14,77,92,0.3); cursor: pointer; transition: var(--transition); }
+  .slider-track input[type="range"]::-webkit-slider-thumb:hover { background: var(--primary-light); transform: scale(1.15); }
+  .slider-value { font-family: 'DM Serif Display', serif; font-size: 2rem; color: var(--primary); min-width: 40px; text-align: center; line-height: 1; }
+  .slider-labels { display: flex; justify-content: space-between; font-size: 0.72rem; color: var(--text-muted); }
+
+  /* ─── CHECK ITEMS ─── */
+  .check-grid { display: flex; flex-wrap: wrap; gap: 9px; background: var(--surface2); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 14px 16px; }
+  .check-item { display: flex; align-items: center; gap: 7px; padding: 6px 13px; border-radius: 50px; border: 2px solid var(--border); background: var(--surface); cursor: pointer; transition: var(--transition); user-select: none; font-size: 0.84rem; font-weight: 500; color: var(--text-muted); }
+  .check-item:hover { border-color: var(--primary-light); color: var(--text); }
+  .check-item.checked { border-color: var(--primary); background: rgba(14,77,92,0.07); color: var(--primary); font-weight: 600; }
+  .check-item input { display: none; }
+
+  /* ─── NOTA TÉCNICA ─── */
+  .nota-btn { display: inline-flex; align-items: center; gap: 5px; font-size: 0.74rem; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; color: var(--primary-light); background: rgba(26,122,140,0.08); border: 1px solid rgba(26,122,140,0.2); border-radius: 50px; padding: 3px 10px; cursor: pointer; transition: var(--transition); margin-bottom: 10px; }
+  .nota-btn:hover { background: rgba(26,122,140,0.15); }
+  .nota-box { background: rgba(14,77,92,0.04); border-left: 3px solid var(--primary-light); border-radius: 0 var(--radius-sm) var(--radius-sm) 0; padding: 12px 16px; font-size: 0.82rem; color: #34505A; line-height: 1.65; margin-bottom: 12px; display: none; }
+  .nota-box.open { display: block; animation: fadeUp 0.25s ease; }
+
+  /* ─── GENERATE BTN ─── */
+  .btn-generate { width: 100%; padding: 17px 32px; margin-top: 8px; background: var(--primary); color: white; border: none; font-family: 'DM Serif Display', serif; font-size: 1.15rem; border-radius: var(--radius-sm); cursor: pointer; transition: var(--transition); letter-spacing: 0.02em; box-shadow: 0 4px 20px rgba(14,77,92,0.3); display: flex; align-items: center; justify-content: center; gap: 10px; }
+  .btn-generate:hover { background: var(--primary-light); transform: translateY(-2px); box-shadow: 0 8px 28px rgba(14,77,92,0.35); }
+  .btn-generate:active { transform: scale(0.99); }
+
+  /* ─── EMERGENCY ─── */
+  .emergency-card { background: var(--surface); border-radius: var(--radius); padding: 40px 44px; box-shadow: var(--shadow); border-top: 5px solid var(--danger); animation: fadeUp 0.4s ease both; }
+  .em-icon { font-size: 2.8rem; margin-bottom: 14px; }
+  .em-title { font-family: 'DM Serif Display', serif; font-size: 1.9rem; color: var(--danger); margin-bottom: 8px; }
+  .em-sub { font-size: 0.9rem; color: var(--text-muted); line-height: 1.65; margin-bottom: 24px; }
+  .em-flags { display: flex; flex-direction: column; gap: 10px; margin-bottom: 24px; }
+  .em-flag { display: flex; align-items: flex-start; gap: 10px; padding: 12px 16px; background: var(--danger-light); border-left: 4px solid var(--danger); border-radius: var(--radius-sm); font-size: 0.87rem; line-height: 1.55; color: #7A1A1A; }
+  .em-flag strong { display: block; font-weight: 700; margin-bottom: 2px; }
+  .em-actions { display: flex; gap: 12px; flex-wrap: wrap; }
+  .btn-danger { background: var(--danger); color: white; border: none; font-family: 'DM Sans', sans-serif; font-size: 0.9rem; font-weight: 700; padding: 13px 24px; border-radius: var(--radius-sm); cursor: pointer; transition: var(--transition); }
+  .btn-danger:hover { background: #a03020; }
+
+  /* ─── RESULT ─── */
+  .result-section-title { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 12px; }
+  .divider { height: 1px; background: var(--border); margin: 24px 0; }
+  .result-badge { display: inline-flex; align-items: center; gap: 8px; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; border-radius: 50px; padding: 5px 16px; margin-bottom: 12px; }
+  .result-title { font-family: 'DM Serif Display', serif; font-size: 2rem; line-height: 1.15; margin-bottom: 8px; }
+  .result-subtitle { font-size: 0.9rem; color: var(--text-muted); line-height: 1.65; }
+  .rg1 .result-badge { background: var(--g1-bg); color: var(--g1); }
+  .rg1 .result-title  { color: var(--g1); }
+  .rg2 .result-badge { background: var(--g2-bg); color: var(--g2); }
+  .rg2 .result-title  { color: var(--g2); }
+
+  /* phase strip */
+  .phase-strip { display: flex; gap: 0; border-radius: var(--radius-sm); overflow: hidden; margin-bottom: 20px; border: 1px solid var(--border); }
+  .ph-item { flex: 1; padding: 10px 8px; text-align: center; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; opacity: 0.3; transition: var(--transition); }
+  .ph-item.active { opacity: 1; }
+  .ph1 { background: var(--phase1-bg); color: var(--phase1); border-right: 1px solid rgba(192,57,43,0.2); }
+  .ph2 { background: var(--phase2-bg); color: var(--phase2); border-right: 1px solid rgba(214,137,16,0.2); }
+  .ph3 { background: var(--phase3-bg); color: var(--phase3); }
+
+  /* protocol box */
+  .protocol-box { border-radius: var(--radius-sm); padding: 18px 22px; margin-bottom: 20px; border-left: 4px solid; }
+  .protocol-box.g1 { border-color: var(--g1); background: var(--g1-bg); }
+  .protocol-box.g2 { border-color: var(--g2); background: var(--g2-bg); }
+  .protocol-box-title { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 6px; }
+  .g1 .protocol-box-title { color: var(--g1); }
+  .g2 .protocol-box-title { color: var(--g2); }
+  .protocol-box p { font-size: 0.87rem; color: var(--text); line-height: 1.65; }
+
+  /* conduct */
+  .conduct-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
+  .conduct-item { display: flex; align-items: flex-start; gap: 12px; padding: 13px 16px; border-radius: var(--radius-sm); background: var(--surface2); border: 1px solid var(--border); }
+  .conduct-icon { font-size: 1rem; flex-shrink: 0; margin-top: 1px; }
+  .conduct-text { font-size: 0.88rem; line-height: 1.55; color: var(--text); }
+  .conduct-text strong { font-weight: 600; display: block; margin-bottom: 2px; }
+
+  /* exercises */
+  .exercise-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
+  .exercise-item { display: flex; align-items: flex-start; gap: 12px; padding: 14px 18px; border-radius: var(--radius-sm); background: var(--surface2); border: 1px solid var(--border); }
+  .ex-num { width: 28px; height: 28px; border-radius: 50%; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; font-weight: 700; color: white; }
+  .ex-num.g1c { background: var(--g1); }
+  .ex-num.g2c { background: var(--g2); }
+  .ex-num.btc { background: var(--primary); }
+  .exercise-item p { font-size: 0.87rem; line-height: 1.6; color: var(--text); }
+  .exercise-item p strong { font-weight: 600; display: block; margin-bottom: 2px; }
+  .ex-tag { display: inline-block; font-size: 0.68rem; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; padding: 2px 8px; border-radius: 50px; margin-bottom: 4px; }
+  .ex-tag.g1t { background: var(--g1-bg); color: var(--g1); }
+  .ex-tag.g2t { background: var(--g2-bg); color: var(--g2); }
+  .ex-tag.btt { background: rgba(14,77,92,0.08); color: var(--primary); }
+
+  /* alert */
+  .alert-box { border-radius: var(--radius-sm); padding: 14px 18px; margin-bottom: 14px; border-left: 4px solid; font-size: 0.84rem; line-height: 1.65; }
+  .alert-box.warning { border-color: var(--warning-mid); background: var(--warning-light); color: #7A5010; }
+  .alert-box.danger  { border-color: var(--danger);       background: var(--danger-light);  color: #8C2020; }
+  .alert-box.info    { border-color: var(--primary-light); background: rgba(14,77,92,0.05); color: #1A3D4A; }
+  .alert-box.success { border-color: var(--success-mid);  background: var(--success-light); color: #1A5040; }
+  .alert-box strong  { font-weight: 700; }
+
+  /* pill list */
+  .pill-list { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
+  .pill { font-size: 0.8rem; font-weight: 500; padding: 5px 13px; border-radius: 50px; background: rgba(14,77,92,0.07); color: var(--primary); }
+  .pill.warn { background: rgba(214,137,16,0.1); color: #8C5A10; }
+  .pill.ok   { background: var(--success-light); color: var(--success); }
+  .pill.red  { background: var(--danger-light); color: var(--danger); }
+
+  /* ─── FUNCTIONAL LIMITATION ─── */
+  .func-block { border-radius: var(--radius-sm); overflow: hidden; border: 1px solid var(--border); margin-bottom: 20px; }
+  .func-header { padding: 16px 22px; display: flex; align-items: center; gap: 14px; }
+  .func-header.fl-leve     { background: #E8F5F0; border-bottom: 1px solid rgba(26,122,92,0.18); }
+  .func-header.fl-moderada { background: #FEF9EC; border-bottom: 1px solid rgba(214,137,16,0.2); }
+  .func-header.fl-severa   { background: var(--danger-light); border-bottom: 1px solid rgba(192,57,43,0.18); }
+  .func-icon { font-size: 1.6rem; flex-shrink: 0; }
+  .func-label { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 2px; }
+  .fl-leve     .func-label { color: var(--success); }
+  .fl-moderada .func-label { color: var(--warning); }
+  .fl-severa   .func-label { color: var(--danger); }
+  .func-title { font-family: 'DM Serif Display', serif; font-size: 1.15rem; line-height: 1.2; }
+  .fl-leve     .func-title { color: var(--success); }
+  .fl-moderada .func-title { color: var(--warning); }
+  .fl-severa   .func-title { color: var(--danger); }
+  .func-body { padding: 16px 20px; display: flex; flex-direction: column; gap: 10px; }
+  .func-item { display: flex; align-items: flex-start; gap: 10px; }
+  .func-item-icon { flex-shrink: 0; font-size: 1rem; margin-top: 2px; }
+  .func-item-text { font-size: 0.87rem; line-height: 1.6; color: var(--text); }
+  .func-item-text strong { display: block; font-weight: 600; font-size: 0.84rem; margin-bottom: 1px; }
+  .func-reeval { margin-top: 4px; padding: 12px 20px; border-top: 1px dashed var(--border); font-size: 0.82rem; color: var(--text-muted); display: flex; align-items: flex-start; gap: 8px; line-height: 1.55; }
+
+  /* message */
+  .msg-tabs { display: flex; gap: 8px; margin-bottom: 12px; flex-wrap: wrap; }
+  .msg-tab { font-size: 0.78rem; font-weight: 600; padding: 6px 14px; border-radius: 50px; border: 2px solid var(--border); background: transparent; cursor: pointer; transition: var(--transition); color: var(--text-muted); }
+  .msg-tab:hover { border-color: var(--primary-light); color: var(--text); }
+  .msg-tab.active { border-color: var(--primary); background: rgba(14,77,92,0.07); color: var(--primary); }
+  .msg-box { background: var(--surface2); border: 1px dashed var(--primary-light); border-radius: var(--radius-sm); padding: 18px 20px; font-size: 0.88rem; color: var(--text); line-height: 1.7; white-space: pre-line; margin-bottom: 12px; }
+  .btn-copy { display: inline-flex; align-items: center; gap: 7px; background: transparent; border: 2px solid var(--primary-light); color: var(--primary); font-family: 'DM Sans', sans-serif; font-size: 0.83rem; font-weight: 600; padding: 9px 20px; border-radius: var(--radius-sm); cursor: pointer; transition: var(--transition); }
+  .btn-copy:hover { background: var(--primary); color: white; border-color: var(--primary); }
+  .btn-copy.copied { background: var(--success-light); border-color: var(--success); color: var(--success); }
+
+  .result-actions { display: flex; gap: 12px; margin-top: 32px; padding-top: 24px; border-top: 1px solid var(--border); }
+  .btn-restart { background: transparent; border: 2px solid var(--border); color: var(--text-muted); font-family: 'DM Sans', sans-serif; font-size: 0.88rem; font-weight: 600; padding: 12px 24px; border-radius: var(--radius-sm); cursor: pointer; transition: var(--transition); }
+  .btn-restart:hover { border-color: var(--text-muted); color: var(--text); }
+  .btn-print { background: var(--primary); color: white; border: none; font-family: 'DM Sans', sans-serif; font-size: 0.88rem; font-weight: 600; padding: 12px 24px; border-radius: var(--radius-sm); cursor: pointer; transition: var(--transition); }
+  .btn-print:hover { background: var(--primary-light); }
+
+  @media (max-width: 600px) {
+    .section-card, .emergency-card { padding: 28px 20px; }
+    .form-row { grid-template-columns: 1fr; }
+    .section-title { font-size: 1.4rem; }
+    .main { padding: 24px 12px 60px; }
+    .result-title { font-size: 1.5rem; }
+  }
+  @media print {
+    .header, .btn-generate, .result-actions, .btn-copy, .msg-tabs, #formCard { display: none !important; }
+    body { background: white; }
+    #resultCard, .emergency-card { box-shadow: none; border: 1px solid #ddd; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-left">
+    <a class="btn-home" href="index.html">← Protocolos</a>
+    <div class="logo">Straloo<span>.</span></div>
+  </div>
+  <div class="header-badge">Artrose de Joelho · OA</div>
+</div>
+
+<div class="main">
+
+<!-- ═══════════ FORM ═══════════ -->
+<div class="section-card" id="formCard">
+  <div class="section-tag">🦵 Membros Inferiores · Fisioterapia do Trabalho</div>
+  <h2 class="section-title">Triagem e Classificação da Artrose de Joelho</h2>
+  <p class="section-subtitle">Protocolo de teleatendimento para osteoartrose de joelho (gonartrose). Baseado em triagem de segurança, grau de irritabilidade articular e classificação por fase clínica.</p>
+
+  <div class="intro-msg">
+    <strong>Mensagem inicial via WhatsApp</strong>
+    "Olá! Para iniciarmos seu atendimento com toda a segurança, preciso te fazer algumas perguntas importantes. Pode me responder 'Sim' ou 'Não' para cada uma?"
+  </div>
+
+  <!-- ETAPA 1: RED FLAGS -->
+  <div class="group-divider" style="border-left: 4px solid var(--danger);">
+    <div class="group-title" style="color:var(--danger);">⚠ Etapa 1 — Triagem de Segurança (Red Flags)</div>
+    <p style="font-size:0.84rem; color:var(--text-muted); margin-bottom:16px; line-height:1.6">Descarta condições graves que mimetizam a artrose ou exigem intervenção médica imediata. Qualquer SIM contraindicada a fisioterapia remota.</p>
+
+    <div class="form-group">
+      <div class="form-label">A dor no joelho começou após alguma queda, pancada direta ou torção forte?<small>Risco de fratura ou lesão ligamentar grave</small></div>
+      <button class="nota-btn" onclick="toggleNota('n_rf1')">📋 Nota Técnica</button>
+      <div class="nota-box" id="n_rf1">Trauma direto ou torção violenta pode causar fratura de platô tibial, ruptura de ligamento cruzado (LCA/LCP) ou lesão meniscal complexa. Essas lesões cursam com hemartrose (joelho muito inchado e com sangue) e instabilidade. Antes de qualquer exercício ou carga, é necessária avaliação presencial com RX e, se indicado, RM do joelho.</div>
+      <div class="yn-group"><button class="yn-btn" onclick="setRF('rf1','sim',this,'Trauma recente — risco de fratura ou lesão ligamentar')">SIM</button><button class="yn-btn" onclick="setRF('rf1','nao',this)">NÃO</button></div>
+    </div>
+
+    <div class="form-group">
+      <div class="form-label">A dor começou de forma muito repentina e forte, piora muito à noite a ponto de acordar, ou veio acompanhada de febre?<small>Risco de infecção articular ou osteonecrose</small></div>
+      <button class="nota-btn" onclick="toggleNota('n_rf2')">📋 Nota Técnica</button>
+      <div class="nota-box" id="n_rf2">Dor noturna intensa e súbita em idoso com joelho é alerta clássico para Osteonecrose Espontânea do Côndilo Femoral Medial (SONK). Artrite séptica (infecção articular) cursa com febre, joelho muito quente e vermelho — urgência reumatológica. Artrite de cristal (gota, pseudogota) também causa dor súbita e intensa. Todas contraindicam fisioterapia sem avaliação médica.</div>
+      <div class="yn-group"><button class="yn-btn" onclick="setRF('rf2','sim',this,'Dor noturna súbita / febre — risco de infecção ou osteonecrose')">SIM</button><button class="yn-btn" onclick="setRF('rf2','nao',this)">NÃO</button></div>
+    </div>
+
+    <div class="form-group">
+      <div class="form-label">O joelho está travando ou bloqueando completamente, impedindo esticar ou dobrar a perna?<small>Risco de lesão meniscal em "alça de balde" ou corpo livre articular</small></div>
+      <button class="nota-btn" onclick="toggleNota('n_rf3')">📋 Nota Técnica</button>
+      <div class="nota-box" id="n_rf3">Bloqueio mecânico verdadeiro (o joelho trava e não volta sozinho) indica lesão meniscal em "alça de balde" (a parte rompida do menisco se desloca e fica presa na articulação) ou corpo livre articular (fragmento osteocartilaginoso livre). Ambos exigem avaliação ortopédica urgente — podem necessitar de artroscopia. Não confundir com pseudobloqueio por espasmo muscular, que cede em minutos.</div>
+      <div class="yn-group"><button class="yn-btn" onclick="setRF('rf3','sim',this,'Bloqueio mecânico — menisco em alça de balde ou corpo livre articular')">SIM</button><button class="yn-btn" onclick="setRF('rf3','nao',this)">NÃO</button></div>
+    </div>
+
+    <div class="form-group" style="margin-bottom:0">
+      <div class="form-label">A panturrilha (batata da perna) está muito inchada, dura, quente e dolorida?<small>Risco de Trombose Venosa Profunda (TVP)</small></div>
+      <button class="nota-btn" onclick="toggleNota('n_rf4')">📋 Nota Técnica</button>
+      <div class="nota-box" id="n_rf4">TVP de membro inferior é emergência vascular. A tríade clínica clássica inclui edema, calor e dor na panturrilha — sinal de Homans positivo (dor na panturrilha ao flexionar o pé). O risco de embolia pulmonar é real e grave. Pacientes com artrose muitas vezes são mais sedentários e idosos, aumentando o risco de TVP. Qualquer suspeita exige encaminhamento urgente e Doppler venoso.</div>
+      <div class="yn-group"><button class="yn-btn" onclick="setRF('rf4','sim',this,'Panturrilha inchada, quente e dolorida — suspeita de TVP')">SIM</button><button class="yn-btn" onclick="setRF('rf4','nao',this)">NÃO</button></div>
+    </div>
+  </div>
+
+  <!-- ETAPA 2: CLASSIFICAÇÃO FUNCIONAL -->
+  <div class="group-divider">
+    <div class="group-title">🔍 Etapa 2 — Mapeamento do Comportamento Articular</div>
+    <p style="font-size:0.84rem; color:var(--text-muted); margin-bottom:16px; line-height:1.6">Identifica o grau de irritabilidade para determinar a fase clínica. O diagnóstico de artrose é clínico — dor que piora com atividade e melhora com repouso, com rigidez matinal.</p>
+
+    <div class="form-group">
+      <label class="form-label">Qual opção descreve melhor o comportamento atual do joelho?</label>
+      <div class="radio-group" id="kneeBehavior">
+        <div class="radio-opt" onclick="setRadio('comportamento','inflamatorio',this)">
+          <div class="radio-dot"></div>
+          <div class="radio-text">
+            <strong>A — Joelho inchado, quente e com dor mesmo em repouso ou sentado</strong>
+            Sinovite e derrame articular presentes. A articulação não tolera carga no momento. Movimento piora a dor.
+          </div>
+        </div>
+        <div class="radio-opt" onclick="setRadio('comportamento','mecanico',this)">
+          <div class="radio-dot"></div>
+          <div class="radio-text">
+            <strong>B — Joelho "seco", mas range/estala e dói principalmente ao sobrecarregar</strong>
+            Crepitação (rangido) ao subir/descer escadas, levantar da cadeira ou caminhar. Sem inchaço expressivo.
+          </div>
+        </div>
+        <div class="radio-opt" onclick="setRadio('comportamento','rigidez',this)">
+          <div class="radio-dot"></div>
+          <div class="radio-text">
+            <strong>C — Rigidez matinal que passa em menos de 30 minutos com o movimento</strong>
+            Joelho "duro" ao acordar que vai melhorando com as primeiras caminhadas do dia. Dor leve a moderada com esforço.
+          </div>
+        </div>
+        <div class="radio-opt" onclick="setRadio('comportamento','misto',this)">
+          <div class="radio-dot"></div>
+          <div class="radio-text">
+            <strong>D — Combinação de inchaço ocasional com dor mecânica e rigidez</strong>
+            Episódios inflamatórios intercalados com períodos de dor mecânica crônica.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ETAPA 3: SINTOMAS E CONTEXTO -->
+  <div class="group-divider">
+    <div class="group-title">📋 Etapa 3 — Sintomas, Intensidade e Contexto Laboral</div>
+
+    <div class="form-row">
+      <div class="form-group" style="margin-bottom:0">
+        <label class="form-label">Intensidade da dor atual<small>Escala de 0 a 10</small></label>
+        <div class="slider-wrap" style="padding:12px 14px">
+          <div class="slider-track">
+            <input type="range" id="dorAtual" min="0" max="10" value="5" oninput="updateSlider(this,'sliderDor')">
+            <span class="slider-value" id="sliderDor">5</span>
+          </div>
+          <div class="slider-labels"><span>0 — Sem dor</span><span>10 — Pior dor</span></div>
+        </div>
+      </div>
+      <div class="form-group" style="margin-bottom:0">
+        <label class="form-label">Lado acometido</label>
+        <select class="form-select" id="ladoAcometido">
+          <option value="direito">Joelho direito</option>
+          <option value="esquerdo">Joelho esquerdo</option>
+          <option value="bilateral">Bilateral (ambos os joelhos)</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Sinais e sintomas associados<small>Selecione todos que se aplicam</small></label>
+      <div class="check-grid" id="checkSintomas">
+        <label class="check-item" onclick="toggleCheck(this)"><input type="checkbox" value="inchaço"> <span>🫧 Inchaço visível</span></label>
+        <label class="check-item" onclick="toggleCheck(this)"><input type="checkbox" value="crepitacao"> <span>🔊 Crepitação (rangido)</span></label>
+        <label class="check-item" onclick="toggleCheck(this)"><input type="checkbox" value="instabilidade"> <span>⚡ Sensação de instabilidade</span></label>
+        <label class="check-item" onclick="toggleCheck(this)"><input type="checkbox" value="dificuldade_escadas"> <span>🪜 Dificuldade em escadas</span></label>
+        <label class="check-item" onclick="toggleCheck(this)"><input type="checkbox" value="rigidez_matinal"> <span>🌅 Rigidez matinal</span></label>
+        <label class="check-item" onclick="toggleCheck(this)"><input type="checkbox" value="deformidade"> <span>📐 Deformidade em varo/valgo</span></label>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Exige esforço do joelho no trabalho?<small>Tipo de demanda ocupacional</small></label>
+      <button class="nota-btn" onclick="toggleNota('n_trab')">📋 Nota Técnica</button>
+      <div class="nota-box" id="n_trab">Trabalhadores que ficam em pé por mais de 2h/dia têm prevalência de gonartrose 2x maior. Agachamentos frequentes (acima de 55x/dia), subir escadas e carregar peso aumentam a força compressiva na articulação femoropatelar em até 7x o peso corporal. A higiene articular no trabalho — pausas, cadeiras corretas e evitar escadas — é parte integrante do tratamento, não apenas prevenção.</div>
+      <select class="form-select" id="demandaLaboral">
+        <option value="sedentario">Trabalho sedentário — sentado a maior parte do dia</option>
+        <option value="em_pe">Em pé com movimentação leve — balcão, recepção</option>
+        <option value="fisico">Físico — cargas, agachamentos, caminhada constante</option>
+        <option value="escadas">Frequente uso de escadas / terrenos irregulares</option>
+      </select>
+    </div>
+
+    <div class="form-group" style="margin-bottom:0">
+      <label class="form-label">Impacto nas atividades diárias e trabalho</label>
+      <select class="form-select" id="impactoFunc">
+        <option value="leve">Leve — realiza todas as atividades com leve desconforto</option>
+        <option value="moderado">Moderado — evita algumas atividades (escadas, agachamento)</option>
+        <option value="severo">Severo — dificuldade em caminhar, subir/descer ou ficar em pé</option>
+      </select>
+    </div>
+  </div>
+
+  <button class="btn-generate" onclick="estratificar()">
+    <span>🎯</span> Estratificar e Gerar Conduta por Fase
+  </button>
+</div>
+
+<!-- ═══════════ EMERGENCY ═══════════ -->
+<div class="emergency-card" id="emergencyCard" style="display:none">
+  <div class="em-icon">🚨</div>
+  <h2 class="em-title">Red Flag de Joelho Detectada</h2>
+  <p class="em-sub">O paciente apresentou sinal de alerta. A fisioterapia por teleatendimento está <strong>contraindicada</strong> neste momento. Encaminhar para avaliação médica ortopédica presencial.</p>
+  <div class="em-flags" id="emFlagsList"></div>
+  <div class="alert-box danger">⚠ <strong>Contraindicação:</strong> Nenhum exercício ou carga articular deve ser realizada até avaliação médica com exame de imagem (RX, RM ou Doppler venoso, conforme a suspeita).</div>
+  <div class="em-actions">
+    <button class="btn-danger">📞 Registrar Encaminhamento Médico</button>
+    <button class="btn-restart" onclick="reiniciar()">↺ Nova Avaliação</button>
+  </div>
+</div>
+
+<!-- ═══════════ RESULT ═══════════ -->
+<div class="section-card" id="resultCard" style="display:none">
+
+  <div class="phase-strip">
+    <div class="ph-item ph1" id="ph1">🔴 Fase 1 · Inflamatória</div>
+    <div class="ph-item ph2" id="ph2">🟡 Fase 2 · Mecânica</div>
+    <div class="ph-item ph3" id="ph3">🟢 Fase 3 · Funcional</div>
+  </div>
+
+  <div id="resultHeader">
+    <div class="result-badge" id="rBadge"></div>
+    <h2 class="result-title" id="rTitle"></h2>
+    <p class="result-subtitle" id="rSubtitle"></p>
+    <div class="pill-list" id="rContextPills" style="margin-top:12px"></div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="protocol-box" id="rProtocolBox">
+    <div class="protocol-box-title" id="rProtocolTitle"></div>
+    <p id="rProtocolText"></p>
+  </div>
+
+  <div class="result-section-title">Condutas Tele-Guiadas</div>
+  <div class="conduct-list" id="rConductList"></div>
+
+  <div id="rAlertsArea"></div>
+
+  <div class="result-section-title" id="rExTitle">Exercícios Indicados</div>
+  <div class="exercise-list" id="rExList"></div>
+
+  <div class="divider"></div>
+
+  <div class="result-section-title">📍 Limitação Funcional e Higiene Articular no Trabalho</div>
+  <div class="func-block" id="rFuncBlock">
+    <div class="func-header" id="rFuncHeader">
+      <span class="func-icon" id="rFuncIcon"></span>
+      <div>
+        <div class="func-label" id="rFuncLabel"></div>
+        <div class="func-title" id="rFuncTitle"></div>
+      </div>
+    </div>
+    <div class="func-body" id="rFuncBody"></div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="result-section-title">💬 Mensagens para o Paciente (WhatsApp)</div>
+  <div class="msg-tabs">
+    <button class="msg-tab active" onclick="showMsg(0,this)">Triagem inicial</button>
+    <button class="msg-tab" onclick="showMsg(1,this)">Higiene articular</button>
+    <button class="msg-tab" onclick="showMsg(2,this)">Monitoramento</button>
+    <button class="msg-tab" onclick="showMsg(3,this)">Progressão de fase</button>
+  </div>
+  <div class="msg-box" id="rMsg"></div>
+  <button class="btn-copy" id="btnCopy" onclick="copiarMsg()">📋 Copiar para WhatsApp</button>
+
+  <div class="result-actions">
+    <button class="btn-print" onclick="window.print()">🖨 Imprimir</button>
+    <button class="btn-restart" onclick="reiniciar()">↺ Nova Avaliação</button>
+  </div>
+
+</div>
+</div>
+
+<script>
+const rfState = {};
+let currentMsgs = [];
+
+// ── UTILS ────────────────────────────────
+function toggleNota(id) { document.getElementById(id).classList.toggle('open'); }
+
+function updateSlider(input, valId) {
+  const val = input.value;
+  document.getElementById(valId).textContent = val;
+  const pct = (val / 10) * 100;
+  input.style.background = `linear-gradient(to right,#1A7A8C 0%,#1A7A8C ${pct}%,#DDD8CF ${pct}%,#DDD8CF 100%)`;
+}
+
+document.addEventListener('DOMContentLoaded', () => updateSlider(document.getElementById('dorAtual'), 'sliderDor'));
+
+function toggleCheck(label) {
+  setTimeout(() => label.classList.toggle('checked', label.querySelector('input').checked), 10);
+}
+
+function setRF(key, val, btn, reason) {
+  rfState[key] = { val, reason };
+  btn.parentElement.querySelectorAll('.yn-btn').forEach(b => b.classList.remove('sel-sim','sel-nao'));
+  btn.classList.add(val === 'sim' ? 'sel-sim' : 'sel-nao');
+}
+
+function setRadio(key, val, el) {
+  window._radioState = window._radioState || {};
+  window._radioState[key] = val;
+  document.querySelectorAll('#kneeBehavior .radio-opt').forEach(o => o.classList.remove('selected'));
+  el.classList.add('selected');
+}
+
+// ── FUNCTIONAL LIMITATION DATA ────────────────
+const FUNC_DATA = {
+  leve: {
+    css: 'fl-leve', icon: '🟢',
+    label: 'Limitação Leve',
+    title: 'Realiza atividades com desconforto mínimo — foco em prevenção',
+    items: [
+      { icon: '🪑', title: 'Escolher cadeiras mais altas com apoio de braço', text: 'Cadeiras altas reduzem drasticamente a força necessária para levantar, diminuindo a pressão no joelho. O apoio de braço distribui parte do peso corporal.' },
+      { icon: '⏸️', title: 'Pausas ativas a cada 45 min', text: 'Alternar entre ficar em pé e sentar. Evitar posição estática prolongada — o movimento distribui o líquido sinovial e nutre a cartilagem.' },
+      { icon: '🪜', title: 'Técnica segura para escadas', text: 'Subir com a perna BOA primeiro. Descer com a perna COM DOR primeiro. Usar o corrimão sempre. "Boa sobe, ruim desce."' },
+      { icon: '👟', title: 'Calçado adequado', text: 'Orientar uso de calçados com amortecimento adequado. Evitar salto alto (aumenta pressão patelofemoral) e sola muito rígida.' },
+    ],
+    reeval: 'Monitoramento quinzenal. Progressão para Fase 3 se mantiver melhora.'
+  },
+  moderado: {
+    css: 'fl-moderada', icon: '🟡',
+    label: 'Limitação Moderada',
+    title: 'Evita algumas atividades — adaptações no trabalho necessárias',
+    items: [
+      { icon: '🚫', title: 'Evitar escadas e agachamentos profundos', text: 'Escadas e agachamentos acima de 45° aumentam a pressão femoropatelar em 7x o peso corporal. Orientar uso de elevador quando disponível e rampas.' },
+      { icon: '🦯', title: 'Bengala contralateral (se dor intensa)', text: 'Usar bengala no lado OPOSTO ao joelho afetado. Reduz a carga sobre a articulação em até 40%. Postura: bengala avança junto com o pé dolorido.' },
+      { icon: '💼', title: 'Adaptação das funções laborais', text: 'Comunicar RH sobre necessidade de evitar escadas, carregar peso e longas caminhadas. Solicitar mesa de trabalho ajustável se possível.' },
+      { icon: '🌡️', title: 'Crioterapia pós-atividade', text: 'Aplicar gelo 20 min após o trabalho se houver aumento do inchaço ou dor. Não usar calor na fase inflamatória.' },
+      { icon: '⚖️', title: 'Controle do peso corporal', text: 'Cada quilo a menos = 4 kg a menos de pressão no joelho ao caminhar. Encaminhar para nutricionista se IMC > 30.' },
+    ],
+    reeval: 'Reavaliar semanalmente. Se não melhorar em 2 semanas, considerar avaliação médica para infiltração ou RX atualizado.'
+  },
+  severo: {
+    css: 'fl-severa', icon: '🔴',
+    label: 'Limitação Severa',
+    title: 'Dificuldade em AVDs básicas — conduta intensiva e avaliação médica',
+    items: [
+      { icon: '🏥', title: 'Avaliação médica presencial indicada', text: 'Limitação severa em gonartrose exige avaliação com RX em carga (posição ortostática) para estadiamento. Pode indicar necessidade de infiltração ou, em casos avançados, artroplastia total.' },
+      { icon: '🦽', title: 'Dispositivos auxiliares de marcha', text: 'Bengala, andador ou órtese de joelho (joelheira de descarga) conforme indicação médica. Não prescrever dispositivos sem avaliação — uso inadequado pode piorar a biomecânica.' },
+      { icon: '💊', title: 'Manejo farmacológico adjuvante', text: 'Comunicar médico sobre intensidade da dor. AINEs, analgésicos centrais e infiltração com ácido hialurônico ou corticoide podem ser necessários para viabilizar a fisioterapia.' },
+      { icon: '💼', title: 'Afastamento laboral temporário', text: 'Documentar limitações para RH. Avaliar necessidade de afastamento temporário ou readaptação de função. Manter paciente ativo dentro do possível — repouso absoluto piora a atrofia.' },
+      { icon: '🧠', title: 'Saúde mental e dor crônica', text: 'Limitação severa crônica aumenta risco de depressão e catastrofização. Abordar expectativas, validar a dor e reforçar que o exercício é o melhor tratamento não-cirúrgico disponível.' },
+    ],
+    reeval: 'Contato a cada 3 dias. Prioridade: reduzir dor para viabilizar exercício. Sem analgesia adequada, o programa de exercícios não avança.'
+  }
+};
+
+// ── STRATIFICATION ENGINE ──────────────────
+function estratificar() {
+  const flags = Object.entries(rfState).filter(([k,v]) => v.val === 'sim');
+  if (flags.length > 0) { showEmergency(flags); return; }
+
+  const comportamento = window._radioState?.comportamento || 'mecanico';
+  const dor = parseInt(document.getElementById('dorAtual').value);
+  const lado = document.getElementById('ladoAcometido').value;
+  const demanda = document.getElementById('demandaLaboral').value;
+  const impacto = document.getElementById('impactoFunc').value;
+  const sintomas = [...document.querySelectorAll('#checkSintomas input:checked')].map(i => i.value);
+
+  // Group: inflamatorio = G1, others = G2, misto = G2 with extra alert
+  const isG1 = comportamento === 'inflamatorio';
+
+  renderResult({ comportamento, dor, lado, demanda, impacto, sintomas, isG1 });
+}
+
+function showEmergency(flags) {
+  document.getElementById('formCard').style.display = 'none';
+  const ec = document.getElementById('emergencyCard');
+  ec.style.display = 'block';
+  document.getElementById('emFlagsList').innerHTML = flags.map(([k,v]) => `
+    <div class="em-flag"><span>⚠</span><div><strong>Red Flag:</strong> ${v.reason}</div></div>`).join('');
+  window.scrollTo({ top:0, behavior:'smooth' });
+}
+
+// ── RENDER ────────────────────────────────
+function renderResult({ comportamento, dor, lado, demanda, impacto, sintomas, isG1 }) {
+  const rc = document.getElementById('resultCard');
+  rc.style.display = 'block';
+
+  // Phase strip
+  ['ph1','ph2','ph3'].forEach(id => document.getElementById(id).classList.remove('active'));
+  if (isG1 || comportamento === 'misto') document.getElementById('ph1').classList.add('active');
+  else if (comportamento === 'mecanico') document.getElementById('ph2').classList.add('active');
+  else document.getElementById('ph3').classList.add('active');
+
+  // Result header
+  const rh = document.getElementById('resultHeader');
+  rh.className = isG1 ? 'rg1' : 'rg2';
+
+  const badgeMap = {
+    inflamatorio: '🔴 Grupo 1 — Artrose Agudizada / Fase Inflamatória',
+    mecanico:     '🟢 Grupo 2 — Artrose Mecânica / Fase Crônica',
+    rigidez:      '🟢 Grupo 2 — Artrose Mecânica com Rigidez Matinal',
+    misto:        '🟡 Componente Misto — Inflamatório + Mecânico',
+  };
+  const titleMap = {
+    inflamatorio: 'Sinovite e Derrame Articular — Proteção Prioritária',
+    mecanico:     'Dor Mecânica por Sobrecarga — Fortalecimento e Movimento',
+    rigidez:      'Artrose Crônica com Rigidez — Mobilidade e Fortalecimento',
+    misto:        'Episódios Inflamatórios com Base Mecânica Crônica',
+  };
+  const subMap = {
+    inflamatorio: 'Presença de sinovite e derrame articular. A articulação não tolera carga no momento. Foco em analgesia, crioterapia e proteção articular. Isometria de quadríceps sem carga.',
+    mecanico:     'Ausência de inflamação aguda. Dor ligada à sobrecarga, fraqueza muscular e alteração biomecânica. Foco em movimento, ganho de força e "joelheira muscular" natural.',
+    rigidez:      'Padrão mecânico com rigidez matinal característica. Rigidez passa em menos de 30 min — diferencia artrose de artrite reumatoide (rigidez > 1h). Foco em mobilidade e força.',
+    misto:        'Episódios inflamatórios intercalados com dor mecânica crônica. Conduta adaptada: crioterapia nos picos, exercícios suaves no intervalo.',
+  };
+
+  document.getElementById('rBadge').textContent    = badgeMap[comportamento];
+  document.getElementById('rTitle').textContent    = titleMap[comportamento];
+  document.getElementById('rSubtitle').textContent = subMap[comportamento];
+
+  // Pills
+  const ladoLabel = { direito:'Joelho direito', esquerdo:'Joelho esquerdo', bilateral:'Bilateral' };
+  const demandaLabel = { sedentario:'Trabalho sedentário', em_pe:'Em pé / balcão', fisico:'Trabalho físico', escadas:'Uso de escadas' };
+  document.getElementById('rContextPills').innerHTML = [
+    ladoLabel[lado], `Dor ${dor}/10`, demandaLabel[demanda],
+    ...sintomas.map(s => s)
+  ].map(p => `<span class="pill">${p}</span>`).join('');
+
+  // Protocol box
+  const pb = document.getElementById('rProtocolBox');
+  pb.className = 'protocol-box ' + (isG1 ? 'g1' : 'g2');
+  const protocolMap = {
+    inflamatorio: { t:'Fase 1 — Controle da Dor e Proteção Articular', p:'Objetivo: reduzir o quadro inflamatório, reabsorver o edema e ativar o quadríceps SEM gerar atrito articular. Crioterapia 3-4x/dia. Reduzir atividades de impacto e carga. O quadríceps é o principal estabilizador do joelho — sua fraqueza agrava a artrose.' },
+    mecanico:     { t:'Fase 2 — Recuperação de Mobilidade e Ganho de Força', p:'Objetivo: restaurar a amplitude de movimento plena e iniciar ganho de força em cadeia cinética. Lubrificação da cartilagem com movimentos pendulares. SLR e abdução para fortalecimento sem carga articular. Alongamento de isquiotibiais e panturrilha.' },
+    rigidez:      { t:'Fase 2/3 — Mobilidade, Força e Função Laboral', p:'Objetivo: superar a rigidez matinal com calor e movimento gradual, fortalecer o quadríceps e estabilizadores do quadril, e adaptar para as demandas do trabalho. Mini-squat e treino de sentar/levantar funcional.' },
+    misto:        { t:'Fase Mista — Protocolo Adaptado', p:'Objetivo: proteger nos picos inflamatórios (crioterapia, proteção) e progredir nos períodos estáveis (mobilidade, força). Monitorar o "sinal da balança" — se o joelho incha após exercício, reduza a intensidade.' },
+  };
+  const pc = protocolMap[comportamento] || protocolMap['mecanico'];
+  document.getElementById('rProtocolTitle').textContent = pc.t;
+  document.getElementById('rProtocolText').textContent  = pc.p;
+
+  // Conducts
+  const conducts_g1 = [
+    { icon:'🧊', title:'Crioterapia 3-4x ao dia', text:'Bolsa de gelo por 20 minutos sobre o joelho. Proteger a pele com pano fino. Reduz edema, dor e temperatura articular. NÃO usar calor na fase inflamatória.' },
+    { icon:'🛋️', title:'Proteção articular e repouso relativo', text:'Reduzir atividades de impacto. Evitar escadas, agachamentos e ficar em pé por longos períodos. O repouso é relativo — manter mobilidade suave é terapêutico.' },
+    { icon:'🦯', title:'Bengala contralateral (se dor intensa)', text:'Usar no lado OPOSTO ao joelho afetado. Reduz carga em até 40%. Avança junto com o pé dolorido.' },
+  ];
+  const conducts_g2 = [
+    { icon:'🔄', title:'Movimentos pendulares para lubrificação', text:'Sentado em cadeira/mesa alta, deixar a perna pendular livremente para frente e para trás. Distribui o líquido sinovial e nutre a cartilagem sem impacto. 5-10 min.' },
+    { icon:'💪', title:'"Joelheira muscular" — fortalecimento progressivo', text:'O quadríceps forte é o melhor protetor do joelho. Cada 1% de ganho de força reduz o risco de progressão da artrose. Meta: não sentir dor DENTRO do joelho (queimação muscular é normal).' },
+    { icon:'🚴', title:'Atividade aeróbica sem impacto', text:'Bicicleta ergométrica (sem carga extra) ou caminhada leve em terreno plano. O movimento melhora a saúde da cartilagem — cartilagem não tem vasos, se nutre pela compressão intermitente.' },
+  ];
+  document.getElementById('rConductList').innerHTML = (isG1 ? conducts_g1 : conducts_g2).map(c => `
+    <div class="conduct-item">
+      <span class="conduct-icon">${c.icon}</span>
+      <div class="conduct-text"><strong>${c.title}</strong>${c.text}</div>
+    </div>`).join('');
+
+  // Alerts
+  let alerts = [];
+  if (comportamento === 'misto') alerts.push({ type:'warning', text:'⚠ <strong>Sinal da balança:</strong> Se o joelho inchar ou aquecer APÓS o exercício, reduza a intensidade. O exercício ideal não deve causar mais que 2 pontos de aumento na dor (escala 0-10) durante as 24h seguintes.' });
+  if (sintomas.includes('instabilidade')) alerts.push({ type:'warning', text:'⚠ <strong>Instabilidade articular:</strong> Treino proprioceptivo (equilíbrio unipodal) é essencial. Pode indicar fraqueza de quadríceps severa ou lesão ligamentar associada. Progressão cuidadosa.' });
+  if (sintomas.includes('deformidade')) alerts.push({ type:'info', text:'ℹ <strong>Deformidade em varo/valgo:</strong> Pode indicar artrose avançada com comprometimento do compartimento medial ou lateral. Considerar órtese de descarga de compartimento e avaliação para RX em carga.' });
+  if (demanda === 'fisico' || demanda === 'escadas') alerts.push({ type:'warning', text:'⚠ <strong>Demanda laboral de alto impacto:</strong> Trabalho físico com artrose de joelho exige higiene articular rigorosa. Documentar para RH. Avaliar readaptação de função se dor estiver fora de controle.' });
+  if (dor >= 7 && !isG1) alerts.push({ type:'warning', text:'⚠ <strong>Dor intensa em fase mecânica (≥7/10):</strong> Considerar avaliação médica para infiltração de ácido hialurônico ou corticoide antes de progredir para exercícios de cadeia fechada.' });
+  document.getElementById('rAlertsArea').innerHTML = alerts.map(a => `<div class="alert-box ${a.type}">${a.text}</div>`).join('');
+
+  // Exercises
+  const exG1 = [
+    { num:'g1c', tag:'g1t', tl:'Grupo 1 — Proteção', name:'Isometria de quadríceps ("esmagar a toalha")', desc:'Deitado com perna estendida, colocar toalha enrolada sob o joelho e "esmagar" para baixo contraindo a coxa por 5 segundos. 10 repetições, 3-4x ao dia. Ativa o quadríceps SEM comprimir a articulação.' },
+    { num:'g1c', tag:'g1t', tl:'Grupo 1 — Proteção', name:'Elevação da perna estendida (SLR)', desc:'Deitado, contrair o quadríceps e elevar a perna a 45°. Segurar 2-3 segundos. 10-15 repetições, 3 séries. Fortalece sem gerar pressão no joelho.' },
+  ];
+  const exG2 = [
+    { num:'g2c', tag:'g2t', tl:'Grupo 2 — Fortalecimento', name:'Movimento pendular (lubrificação articular)', desc:'Sentado em cadeira alta, deixar a perna balançar livremente por 5-10 minutos. Distribui líquido sinovial e nutre a cartilagem sem impacto.' },
+    { num:'g2c', tag:'g2t', tl:'Grupo 2 — Fortalecimento', name:'Elevação da perna estendida (SLR)', desc:'Deitado, elevar a perna a 45° com joelho estendido. 15 repetições, 3 séries. Fortalece quadríceps.' },
+    { num:'g2c', tag:'g2t', tl:'Grupo 2 — Fortalecimento', name:'Abdução de quadril deitado', desc:'Deitado de lado, elevar a perna (pé em flexão dorsal). 15 repetições, 3 séries. Fortalece glúteo médio — estabilizador da pelve e do joelho.' },
+    { num:'g2c', tag:'g2t', tl:'Grupo 2 — Fortalecimento', name:'Alongamento de isquiotibiais e panturrilha', desc:'Sentado, colocar toalha no pé e puxar em direção ao corpo com joelho levemente flexionado. 30 segundos, 3 repetições. Reduz pressão patelofemoral.' },
+    { num:'btc', tag:'btt', tl:'Fase 3 — Funcional', name:'Agachamento isométrico na parede (mini-squat)', desc:'Encostado na parede, descer apenas 30-45°. Manter por 30 segundos. 3-5 séries. NÃO ultrapassar 90° — aumenta pressão patelofemoral além do tolerado.' },
+    { num:'btc', tag:'btt', tl:'Fase 3 — Funcional', name:'Treino de sentar e levantar da cadeira', desc:'Controlar o movimento de sentar e levantar SEM usar as mãos. Começar com cadeira alta e progredir. Simula a demanda funcional real do trabalho.' },
+    { num:'btc', tag:'btt', tl:'Fase 3 — Funcional', name:'Equilíbrio em apoio unipodal', desc:'Ficar em um pé só por 30 segundos (seguro perto de cadeira/parede). Treino proprioceptivo — melhora estabilidade e reduz risco de quedas.' },
+  ];
+  const exercises = isG1 ? exG1 : (comportamento === 'rigidez' ? exG2.slice(1) : exG2);
+  document.getElementById('rExList').innerHTML = exercises.map((e,i) => `
+    <div class="exercise-item">
+      <div class="ex-num ${e.num}">${i+1}</div>
+      <p><span class="ex-tag ${e.tag}">${e.tl}</span><strong>${e.name}</strong>${e.desc}</p>
+    </div>`).join('');
+
+  // Functional limitation
+  const fd = FUNC_DATA[impacto];
+  const fhdr = document.getElementById('rFuncHeader');
+  fhdr.className = 'func-header fl-' + (impacto === 'leve' ? 'leve' : impacto === 'moderado' ? 'moderada' : 'severa');
+  document.getElementById('rFuncIcon').textContent  = fd.icon;
+  document.getElementById('rFuncLabel').textContent = fd.label;
+  document.getElementById('rFuncTitle').textContent = fd.title;
+  document.getElementById('rFuncLabel').className   = 'func-label';
+  document.getElementById('rFuncTitle').className   = 'func-title';
+  document.getElementById('rFuncBody').innerHTML =
+    fd.items.map(item => `
+      <div class="func-item">
+        <span class="func-item-icon">${item.icon}</span>
+        <div class="func-item-text"><strong>${item.title}</strong>${item.text}</div>
+      </div>`).join('')
+    + `<div class="func-reeval"><span>⏱</span><span>${fd.reeval}</span></div>`;
+
+  // Messages
+  currentMsgs = [
+    `Olá! Para iniciarmos seu atendimento com toda a segurança, vou te fazer algumas perguntas rápidas. Responda Sim ou Não:\n\n1. Essa dor no joelho começou após alguma queda, pancada ou torção forte?\n2. A dor começou de forma muito repentina e forte, piora à noite a ponto de acordar, ou veio com febre?\n3. Seu joelho está travando/bloqueando, impedindo de esticar ou dobrar a perna?\n4. Sua panturrilha (batata da perna) está muito inchada, dura, quente e dolorida?`,
+    `Como seu trabalho exige ${demanda === 'fisico' ? 'esforço físico' : demanda === 'escadas' ? 'uso de escadas' : 'movimento'}, vamos adotar a "Higiene Articular":\n\n1. Evite ficar em pé parado por longos períodos — faça pausas para sentar\n2. Escolha cadeiras mais altas com apoio de braço (diminui muito a força para levantar)\n3. Para escadas: suba com a perna BOA primeiro, desça com a perna COM DOR primeiro\n4. ${isG1 ? 'Aplique gelo por 20 minutos no joelho 3x ao dia' : 'Faça pausas de 5 min a cada 45 min de atividade — pendule a perna livremente'}\n\nAmanhã me conta como se sentiu!`,
+    `Bom dia! De 0 a 10, como está a dor no joelho hoje para caminhar pela casa?\nO joelho está menos inchado e mais solto após ${isG1 ? 'o gelo e o repouso' : 'os exercícios na cadeira'}?\n\nMe conta para ajustarmos a conduta!`,
+    `Como ${isG1 ? 'o inchaço diminuiu e a dor está mais controlada' : 'seu joelho já está respondendo bem'}, nosso objetivo agora é criar uma "joelheira muscular" natural para proteger sua articulação!\n\nEstou enviando os exercícios indicados para o seu caso. Use tênis, em piso seguro.\n\nLembre-se: você vai sentir o músculo da coxa queimar — isso é normal e bom! Mas NÃO deve sentir dor aguda DENTRO do joelho. Se sentir, me avise imediatamente.`,
+  ];
+  showMsg(0, document.querySelector('.msg-tab'));
+  rc.scrollIntoView({ behavior:'smooth', block:'start' });
+}
+
+// ── MESSAGES ──────────────────────────────
+function showMsg(idx, btn) {
+  document.querySelectorAll('.msg-tab').forEach(t => t.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  document.getElementById('rMsg').textContent = currentMsgs[idx] || '';
+  const bc = document.getElementById('btnCopy');
+  bc.textContent = '📋 Copiar para WhatsApp';
+  bc.classList.remove('copied');
+}
+
+function copiarMsg() {
+  navigator.clipboard.writeText(document.getElementById('rMsg').textContent).then(() => {
+    const btn = document.getElementById('btnCopy');
+    btn.textContent = '✅ Copiado!';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = '📋 Copiar para WhatsApp'; btn.classList.remove('copied'); }, 2200);
+  });
+}
+
+// ── REINICIAR ─────────────────────────────
+function reiniciar() {
+  document.getElementById('resultCard').style.display = 'none';
+  document.getElementById('emergencyCard').style.display = 'none';
+  document.getElementById('formCard').style.display = 'block';
+  Object.keys(rfState).forEach(k => delete rfState[k]);
+  if (window._radioState) window._radioState = {};
+  document.querySelectorAll('.yn-btn').forEach(b => b.classList.remove('sel-sim','sel-nao'));
+  document.querySelectorAll('.radio-opt').forEach(o => o.classList.remove('selected'));
+  document.querySelectorAll('.check-item').forEach(el => { el.classList.remove('checked'); el.querySelector('input').checked = false; });
+  document.getElementById('dorAtual').value = 5;
+  updateSlider(document.getElementById('dorAtual'), 'sliderDor');
+  document.getElementById('formCard').scrollIntoView({ behavior:'smooth', block:'start' });
+}
+</script>
+</body>
+</html>

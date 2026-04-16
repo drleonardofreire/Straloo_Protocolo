@@ -320,15 +320,112 @@ A fase define qual conduta e quais exercícios serão gerados dentro do grupo:
 
 **TABELA RESUMO**
 
-| Pergunta / Campo | Emergência | Grupo 1 | Grupo 2 | Misto |
-|---|---|---|---|---|
-| Red Flags (Etapa 1) | Qualquer SIM | Todos NÃO | Todos NÃO | Todos NÃO |
-| Padrão de dor (Etapa 2) | — | Opção A | Opção B | Opção C |
-| Dor desce para o braço | — | NÃO | SIM | Às vezes |
-| Fase aguda → conduta | — | Fase 1 | Fase 1 | Fase 1 |
-| Fase subaguda → conduta | — | Fase 2 + alongamento trapézio | Fase 2 + retração de queixo | Fase 2 + ambos |
-| Fase crônica → conduta | — | Fase 3 + isometria | Fase 3 + isometria | Fase 3 + isometria |
+| Pergunta / Campo         | Emergência   | Grupo 1 | Grupo 2 | Misto |
+|--------------------------|--------------|---------|---------|-------|
+| Red Flags (Etapa 1)      | Qualquer SIM | Todos NÃO | Todos NÃO | Todos NÃO |
+| Padrão de dor (Etapa 2)  | —            | Opção A | Opção B | Opção C |
+| Dor desce para o braço   | —            | NÃO | SIM | Às vezes |
+| Fase aguda → conduta     | —            | Fase 1 | Fase 1 | Fase 1 |
+| Fase subaguda → conduta  | — | Fase 2 + alongamento trapézio | Fase 2 + retração de queixo | Fase 2 + ambos |
+| Fase crônica → conduta   | — | Fase 3 + isometria | Fase 3 + isometria | Fase 3 + isometria |
 
 ---
 
 **REGRA GERAL — GRUPO 2:** Nunca prescrever alongamento puxando a cabeça para o lado oposto da dor (estira o nervo já irritado). O exercício central é a retração de queixo. Qualquer periferização (dor desce mais para o braço) durante o exercício = exercício proibido imediatamente.
+
+==========================================
+ARTROSE DE joelho
+==========================================
+
+---
+
+**PROTOCOLO DE ARTROSE DE JOELHO — CRITÉRIOS DE ESTRATIFICAÇÃO**
+*Referência para anotações clínicas*
+
+---
+
+**LÓGICA DE PRIORIDADE**
+Etapa 1 (Red Flags) é verificada primeiro. Qualquer SIM = emergência, sem estratificação de grupo. Se todos forem NÃO, a Etapa 2 classifica o grupo clínico e a fase. A Etapa 3 determina o nível de limitação funcional e a conduta no trabalho.
+
+---
+
+**🚨 EMERGÊNCIA — Red Flags (qualquer SIM contraindicada a fisioterapia remota)**
+
+Etapa 1 — resposta SIM em qualquer pergunta abaixo encerra o atendimento remoto:
+
+- A dor no joelho começou após alguma queda, pancada direta ou torção forte? → Risco de fratura de platô tibial ou lesão ligamentar grave
+- A dor começou de forma muito repentina e forte, piora muito à noite a ponto de acordar, ou veio acompanhada de febre? → Risco de osteonecrose espontânea do côndilo femoral ou artrite séptica
+- O joelho está travando ou bloqueando completamente, impedindo esticar ou dobrar a perna? → Risco de lesão meniscal em alça de balde ou corpo livre articular
+- A panturrilha está muito inchada, dura, quente e dolorida? → Risco de Trombose Venosa Profunda (TVP)
+
+---
+
+**🔴 GRUPO 1 — Artrose Agudizada / Fase Inflamatória**
+
+Ativado pela opção A na Etapa 2:
+
+- Comportamento articular: "A — Joelho inchado, quente e com dor mesmo em repouso ou sentado"
+  - Sinovite e derrame articular presentes
+  - Movimento piora a dor
+  - A articulação não tolera carga no momento
+
+Conduta: crioterapia 3-4x/dia, proteção articular, bengala contralateral se dor intensa, isometria de quadríceps e SLR sem carga articular. Sem exercícios de impacto ou cadeia cinética fechada.
+
+---
+
+**🟢 GRUPO 2 — Artrose Mecânica / Fase Crônica**
+
+Ativado pelas opções B, C ou D na Etapa 2:
+
+- Opção B: "Joelho seco, mas range/estala e dói principalmente ao sobrecarregar"
+  - Crepitação ao subir/descer escadas, levantar da cadeira ou caminhar
+  - Sem inchaço expressivo
+  - Dor ligada à sobrecarga e fraqueza muscular
+
+- Opção C: "Rigidez matinal que passa em menos de 30 minutos com o movimento"
+  - Joelho duro ao acordar que melhora com as primeiras caminhadas
+  - Dor leve a moderada com esforço
+  - Diferencia artrose de artrite reumatoide (rigidez > 1h)
+
+- Opção D: "Combinação de inchaço ocasional com dor mecânica e rigidez"
+  - Episódios inflamatórios intercalados com períodos de dor mecânica crônica
+  - Protocolo híbrido — monitorar o "sinal da balança"
+
+Conduta: movimento pendular para lubrificação, SLR e abdução de quadril, alongamento de isquiotibiais e panturrilha, mini-squat na parede (máximo 45°), treino de sentar e levantar, bicicleta ergométrica sem carga.
+
+---
+
+**📅 DETERMINAÇÃO DA FASE CLÍNICA**
+*(definida automaticamente pelo comportamento articular escolhido)*
+
+- Opção A → Fase 1 (Inflamatória): proteção e analgesia
+- Opção B → Fase 2 (Mecânica): mobilidade e fortalecimento
+- Opção C → Fase 2/3 (Crônica com rigidez): mobilidade, força e função laboral
+- Opção D → Fase Mista: protocolo adaptado com monitoramento do inchaço pós-exercício
+
+---
+
+**📍 DETERMINAÇÃO DA LIMITAÇÃO FUNCIONAL**
+*(resposta ao seletor de impacto nas AVDs — Etapa 3)*
+
+- "Leve — realiza todas as atividades com leve desconforto" → Verde: higiene articular, pausas ativas, cadeiras altas, técnica de escadas. Monitoramento quinzenal.
+- "Moderado — evita algumas atividades (escadas, agachamento)" → Amarelo: evitar escadas e agachamentos profundos, bengala contralateral, adaptação de função laboral, crioterapia pós-atividade, controle de peso. Reavaliar semanalmente.
+- "Severo — dificuldade em caminhar, subir/descer ou ficar em pé" → Vermelho: avaliação médica com RX em carga, dispositivos auxiliares de marcha, manejo farmacológico adjuvante, afastamento laboral, suporte para saúde mental. Contato a cada 3 dias.
+
+---
+
+**TABELA RESUMO**
+
+| Pergunta / Campo | Emergência | Grupo 1 🔴 | Grupo 2 🟢 |
+|---|---|---|---|
+| Red Flags (Etapa 1) | Qualquer SIM | Todos NÃO | Todos NÃO |
+| Comportamento articular (Etapa 2) | — | Opção A | Opções B, C ou D |
+| Inchaço e dor em repouso | — | SIM | NÃO |
+| Fase gerada | — | Fase 1 — Inflamatória | Fase 2/3 — Mecânica ou Crônica |
+| Exercícios liberados | — | Isometria e SLR sem carga | Pendular, SLR, mini-squat, funcional |
+| Crioterapia | — | SIM — 3-4x/dia | Pós-atividade se houver dor |
+| Calor local | — | NÃO — contraindicado | Pode ser usado antes dos exercícios |
+
+---
+
+**REGRA GERAL — SINAL DA BALANÇA (Opção D / Misto):** Se o joelho inchar ou aquecer após o exercício, reduza a intensidade. O exercício ideal não deve causar mais que 2 pontos de aumento na dor (escala 0-10) durante as 24h seguintes. Acima disso, volte um passo na progressão.
