@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Straloo — Artrodese Pré e Pós-Operatório</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #F2EFE9; --surface: #FFFFFF; --surface2: #F8F6F2;
+    --primary: #0E4D5C; --primary-light: #1A7A8C;
+    --accent: #E8A84C; --accent-dark: #C8882C;
+    --danger: #C0392B; --danger-light: #FDECEB;
+    --warning: #D68910; --warning-light: #FEF9EC; --warning-mid: #F39C12;
+    --success: #1A7A5C; --success-light: #E8F5F0; --success-mid: #27AE60;
+    --phase0: #6C3A8C; --phase0-bg: rgba(108,58,140,0.09);
+    --g1: #C0392B; --g1-bg: #FDECEB;
+    --g2: #D68910; --g2-bg: #FEF9EC;
+    --g3: #1A7A5C; --g3-bg: #E8F5F0;
+    --text: #1A2530; --text-muted: #6B7A85;
+    --border: #DDD8CF; --shadow: 0 4px 24px rgba(14,77,92,0.10);
+    --radius: 16px; --radius-sm: 8px;
+    --transition: all 0.32s cubic-bezier(0.4,0,0.2,1);
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; overflow-x: hidden; }
+
+  .header { background: var(--primary); padding: 18px 32px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 16px rgba(0,0,0,0.18); }
+  .header-left { display: flex; align-items: center; gap: 18px; }
+  .btn-home { display: inline-flex; align-items: center; gap: 6px; font-family: 'DM Sans', sans-serif; font-size: 0.78rem; font-weight: 600; color: rgba(255,255,255,0.6); background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); border-radius: 50px; padding: 5px 14px; text-decoration: none; transition: var(--transition); letter-spacing: 0.03em; }
+  .btn-home:hover { color: white; background: rgba(255,255,255,0.14); border-color: rgba(255,255,255,0.3); }
+  .logo { font-family: 'DM Serif Display', serif; font-size: 1.6rem; color: #FFF; letter-spacing: 0.02em; }
+  .logo span { color: var(--accent); }
+  .header-badge { font-size: 0.72rem; font-weight: 600; color: var(--accent); background: rgba(232,168,76,0.15); border: 1px solid rgba(232,168,76,0.35); border-radius: 50px; padding: 4px 12px; letter-spacing: 0.08em; text-transform: uppercase; }
+
+  .main { max-width: 820px; margin: 0 auto; padding: 40px 20px 80px; }
+
+  .section-card { background: var(--surface); border-radius: var(--radius); padding: 40px 44px; box-shadow: var(--shadow); margin-bottom: 24px; animation: fadeUp 0.4s ease both; }
+  @keyframes fadeUp { from { opacity:0; transform:translateY(16px); } to { opacity:1; transform:translateY(0); } }
+  .section-tag { display: inline-flex; align-items: center; gap: 6px; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--primary); background: rgba(14,77,92,0.08); border-radius: 50px; padding: 4px 12px; margin-bottom: 12px; }
+  .section-title { font-family: 'DM Serif Display', serif; font-size: 1.7rem; color: var(--primary); line-height: 1.25; margin-bottom: 6px; }
+  .section-subtitle { font-size: 0.88rem; color: var(--text-muted); line-height: 1.65; margin-bottom: 28px; }
+  .intro-msg { background: rgba(14,77,92,0.04); border-left: 3px solid var(--primary-light); border-radius: 0 var(--radius-sm) var(--radius-sm) 0; padding: 12px 16px; font-size: 0.85rem; color: #34505A; line-height: 1.65; margin-bottom: 24px; font-style: italic; }
+  .intro-msg strong { font-style: normal; font-size: 0.72rem; letter-spacing: 0.07em; text-transform: uppercase; display: block; margin-bottom: 4px; color: var(--primary-light); }
+  .divider { height: 1px; background: var(--border); margin: 24px 0; }
+
+  .group-divider { background: var(--surface2); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 20px 22px; margin: 24px 0; }
+  .group-title { font-size: 0.75rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 16px; padding-bottom: 8px; border-bottom: 1px solid var(--border); }
+
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px; }
+  .form-group { margin-bottom: 20px; }
+  .form-label { display: block; font-size: 0.88rem; font-weight: 600; color: var(--text); margin-bottom: 7px; line-height: 1.45; }
+  .form-label small { display: block; font-weight: 400; color: var(--text-muted); font-size: 0.8rem; margin-top: 2px; }
+  .form-select { width: 100%; padding: 11px 14px; border: 2px solid var(--border); border-radius: var(--radius-sm); background: var(--surface); color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 0.9rem; outline: none; transition: var(--transition); appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%236B7A85' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 14px center; padding-right: 36px; }
+  .form-select:focus { border-color: var(--primary-light); box-shadow: 0 0 0 3px rgba(26,122,140,0.12); }
+
+  .yn-group { display: flex; gap: 10px; }
+  .yn-btn { flex: 1; padding: 11px; border-radius: var(--radius-sm); border: 2px solid var(--border); background: transparent; font-family: 'DM Sans', sans-serif; font-size: 0.88rem; font-weight: 600; cursor: pointer; transition: var(--transition); color: var(--text-muted); }
+  .yn-btn:hover { border-color: var(--primary-light); color: var(--primary); }
+  .yn-btn.sel-sim { border-color: var(--danger); background: var(--danger-light); color: var(--danger); }
+  .yn-btn.sel-nao { border-color: var(--success); background: var(--success-light); color: var(--success); }
+
+  .radio-group { display: flex; flex-direction: column; gap: 10px; }
+  .radio-opt { display: flex; align-items: flex-start; gap: 12px; padding: 16px 18px; border-radius: var(--radius-sm); border: 2px solid var(--border); cursor: pointer; transition: var(--transition); background: transparent; }
+  .radio-opt:hover { border-color: var(--primary-light); background: rgba(26,122,140,0.03); }
+  .radio-opt.selected { border-color: var(--primary); background: rgba(14,77,92,0.05); }
+  .radio-dot { width: 18px; height: 18px; border-radius: 50%; border: 2px solid var(--border); flex-shrink: 0; margin-top: 3px; transition: var(--transition); background: white; }
+  .radio-opt.selected .radio-dot { border-color: var(--primary); background: var(--primary); box-shadow: inset 0 0 0 3px white; }
+  .radio-text { font-size: 0.88rem; line-height: 1.6; color: var(--text); }
+  .radio-text strong { display: block; font-weight: 600; margin-bottom: 4px; font-size: 0.92rem; }
+
+  .check-grid { display: flex; flex-wrap: wrap; gap: 9px; background: var(--surface2); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 14px 16px; }
+  .check-item { display: flex; align-items: center; gap: 7px; padding: 6px 13px; border-radius: 50px; border: 2px solid var(--border); background: var(--surface); cursor: pointer; transition: var(--transition); user-select: none; font-size: 0.84rem; font-weight: 500; color: var(--text-muted); }
+  .check-item:hover { border-color: var(--primary-light); color: var(--text); }
+  .check-item.checked { border-color: var(--primary); background: rgba(14,77,92,0.07); color: var(--primary); font-weight: 600; }
+  .check-item input { display: none; }
+
+  .slider-wrap { background: var(--surface2); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 16px 18px; }
+  .slider-track { display: flex; align-items: center; gap: 16px; margin-bottom: 10px; }
+  .slider-track input[type="range"] { flex: 1; -webkit-appearance: none; appearance: none; height: 6px; border-radius: 3px; outline: none; cursor: pointer; }
+  .slider-track input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 22px; height: 22px; border-radius: 50%; background: var(--primary); border: 3px solid white; box-shadow: 0 2px 8px rgba(14,77,92,0.3); cursor: pointer; transition: var(--transition); }
+  .slider-track input[type="range"]::-webkit-slider-thumb:hover { background: var(--primary-light); transform: scale(1.15); }
+  .slider-value { font-family: 'DM Serif Display', serif; font-size: 2rem; color: var(--primary); min-width: 40px; text-align: center; line-height: 1; }
+  .slider-labels { display: flex; justify-content: space-between; font-size: 0.72rem; color: var(--text-muted); }
+
+  .nota-btn { display: inline-flex; align-items: center; gap: 5px; font-size: 0.74rem; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; color: var(--primary-light); background: rgba(26,122,140,0.08); border: 1px solid rgba(26,122,140,0.2); border-radius: 50px; padding: 3px 10px; cursor: pointer; transition: var(--transition); margin-bottom: 10px; }
+  .nota-btn:hover { background: rgba(26,122,140,0.15); }
+  .nota-box { background: rgba(14,77,92,0.04); border-left: 3px solid var(--primary-light); border-radius: 0 var(--radius-sm) var(--radius-sm) 0; padding: 12px 16px; font-size: 0.82rem; color: #34505A; line-height: 1.65; margin-bottom: 12px; display: none; }
+  .nota-box.open { display: block; animation: fadeUp 0.25s ease; }
+
+  .btn-generate { width: 100%; padding: 17px 32px; margin-top: 8px; background: var(--primary); color: white; border: none; font-family: 'DM Serif Display', serif; font-size: 1.15rem; border-radius: var(--radius-sm); cursor: pointer; transition: var(--transition); letter-spacing: 0.02em; box-shadow: 0 4px 20px rgba(14,77,92,0.3); display: flex; align-items: center; justify-content: center; gap: 10px; }
+  .btn-generate:hover { background: var(--primary-light); transform: translateY(-2px); box-shadow: 0 8px 28px rgba(14,77,92,0.35); }
+  .btn-generate:active { transform: scale(0.99); }
+
+  /* FUNDAMENTAL CONCEPT BOX */
+  .concept-box { border-radius: var(--radius-sm); padding: 18px 22px; margin-bottom: 24px; background: rgba(108,58,140,0.07); border-left: 4px solid var(--phase0); }
+  .concept-title { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--phase0); margin-bottom: 8px; }
+  .concept-box p { font-size: 0.87rem; line-height: 1.65; color: var(--text); }
+  .concept-box strong { font-weight: 600; }
+
+  /* PHASE STRIP — 4 phases for arthrodesis */
+  .phase-strip { display: flex; gap: 0; border-radius: var(--radius-sm); overflow: hidden; margin-bottom: 20px; border: 1px solid var(--border); }
+  .ph-item { flex: 1; padding: 10px 6px; text-align: center; font-size: 0.68rem; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; opacity: 0.28; transition: var(--transition); }
+  .ph-item.active { opacity: 1; }
+  .ph0 { background: var(--phase0-bg); color: var(--phase0); border-right: 1px solid rgba(108,58,140,0.15); }
+  .ph1 { background: var(--g1-bg); color: var(--g1); border-right: 1px solid rgba(192,57,43,0.2); }
+  .ph2 { background: var(--g2-bg); color: var(--g2); border-right: 1px solid rgba(214,137,16,0.2); }
+  .ph3 { background: var(--g3-bg); color: var(--g3); }
+
+  /* EMERGENCY */
+  .emergency-card { background: var(--surface); border-radius: var(--radius); padding: 40px 44px; box-shadow: var(--shadow); border-top: 5px solid var(--danger); animation: fadeUp 0.4s ease both; }
+  .em-icon { font-size: 2.8rem; margin-bottom: 14px; }
+  .em-title { font-family: 'DM Serif Display', serif; font-size: 1.9rem; color: var(--danger); margin-bottom: 8px; }
+  .em-sub { font-size: 0.9rem; color: var(--text-muted); line-height: 1.65; margin-bottom: 24px; }
+  .em-flags { display: flex; flex-direction: column; gap: 10px; margin-bottom: 24px; }
+  .em-flag { display: flex; align-items: flex-start; gap: 10px; padding: 12px 16px; background: var(--danger-light); border-left: 4px solid var(--danger); border-radius: var(--radius-sm); font-size: 0.87rem; line-height: 1.55; color: #7A1A1A; }
+  .em-flag strong { display: block; font-weight: 700; margin-bottom: 2px; }
+  .em-actions { display: flex; gap: 12px; flex-wrap: wrap; }
+  .btn-danger { background: var(--danger); color: white; border: none; font-family: 'DM Sans', sans-serif; font-size: 0.9rem; font-weight: 700; padding: 13px 24px; border-radius: var(--radius-sm); cursor: pointer; transition: var(--transition); }
+  .btn-danger:hover { background: #a03020; }
+
+  /* RESULT */
+  .result-section-title { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 12px; }
+  .result-badge { display: inline-flex; align-items: center; gap: 8px; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; border-radius: 50px; padding: 5px 16px; margin-bottom: 12px; }
+  .result-title { font-family: 'DM Serif Display', serif; font-size: 2rem; line-height: 1.15; margin-bottom: 8px; }
+  .result-subtitle { font-size: 0.9rem; color: var(--text-muted); line-height: 1.65; }
+  .rp0 .result-badge { background: var(--phase0-bg); color: var(--phase0); }
+  .rp0 .result-title  { color: var(--phase0); }
+  .rg1 .result-badge { background: var(--g1-bg); color: var(--g1); }
+  .rg1 .result-title  { color: var(--g1); }
+  .rg2 .result-badge { background: var(--g2-bg); color: var(--g2); }
+  .rg2 .result-title  { color: var(--g2); }
+  .rg3 .result-badge { background: var(--g3-bg); color: var(--g3); }
+  .rg3 .result-title  { color: var(--g3); }
+
+  .protocol-box { border-radius: var(--radius-sm); padding: 18px 22px; margin-bottom: 20px; border-left: 4px solid; }
+  .protocol-box.p0 { border-color: var(--phase0); background: var(--phase0-bg); }
+  .protocol-box.g1 { border-color: var(--g1); background: var(--g1-bg); }
+  .protocol-box.g2 { border-color: var(--g2); background: var(--g2-bg); }
+  .protocol-box.g3 { border-color: var(--g3); background: var(--g3-bg); }
+  .protocol-box-title { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 6px; }
+  .p0 .protocol-box-title { color: var(--phase0); }
+  .g1 .protocol-box-title { color: var(--g1); }
+  .g2 .protocol-box-title { color: var(--g2); }
+  .g3 .protocol-box-title { color: var(--g3); }
+  .protocol-box p { font-size: 0.87rem; color: var(--text); line-height: 1.65; }
+
+  .conduct-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
+  .conduct-item { display: flex; align-items: flex-start; gap: 12px; padding: 13px 16px; border-radius: var(--radius-sm); background: var(--surface2); border: 1px solid var(--border); }
+  .conduct-icon { font-size: 1rem; flex-shrink: 0; margin-top: 1px; }
+  .conduct-text { font-size: 0.88rem; line-height: 1.55; color: var(--text); }
+  .conduct-text strong { font-weight: 600; display: block; margin-bottom: 2px; }
+
+  .exercise-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
+  .exercise-item { display: flex; align-items: flex-start; gap: 12px; padding: 14px 18px; border-radius: var(--radius-sm); background: var(--surface2); border: 1px solid var(--border); }
+  .ex-num { width: 28px; height: 28px; border-radius: 50%; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; font-weight: 700; color: white; }
+  .ex-num.p0c { background: var(--phase0); }
+  .ex-num.g1c { background: var(--g1); }
+  .ex-num.g2c { background: var(--g2); }
+  .ex-num.g3c { background: var(--g3); }
+  .exercise-item p { font-size: 0.87rem; line-height: 1.6; color: var(--text); }
+  .exercise-item p strong { font-weight: 600; display: block; margin-bottom: 2px; }
+  .ex-tag { display: inline-block; font-size: 0.68rem; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; padding: 2px 8px; border-radius: 50px; margin-bottom: 4px; }
+  .ex-tag.p0t { background: var(--phase0-bg); color: var(--phase0); }
+  .ex-tag.g1t { background: var(--g1-bg); color: var(--g1); }
+  .ex-tag.g2t { background: var(--g2-bg); color: var(--g2); }
+  .ex-tag.g3t { background: var(--g3-bg); color: var(--g3); }
+
+  .alert-box { border-radius: var(--radius-sm); padding: 14px 18px; margin-bottom: 14px; border-left: 4px solid; font-size: 0.84rem; line-height: 1.65; }
+  .alert-box.warning { border-color: var(--warning-mid); background: var(--warning-light); color: #7A5010; }
+  .alert-box.danger  { border-color: var(--danger);       background: var(--danger-light);  color: #8C2020; }
+  .alert-box.info    { border-color: var(--primary-light); background: rgba(14,77,92,0.05); color: #1A3D4A; }
+  .alert-box.success { border-color: var(--success-mid);  background: var(--success-light); color: #1A5040; }
+  .alert-box.purple  { border-color: var(--phase0);       background: var(--phase0-bg);     color: #4A1A6A; }
+  .alert-box strong  { font-weight: 700; }
+
+  .pill-list { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
+  .pill { font-size: 0.8rem; font-weight: 500; padding: 5px 13px; border-radius: 50px; background: rgba(14,77,92,0.07); color: var(--primary); }
+  .pill.warn { background: rgba(214,137,16,0.1); color: #8C5A10; }
+  .pill.ok   { background: var(--success-light); color: var(--success); }
+  .pill.purp { background: var(--phase0-bg); color: var(--phase0); }
+
+  /* FUSION WARNING BOX */
+  .fusion-box { border-radius: var(--radius-sm); padding: 18px 22px; margin-bottom: 20px; background: rgba(192,57,43,0.06); border: 2px dashed rgba(192,57,43,0.3); }
+  .fusion-title { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--g1); margin-bottom: 8px; }
+  .fusion-rule { display: flex; align-items: flex-start; gap: 10px; font-size: 0.87rem; color: var(--text); line-height: 1.6; margin-bottom: 6px; }
+
+  /* FUNCTIONAL LIMITATION */
+  .func-block { border-radius: var(--radius-sm); overflow: hidden; border: 1px solid var(--border); margin-bottom: 20px; }
+  .func-header { padding: 16px 22px; display: flex; align-items: center; gap: 14px; }
+  .func-header.fl-leve     { background: #E8F5F0; border-bottom: 1px solid rgba(26,122,92,0.18); }
+  .func-header.fl-moderada { background: #FEF9EC; border-bottom: 1px solid rgba(214,137,16,0.2); }
+  .func-header.fl-severa   { background: var(--danger-light); border-bottom: 1px solid rgba(192,57,43,0.18); }
+  .func-icon { font-size: 1.6rem; flex-shrink: 0; }
+  .func-label { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 2px; }
+  .fl-leve .func-label { color: var(--success); } .fl-moderada .func-label { color: var(--warning); } .fl-severa .func-label { color: var(--danger); }
+  .func-title { font-family: 'DM Serif Display', serif; font-size: 1.15rem; line-height: 1.2; }
+  .fl-leve .func-title { color: var(--success); } .fl-moderada .func-title { color: var(--warning); } .fl-severa .func-title { color: var(--danger); }
+  .func-body { padding: 16px 20px; display: flex; flex-direction: column; gap: 10px; }
+  .func-item { display: flex; align-items: flex-start; gap: 10px; }
+  .func-item-icon { flex-shrink: 0; font-size: 1rem; margin-top: 2px; }
+  .func-item-text { font-size: 0.87rem; line-height: 1.6; color: var(--text); }
+  .func-item-text strong { display: block; font-weight: 600; font-size: 0.84rem; margin-bottom: 1px; }
+  .func-reeval { margin-top: 4px; padding: 12px 20px; border-top: 1px dashed var(--border); font-size: 0.82rem; color: var(--text-muted); display: flex; align-items: flex-start; gap: 8px; line-height: 1.55; }
+
+  .msg-tabs { display: flex; gap: 8px; margin-bottom: 12px; flex-wrap: wrap; }
+  .msg-tab { font-size: 0.78rem; font-weight: 600; padding: 6px 14px; border-radius: 50px; border: 2px solid var(--border); background: transparent; cursor: pointer; transition: var(--transition); color: var(--text-muted); }
+  .msg-tab:hover { border-color: var(--primary-light); color: var(--text); }
+  .msg-tab.active { border-color: var(--primary); background: rgba(14,77,92,0.07); color: var(--primary); }
+  .msg-box { background: var(--surface2); border: 1px dashed var(--primary-light); border-radius: var(--radius-sm); padding: 18px 20px; font-size: 0.88rem; color: var(--text); line-height: 1.7; white-space: pre-line; margin-bottom: 12px; }
+  .btn-copy { display: inline-flex; align-items: center; gap: 7px; background: transparent; border: 2px solid var(--primary-light); color: var(--primary); font-family: 'DM Sans', sans-serif; font-size: 0.83rem; font-weight: 600; padding: 9px 20px; border-radius: var(--radius-sm); cursor: pointer; transition: var(--transition); }
+  .btn-copy:hover { background: var(--primary); color: white; border-color: var(--primary); }
+  .btn-copy.copied { background: var(--success-light); border-color: var(--success); color: var(--success); }
+
+  .result-actions { display: flex; gap: 12px; margin-top: 32px; padding-top: 24px; border-top: 1px solid var(--border); }
+  .btn-restart { background: transparent; border: 2px solid var(--border); color: var(--text-muted); font-family: 'DM Sans', sans-serif; font-size: 0.88rem; font-weight: 600; padding: 12px 24px; border-radius: var(--radius-sm); cursor: pointer; transition: var(--transition); }
+  .btn-restart:hover { border-color: var(--text-muted); color: var(--text); }
+  .btn-print { background: var(--primary); color: white; border: none; font-family: 'DM Sans', sans-serif; font-size: 0.88rem; font-weight: 600; padding: 12px 24px; border-radius: var(--radius-sm); cursor: pointer; transition: var(--transition); }
+  .btn-print:hover { background: var(--primary-light); }
+
+  @media (max-width: 600px) {
+    .section-card, .emergency-card { padding: 28px 20px; }
+    .form-row { grid-template-columns: 1fr; }
+    .section-title { font-size: 1.4rem; }
+    .main { padding: 24px 12px 60px; }
+    .result-title { font-size: 1.5rem; }
+  }
+  @media print {
+    .header, .btn-generate, .result-actions, .btn-copy, .msg-tabs, #formCard { display: none !important; }
+    body { background: white; }
+    #resultCard, .emergency-card { box-shadow: none; border: 1px solid #ddd; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-left">
+    <a class="btn-home" href="index.html">← Protocolos</a>
+    <div class="logo">Straloo<span>.</span></div>
+  </div>
+  <div class="header-badge">Artrodese · Pré e Pós-Op</div>
+</div>
+
+<div class="main">
+
+<!-- ════ FORM ════ -->
+<div class="section-card" id="formCard">
+  <div class="section-tag">🔩 Fusão Articular · Fisioterapia do Trabalho</div>
+  <h2 class="section-title">Artrodese — Pré e Pós-Operatório</h2>
+  <p class="section-subtitle">Protocolo de teleatendimento para artrodese de coluna, punho, tornozelo ou pé. A reabilitação foca em <strong>proteger a fusão óssea</strong>, fortalecer a musculatura estabilizadora e manter a mobilidade das articulações vizinhas.</p>
+
+  <div class="concept-box">
+    <div class="concept-title">🔩 Conceito Clínico Fundamental — Artrodese ≠ Artroplastia</div>
+    <p>Na artroplastia, queremos <strong>recuperar o movimento</strong> da articulação. Na artrodese, o objetivo é o oposto: <strong>fundir os ossos e eliminar o movimento</strong> para gerar estabilidade e alívio da dor. A reabilitação NÃO busca devolver mobilidade ao segmento operado — busca proteger a fusão enquanto o restante do corpo compensa com eficiência.</p>
+  </div>
+
+  <!-- ETAPA 0: MOMENTO CIRÚRGICO -->
+  <div class="group-divider" style="border-left: 4px solid var(--phase0);">
+    <div class="group-title" style="color:var(--phase0);">🟣 Etapa 0 — Momento Cirúrgico</div>
+    <div class="form-group">
+      <label class="form-label">Em qual momento o paciente se encontra?</label>
+      <div class="radio-group" id="momentoCirurgico">
+        <div class="radio-opt" onclick="setRadio('momento','pre_op',this)">
+          <div class="radio-dot"></div>
+          <div class="radio-text">
+            <strong>Pré-Operatório — Cirurgia agendada (Fase Zero)</strong>
+            A cirurgia de artrodese ainda não foi realizada. Objetivo: preparar o corpo, o ambiente domiciliar e ensinar as transferências seguras antes da operação.
+          </div>
+        </div>
+        <div class="radio-opt" onclick="setRadio('momento','pos_op',this)">
+          <div class="radio-dot"></div>
+          <div class="radio-text">
+            <strong>Pós-Operatório — Cirurgia já realizada</strong>
+            A artrodese foi realizada. Avançar para triagem de complicações e classificação por fase de consolidação óssea.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ETAPA 1: ARTICULAÇÃO E CONTEXTO -->
+  <div class="group-divider">
+    <div class="group-title">🩺 Etapa 1 — Articulação e Contexto Clínico</div>
+    <div class="form-row">
+      <div class="form-group" style="margin-bottom:0">
+        <label class="form-label">Articulação artrodesada<small>Guia as condutas específicas</small></label>
+        <select class="form-select" id="articulacao">
+          <option value="coluna_lombar">Coluna Lombar (artrodese vertebral)</option>
+          <option value="coluna_cervical">Coluna Cervical (artrodese cervical)</option>
+          <option value="punho">Punho (artrodese rádio-cárpica)</option>
+          <option value="tornozelo">Tornozelo (artrodese tibiotársica)</option>
+          <option value="pe">Pé (artrodese tarsometatársica ou subtalar)</option>
+          <option value="quadril">Quadril (artrodese coxofemoral)</option>
+          <option value="joelho">Joelho (artrodese femorotibial)</option>
+          <option value="outro">Outra articulação</option>
+        </select>
+      </div>
+      <div class="form-group" style="margin-bottom:0">
+        <label class="form-label">Tempo desde a cirurgia<small>Orienta a fase de consolidação</small></label>
+        <select class="form-select" id="tempoPO" id="tempoPO">
+          <option value="pre">Pré-operatório (não realizada ainda)</option>
+          <option value="s1_6">0 a 6 semanas (fase de imobilização)</option>
+          <option value="s6_12">6 a 12 semanas (fase de consolidação)</option>
+          <option value="mais12">Acima de 12 semanas (fase de remodelação)</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Fatores de risco para consolidação<small>Sinalizam progressão mais lenta — selecione todos que se aplicam</small></label>
+      <button class="nota-btn" onclick="toggleNota('n_riscos')">📋 Nota Técnica</button>
+      <div class="nota-box" id="n_riscos">Tabagismo é o fator de risco mais importante para falha da artrodese — a nicotina vasoconstritora reduz o suprimento sanguíneo ao enxerto ósseo em até 50%, podendo causar pseudoartrose (não-consolidação). Diabetes retarda a cicatrização óssea. Osteoporose compromete a ancoragem dos parafusos e a qualidade do enxerto. Artrodese em múltiplos níveis (ex: coluna L3-S1) tem taxa de consolidação menor que artrodese de nível único. Todos esses fatores exigem progressão mais conservadora e monitoramento mais frequente.</div>
+      <div class="check-grid" id="checkRiscos">
+        <label class="check-item" onclick="toggleCheck(this)"><input type="checkbox" value="tabagismo"> <span>🚬 Tabagismo (risco principal)</span></label>
+        <label class="check-item" onclick="toggleCheck(this)"><input type="checkbox" value="diabetes"> <span>🩸 Diabetes</span></label>
+        <label class="check-item" onclick="toggleCheck(this)"><input type="checkbox" value="osteoporose"> <span>🦴 Osteoporose</span></label>
+        <label class="check-item" onclick="toggleCheck(this)"><input type="checkbox" value="multiníveis"> <span>🔗 Artrodese em múltiplos níveis</span></label>
+        <label class="check-item" onclick="toggleCheck(this)"><input type="checkbox" value="obesidade"> <span>⚖️ Obesidade (IMC > 35)</span></label>
+        <label class="check-item" onclick="toggleCheck(this)"><input type="checkbox" value="cirurgia_previa"> <span>🔄 Cirurgia anterior no mesmo local</span></label>
+      </div>
+    </div>
+  </div>
+
+  <!-- ETAPA 2: RED FLAGS (apenas pós-op) -->
+  <div class="group-divider" id="redFlagSection" style="border-left: 4px solid var(--danger);">
+    <div class="group-title" style="color:var(--danger);">⚠ Etapa 2 — Triagem de Complicações Pós-Operatórias</div>
+    <p style="font-size:0.84rem; color:var(--text-muted); margin-bottom:16px; line-height:1.6">Responda apenas se já realizou a cirurgia. Qualquer SIM suspende exercícios e exige encaminhamento médico imediato.</p>
+
+    <div class="form-group">
+      <div class="form-label">Ferida muito vermelha, quente, com saída de pus, ou febre nas últimas 48h?<small>Risco de infecção profunda do enxerto ósseo ou do material de síntese</small></div>
+      <button class="nota-btn" onclick="toggleNota('n_rf1')">📋 Nota Técnica</button>
+      <div class="nota-box" id="n_rf1">Infecção profunda em artrodese é catastrófica — pode comprometer a consolidação óssea e exigir retirada do material (parafusos, hastes, cages). Taxa de infecção profunda varia de 1-4% nas artrodeses de coluna. Sinais: febre persistente > 48h, calor e rubor crescente na ferida, drenagem purulenta fétida. Encaminhar ao cirurgião IMEDIATAMENTE — não iniciar nenhum exercício antes de avaliação médica.</div>
+      <div class="yn-group"><button class="yn-btn" onclick="setRF('rf1','sim',this,'Infecção profunda / febre — risco de comprometimento do enxerto ósseo')">SIM</button><button class="yn-btn" onclick="setRF('rf1','nao',this)">NÃO</button></div>
+    </div>
+
+    <div class="form-group">
+      <div class="form-label">Falta de ar repentina, dor no peito, ou panturrilha dura, dolorida e inchada?<small>Risco de TVP ou Embolia Pulmonar</small></div>
+      <button class="nota-btn" onclick="toggleNota('n_rf2')">📋 Nota Técnica</button>
+      <div class="nota-box" id="n_rf2">Artrodese de coluna com repouso prolongado aumenta significativamente o risco de TVP. Artrodese de tornozelo e pé com imobilização em bota gessada/robofoot é outra situação de alto risco. A "bomba da panturrilha" (movimentos ativos de tornozelo) é a principal prevenção não-farmacológica. Falta de ar + dor torácica = embolia pulmonar — acionar SAMU 192 imediatamente.</div>
+      <div class="yn-group"><button class="yn-btn" onclick="setRF('rf2','sim',this,'Falta de ar / panturrilha dura — risco de TVP ou Embolia Pulmonar')">SIM</button><button class="yn-btn" onclick="setRF('rf2','nao',this)">NÃO</button></div>
+    </div>
+
+    <div class="form-group">
+      <div class="form-label">Perda súbita de força, formigamento forte ou perda de sensibilidade na região operada ou nos membros?<small>Risco neurológico — compressão radicular por edema ou hematoma</small></div>
+      <button class="nota-btn" onclick="toggleNota('n_rf3')">📋 Nota Técnica</button>
+      <div class="nota-box" id="n_rf3">Hematoma pós-operatório ou edema excessivo pode comprimir estruturas nervosas na artrodese de coluna, causando déficit neurológico novo ou piora de déficit pré-existente. Nas artrodeses de tornozelo, compressão do nervo fibular ou tibial pode causar dormência ou fraqueza no pé. Qualquer novo déficit neurológico pós-operatório é urgência — encaminhar ao cirurgião para avaliação com RM ou TC.</div>
+      <div class="yn-group"><button class="yn-btn" onclick="setRF('rf3','sim',this,'Novo déficit neurológico — formigamento/fraqueza após artrodese')">SIM</button><button class="yn-btn" onclick="setRF('rf3','nao',this)">NÃO</button></div>
+    </div>
+
+    <div class="form-group" style="margin-bottom:0">
+      <div class="form-label">"Estalo" forte no local dos parafusos/hastes seguido de dor aguda e incapacitante?<small>Risco de falha da osteossíntese ou pseudoartrose</small></div>
+      <button class="nota-btn" onclick="toggleNota('n_rf4')">📋 Nota Técnica</button>
+      <div class="nota-box" id="n_rf4">Falha do material de síntese (parafuso solto, haste fraturada) pode ocorrer se a carga for aplicada antes da consolidação óssea suficiente, especialmente em pacientes tabagistas, obesos ou osteoporóticos. Pseudoartrose (não-consolidação da artrodese) é a complicação mais comum a longo prazo — o osso não cola e o movimento persiste. Sinais: dor que não melhora progressivamente após 3-4 meses, piora com carga. Encaminhar ao cirurgião para TC e Raio-X dinâmico.</div>
+      <div class="yn-group"><button class="yn-btn" onclick="setRF('rf4','sim',this,'Estalo + dor aguda no local dos implantes — falha de síntese ou pseudoartrose')">SIM</button><button class="yn-btn" onclick="setRF('rf4','nao',this)">NÃO</button></div>
+    </div>
+  </div>
+
+  <!-- ETAPA 3: LIBERAÇÃO MÉDICA -->
+  <div class="group-divider">
+    <div class="group-title">📋 Etapa 3 — Liberação Médica e Fase de Consolidação</div>
+    <p style="font-size:0.84rem; color:var(--text-muted); margin-bottom:16px; line-height:1.6">A estratificação é feita pelo <strong>grau de consolidação óssea confirmado em imagem</strong> e pela liberação do cirurgião — não pela ausência de dor.</p>
+
+    <div class="form-group">
+      <label class="form-label">Qual é a liberação médica atual?</label>
+      <div class="radio-group" id="liberacaoMedica">
+        <div class="radio-opt" onclick="setRadio('liberacao','protecao',this)">
+          <div class="radio-dot"></div>
+          <div class="radio-text">
+            <strong>A — Imobilização total / Órtese rígida obrigatória</strong>
+            Uso contínuo de colete Putti (coluna), bota gessada/robofoot (tornozelo/pé) ou tala rígida (punho). Carga proibida nos membros operados. Fase de integração do enxerto.
+          </div>
+        </div>
+        <div class="radio-opt" onclick="setRadio('liberacao','consolidacao',this)">
+          <div class="radio-dot"></div>
+          <div class="radio-text">
+            <strong>B — Desmame da órtese / Liberação de carga parcial</strong>
+            Médico autorizou início do desmame da órtese e/ou carga parcial com dispositivo. RX mostra início de calo ósseo. Fase de consolidação avançada.
+          </div>
+        </div>
+        <div class="radio-opt" onclick="setRadio('liberacao','total',this)">
+          <div class="radio-dot"></div>
+          <div class="radio-text">
+            <strong>C — Carga plena e fortalecimento liberados</strong>
+            Consolidação confirmada em imagem. Órtese dispensada. Liberado para fortalecimento resistido e retorno funcional ao trabalho.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Intensidade da dor atual<small>0 = sem dor · 10 = pior dor</small></label>
+      <div class="slider-wrap" style="padding:12px 14px">
+        <div class="slider-track">
+          <input type="range" id="dorAtual" min="0" max="10" value="5" oninput="updateSlider(this,'sliderDor')">
+          <span class="slider-value" id="sliderDor">5</span>
+        </div>
+        <div class="slider-labels"><span>0 — Sem dor</span><span>10 — Pior dor</span></div>
+      </div>
+    </div>
+
+    <div class="form-group" style="margin-bottom:0">
+      <label class="form-label">Impacto no trabalho</label>
+      <select class="form-select" id="impactoTrab">
+        <option value="afastado">Afastado — cirurgia não realizada ou imobilização total</option>
+        <option value="retorno_parcial">Retorno parcial — adaptações necessárias</option>
+        <option value="quase_normal">Quase normal — pequenas limitações residuais</option>
+      </select>
+    </div>
+  </div>
+
+  <button class="btn-generate" onclick="estratificar()">
+    <span>🎯</span> Estratificar e Gerar Conduta por Fase
+  </button>
+</div>
+
+<!-- ════ EMERGENCY ════ -->
+<div class="emergency-card" id="emergencyCard" style="display:none">
+  <div class="em-icon">🚨</div>
+  <h2 class="em-title">Complicação da Artrodese Detectada</h2>
+  <p class="em-sub">Sinal de alerta pós-operatório identificado. <strong>Suspender todos os exercícios e encaminhar ao cirurgião ou pronto-socorro imediatamente.</strong></p>
+  <div class="em-flags" id="emFlagsList"></div>
+  <div class="alert-box danger">⚠ <strong>Importante:</strong> Nas artrodeses, qualquer complicação que comprometa a consolidação pode resultar em pseudoartrose permanente, reoperação ou falha do implante. Não atrasar o encaminhamento médico.</div>
+  <div class="em-actions">
+    <button class="btn-danger">📞 Registrar Encaminhamento Urgente</button>
+    <button class="btn-restart" onclick="reiniciar()">↺ Nova Avaliação</button>
+  </div>
+</div>
+
+<!-- ════ RESULT ════ -->
+<div class="section-card" id="resultCard" style="display:none">
+
+  <div class="phase-strip">
+    <div class="ph-item ph0" id="ph0">🟣 Fase 0 · Pré-Op</div>
+    <div class="ph-item ph1" id="ph1">🔴 Fase 1 · Imobilização</div>
+    <div class="ph-item ph2" id="ph2">🟡 Fase 2 · Consolidação</div>
+    <div class="ph-item ph3" id="ph3">🟢 Fase 3 · Retorno</div>
+  </div>
+
+  <div id="resultHeader">
+    <div class="result-badge" id="rBadge"></div>
+    <h2 class="result-title" id="rTitle"></h2>
+    <p class="result-subtitle" id="rSubtitle"></p>
+    <div class="pill-list" id="rContextPills" style="margin-top:12px"></div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- FUSION RULE — always visible -->
+  <div class="fusion-box" id="rFusionBox">
+    <div class="fusion-title">🔩 Regra de Ouro da Artrodese — Válida em Todas as Fases</div>
+    <div class="fusion-rule"><span>✕</span><span><strong>NÃO</strong> tentar mobilizar, girar ou flexionar a articulação artrodesada — o objetivo cirúrgico é a fusão permanente.</span></div>
+    <div class="fusion-rule"><span>✓</span><span>O segmento operado <strong>fica imóvel</strong>, mas os vizinhos (acima e abaixo) precisam trabalhar para compensar com eficiência.</span></div>
+    <div class="fusion-rule" id="fusionSpecific"></div>
+  </div>
+
+  <div class="protocol-box" id="rProtocolBox">
+    <div class="protocol-box-title" id="rProtocolTitle"></div>
+    <p id="rProtocolText"></p>
+  </div>
+
+  <div class="result-section-title">Condutas Tele-Guiadas</div>
+  <div class="conduct-list" id="rConductList"></div>
+
+  <div id="rAlertsArea"></div>
+
+  <div class="result-section-title" id="rExTitle">Exercícios Indicados</div>
+  <div class="exercise-list" id="rExList"></div>
+
+  <div class="divider"></div>
+
+  <div class="result-section-title">📍 Limitação Funcional e Retorno ao Trabalho</div>
+  <div class="func-block" id="rFuncBlock">
+    <div class="func-header" id="rFuncHeader">
+      <span class="func-icon" id="rFuncIcon"></span>
+      <div>
+        <div class="func-label" id="rFuncLabel"></div>
+        <div class="func-title" id="rFuncTitle"></div>
+      </div>
+    </div>
+    <div class="func-body" id="rFuncBody"></div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="result-section-title">💬 Mensagens para o Paciente (WhatsApp)</div>
+  <div class="msg-tabs">
+    <button class="msg-tab active" onclick="showMsg(0,this)">Triagem / Pré-Op</button>
+    <button class="msg-tab" onclick="showMsg(1,this)">Início Pós-Op</button>
+    <button class="msg-tab" onclick="showMsg(2,this)">Monitoramento</button>
+    <button class="msg-tab" onclick="showMsg(3,this)">Progressão</button>
+  </div>
+  <div class="msg-box" id="rMsg"></div>
+  <button class="btn-copy" id="btnCopy" onclick="copiarMsg()">📋 Copiar para WhatsApp</button>
+
+  <div class="result-actions">
+    <button class="btn-print" onclick="window.print()">🖨 Imprimir</button>
+    <button class="btn-restart" onclick="reiniciar()">↺ Nova Avaliação</button>
+  </div>
+
+</div>
+</div>
+
+<script>
+const rfState = {};
+let currentMsgs = [];
+
+function toggleNota(id) { document.getElementById(id).classList.toggle('open'); }
+function updateSlider(input, valId) {
+  const val = input.value;
+  document.getElementById(valId).textContent = val;
+  const pct = (val / 10) * 100;
+  input.style.background = `linear-gradient(to right,#1A7A8C 0%,#1A7A8C ${pct}%,#DDD8CF ${pct}%,#DDD8CF 100%)`;
+}
+document.addEventListener('DOMContentLoaded', () => updateSlider(document.getElementById('dorAtual'), 'sliderDor'));
+function toggleCheck(label) { setTimeout(() => label.classList.toggle('checked', label.querySelector('input').checked), 10); }
+function setRF(key, val, btn, reason) {
+  rfState[key] = { val, reason };
+  btn.parentElement.querySelectorAll('.yn-btn').forEach(b => b.classList.remove('sel-sim','sel-nao'));
+  btn.classList.add(val === 'sim' ? 'sel-sim' : 'sel-nao');
+}
+function setRadio(key, val, el) {
+  window._rs = window._rs || {};
+  window._rs[key] = val;
+  const groupId = key === 'momento' ? 'momentoCirurgico' : key === 'liberacao' ? 'liberacaoMedica' : null;
+  if (groupId) document.querySelectorAll('#' + groupId + ' .radio-opt').forEach(o => o.classList.remove('selected'));
+  el.classList.add('selected');
+}
+
+// ── FUNCTIONAL LIMITATION ──────────────────
+const FUNC_DATA = {
+  afastado: {
+    css:'fl-severa', icon:'🔴', label:'Afastado do Trabalho',
+    title:'Pré-op ou imobilização total — foco na preparação e segurança',
+    items:[
+      {icon:'📋', title:'Documentação e comunicação com RH', text:'Informar prazo cirúrgico, tempo estimado de afastamento e plano de retorno. Artrodeses de coluna geralmente exigem 3-6 meses de afastamento. Tornozelo/punho: 3-4 meses.'},
+      {icon:'🏠', title:'Adaptação do ambiente antes da cirurgia', text:'Cheklist pré-op: retirar tapetes, adaptar altura da cama e vaso sanitário, separar muletas/andador, organizar itens de uso frequente em altura acessível, instalar barras de apoio.'},
+      {icon:'🤝', title:'Treino de cuidadores / familiar', text:'Ensinar técnicas seguras de transferência (rolar em bloco para coluna, apoio a 3 pontos para tornozelo). O familiar é parte da equipe de reabilitação.'},
+    ],
+    reeval:'Contato diário na primeira semana pós-cirurgia. Monitorar sinais de complicação rigorosamente.'
+  },
+  retorno_parcial: {
+    css:'fl-moderada', icon:'🟡', label:'Retorno Parcial',
+    title:'Adaptações no trabalho — ergonomia para articulação fundida',
+    items:[
+      {icon:'🖥️', title:'Ergonomia para articulação artrodesada', text:'Artrodese lombar: monitor na altura dos olhos, suporte lombar, evitar inclinar o tronco. Artrodese cervical: elevar tela, headset para telefone. Artrodese de punho: teclado ergonômico, suporte de punho.'},
+      {icon:'⏰', title:'Micropausas e alternância postural', text:'Pausa de 5 min a cada 45 min. A articulação fundida sobrecarrega as articulações vizinhas — pausas reduzem o desgaste compensatório a longo prazo.'},
+      {icon:'🚫', title:'Atividades proibidas no trabalho atual', text:'Artrodese lombar: proibido carregar peso, curvar coluna, girar tronco. Artrodese de tornozelo: proibido subir escadas repetidamente. Artrodese de punho: proibido torção de força.'},
+      {icon:'📅', title:'Plano gradual de retorno funcional', text:'Definir metas semanais com RH e medicina do trabalho. O retorno abrupto às demandas anteriores é o principal precipitante de falha tardia da artrodese.'},
+    ],
+    reeval:'Monitoramento semanal. Ajustar atividades conforme evolução do RX de controle.'
+  },
+  quase_normal: {
+    css:'fl-leve', icon:'🟢', label:'Quase Normal',
+    title:'Pequenas limitações residuais — adaptações permanentes',
+    items:[
+      {icon:'⚠️', title:'Limitações permanentes da artrodese', text:'A fusão articular é irreversível. O paciente precisará adaptar permanentemente certas atividades: agachar substituindo inclinação de coluna, alcançar objetos rotacionando quadris, não tornozelo artrodesado.'},
+      {icon:'💪', title:'Fortalecimento das articulações vizinhas', text:'As articulações acima e abaixo da fusão sofrerão desgaste acelerado. Fortalecer quadril e joelhos (artrodese lombar), ombro e cotovelo (artrodese de punho), joelho e quadril (artrodese de tornozelo).'},
+      {icon:'📋', title:'Alta médica e limitações funcionais permanentes', text:'Documentar com o cirurgião as limitações funcionais permanentes para RH. Algumas funções podem exigir readaptação definitiva de cargo, especialmente em trabalho físico.'},
+    ],
+    reeval:'Monitoramento trimestral. Avaliar sinais de desgaste das articulações adjacentes (dor progressiva após anos).'
+  }
+};
+
+// ── ADJACENT MOBILITY BY JOINT ──────────────
+function getAdjacent(articulacao) {
+  const map = {
+    coluna_lombar: 'Artrodese lombar → mobilizar tornozelos, joelhos e quadris ativamente. Alongamento de isquiotibiais sem fletir a coluna. Rotações de tronco PROIBIDAS.',
+    coluna_cervical: 'Artrodese cervical → mobilizar ativamente punho, mãos, cotovelo e ombro. Rotações e inclinações de pescoço PROIBIDAS. Respiração diafragmática obrigatória.',
+    punho: 'Artrodese de punho → mobilizar ativamente dedos (abertura/fechamento), cotovelo (flexão/extensão, pronossupinação) e ombro. Movimentos de torção do punho PROIBIDOS.',
+    tornozelo: 'Artrodese de tornozelo → mobilizar ativamente joelho e quadril. Dedos dos pés: flexão/extensão ativas. Movimentos de flexão plantar/dorsiflexão do tornozelo PROIBIDOS.',
+    pe: 'Artrodese de pé → mobilizar tornozelo (com limitação), joelho e quadril. Carga total somente após liberação médica com RX mostrando consolidação.',
+    quadril: 'Artrodese de quadril → mobilizar ativamente joelho, tornozelo e coluna lombar. Movimento de flexão/extensão/rotação do quadril PROIBIDOS.',
+    joelho: 'Artrodese de joelho → mobilizar quadril e tornozelo ativamente. Flexão/extensão do joelho PROIBIDAS. Marcha com membro rígido — treinar padrão compensatório.',
+    outro: 'Mobilizar as articulações imediatamente acima e abaixo da articulação fundida. O segmento operado permanece imóvel.',
+  };
+  return map[articulacao] || map['outro'];
+}
+
+// ── STRATIFICATION ENGINE ───────────────────
+function estratificar() {
+  const momento   = window._rs?.momento   || 'pre_op';
+  const liberacao = window._rs?.liberacao || 'protecao';
+  const articulacao = document.getElementById('articulacao').value;
+  const tempo     = document.getElementById('tempoPO').value;
+  const riscos    = [...document.querySelectorAll('#checkRiscos input:checked')].map(i => i.value);
+  const dor       = parseInt(document.getElementById('dorAtual').value);
+  const impacto   = document.getElementById('impactoTrab').value;
+
+  // Red flag check (only post-op)
+  if (momento === 'pos_op') {
+    const flags = Object.entries(rfState).filter(([k,v]) => v.val === 'sim');
+    if (flags.length > 0) { showEmergency(flags); return; }
+  }
+
+  // Phase logic
+  let fase;
+  if (momento === 'pre_op') fase = 'f0';
+  else if (liberacao === 'protecao') fase = 'f1';
+  else if (liberacao === 'consolidacao') fase = 'f2';
+  else fase = 'f3';
+
+  renderResult({ momento, liberacao, articulacao, tempo, riscos, dor, impacto, fase });
+}
+
+function showEmergency(flags) {
+  document.getElementById('formCard').style.display = 'none';
+  document.getElementById('emergencyCard').style.display = 'block';
+  document.getElementById('emFlagsList').innerHTML = flags.map(([k,v]) => `
+    <div class="em-flag"><span>⚠</span><div><strong>Red Flag:</strong> ${v.reason}</div></div>`).join('');
+  window.scrollTo({ top:0, behavior:'smooth' });
+}
+
+// ── RENDER ─────────────────────────────────
+function renderResult({ momento, liberacao, articulacao, tempo, riscos, dor, impacto, fase }) {
+  const rc = document.getElementById('resultCard');
+  rc.style.display = 'block';
+
+  ['ph0','ph1','ph2','ph3'].forEach(id => document.getElementById(id).classList.remove('active'));
+  const phMap = { f0:'ph0', f1:'ph1', f2:'ph2', f3:'ph3' };
+  document.getElementById(phMap[fase]).classList.add('active');
+
+  const rh = document.getElementById('resultHeader');
+  rh.className = fase === 'f0' ? 'rp0' : fase === 'f1' ? 'rg1' : fase === 'f2' ? 'rg2' : 'rg3';
+
+  const cfg = {
+    f0: { badge:'🟣 Fase Zero — Preparação Pré-Operatória', title:'Fisioterapia Preventiva Pré-Artrodese', sub:'Cirurgia agendada. Preparar o corpo, o ambiente e ensinar as transferências seguras antes da operação para minimizar complicações e acelerar a recuperação pós-operatória.' },
+    f1: { badge:'🔴 Grupo 1 — Fase de Imobilização e Proteção', title:'Enxerto em Integração — Órtese Obrigatória', sub:'0 a 6 semanas. Enxerto ósseo em fase inicial de integração. Órtese rígida em uso contínuo. Foco em proteger a fusão, controlar edema, prevenir TVP e mobilizar as articulações vizinhas.' },
+    f2: { badge:'🟡 Grupo 2 — Fase de Consolidação e Carga', title:'Calo Ósseo Iniciando — Desmame da Órtese', sub:'6 a 12 semanas. RX mostra início de calo ósseo. Médico autorizou desmame da órtese e/ou carga parcial. Foco em estabilização muscular, reeducação da marcha e "movimento em bloco".' },
+    f3: { badge:'🟢 Grupo 3 — Fase de Remodelação e Retorno', title:'Consolidação Confirmada — Retorno Funcional', sub:'Acima de 12 semanas. Consolidação óssea confirmada em imagem. Foco em fortalecimento resistido, condicionamento cardiovascular e adaptação ergonômica permanente do posto de trabalho.' },
+  };
+  const c = cfg[fase];
+  document.getElementById('rBadge').textContent    = c.badge;
+  document.getElementById('rTitle').textContent    = c.title;
+  document.getElementById('rSubtitle').textContent = c.sub;
+
+  // Pills
+  const artLabels = { coluna_lombar:'Coluna Lombar', coluna_cervical:'Coluna Cervical', punho:'Punho', tornozelo:'Tornozelo', pe:'Pé', quadril:'Quadril', joelho:'Joelho', outro:'Outra' };
+  const pills = [artLabels[articulacao], `Dor ${dor}/10`, ...riscos.slice(0,2)];
+  if (riscos.includes('tabagismo')) pills.push('⚠ Tabagismo');
+  document.getElementById('rContextPills').innerHTML = pills.map(p => `<span class="pill ${p.includes('Tabagismo') ? 'warn' : ''}">${p}</span>`).join('');
+
+  // Fusion specific rule
+  document.getElementById('fusionSpecific').innerHTML = `<span>💡</span><span><em>${getAdjacent(articulacao)}</em></span>`;
+
+  // Protocol
+  const pb = document.getElementById('rProtocolBox');
+  pb.className = 'protocol-box ' + (fase === 'f0' ? 'p0' : fase === 'f1' ? 'g1' : fase === 'f2' ? 'g2' : 'g3');
+  const prots = {
+    f0: { t:'Fase Zero — Preparação Pré-Operatória', p:'Treino de transferências seguras (rolar em bloco para coluna, apoio a 3 pontos para tornozelo). Fisioterapia respiratória para prevenir atelectasia pós-anestesia. Fortalecimento de braços para uso de muletas. Adaptação do ambiente domiciliar. Orientação sobre tabagismo.' },
+    f1: { t:'Fase 1 — Proteção da Fusão e Controle do Edema', p:'P.R.I.C.E respeitando os limites da órtese. Bomba da panturrilha para prevenir TVP. NUNCA tentar mobilizar o segmento artrodesado. Mobilizar ativamente todas as articulações vizinhas. Isometria submáxima dos músculos que cruzam a articulação operada.' },
+    f2: { t:'Fase 2 — Estabilização Muscular e Reeducação', p:'Isometria e co-contração para musculatura estabilizadora. Treino de marcha com desmame progressivo do dispositivo de apoio. Educação sobre "movimento em bloco" — girar com a cintura pélvica/escapular, não com o segmento fundido. Carga progressiva conforme tolerância e liberação médica.' },
+    f3: { t:'Fase 3 — Fortalecimento e Adaptação Ergonômica', p:'Fortalecimento resistido com theraband/pesos. Cadeia cinética fechada funcional. Treino proprioceptivo. Adequação ergonômica permanente do posto de trabalho — a articulação fundida é irreversível e as articulações vizinhas compensarão por toda a vida.' },
+  };
+  const pr = prots[fase];
+  document.getElementById('rProtocolTitle').textContent = pr.t;
+  document.getElementById('rProtocolText').textContent  = pr.p;
+
+  // Conducts
+  const conducts = {
+    f0:[
+      {icon:'🏃', title:'Fortalecimento de membros livres pré-op', text:'Fortalecer braços para uso de muletas (supino, remada com theraband). Fortalecer perna não operada (agachamento unilateral, ponte de glúteos). Quanto mais forte antes, menor a perda pós-op.'},
+      {icon:'🫁', title:'Fisioterapia respiratória preventiva', text:'Ensinar respiração diafragmática e expansão pulmonar com incentivador respiratório (coach2). Previne atelectasia pós-anestesia — causa frequente de febre nos primeiros dias pós-op.'},
+      {icon:'🔄', title:'Treino de transferências seguras', text:'Artrodese lombar: técnica log roll (rolar em bloco). Artrodese de tornozelo/pé: apoio a 3 pontos (andador). Praticar ANTES da cirurgia facilita muito a execução no pós-operatório.'},
+      {icon:'🏠', title:'Cheklist ambiental pré-operatório', text:'Retirar tapetes. Adaptar cama (altura adequada para levantar sem curvar coluna). Elevar vaso sanitário. Separar muletas/andador. Reorganizar itens de uso frequente em altura acessível.'},
+    ],
+    f1:[
+      {icon:'🧊', title:'P.R.I.C.E respeitando a órtese', text:'Gelo ao redor (nunca em cima) da ferida cirúrgica, 20 min, 3x ao dia. Membro elevado acima do coração. Compressa elástica suave sobre a órtese se possível. Proteção total do segmento operado.'},
+      {icon:'🦵', title:'Bomba da panturrilha — prevenção de TVP', text:'"Acelerar o pé" 30x a cada hora acordado. Essencial nas artrodeses de coluna (repouso prolongado) e tornozelo/pé (imobilização em bota). Principal prevenção não-farmacológica de trombose.'},
+      {icon:'🔄', title:'Mobilização ativa das articulações vizinhas', text:`${getAdjacent(articulacao)} Fazer 2-3x ao dia, 15-20 repetições. Previne rigidez e atrofia das articulações adjacentes.`},
+      {icon:'💪', title:'Isometria submáxima', text:'Contrações musculares estáticas SEM gerar movimento na articulação operada. Artrodese lombar: ativação do core em posição neutra. Artrodese de tornozelo: isometria de tibial anterior e gastrocnêmio. Mantém tônus sem estressar a fusão.'},
+    ],
+    f2:[
+      {icon:'🔒', title:'Estabilização muscular — "cinturão de proteção"', text:'Exercícios isométricos progressivos da musculatura que cruza a artrodese. Artrodese lombar: bracing de core, ponte de glúteos. Artrodese de tornozelo: isometria de panturrilha. Criam suporte muscular para a fusão.'},
+      {icon:'🚶', title:'Treino de marcha e desmame do dispositivo', text:'Progressão: andador → muletas axilares → muletas canadenses → bengala → marcha livre. Corrigir padrão antálgico (mancar). Ritmo progressivo, nunca abrupto.'},
+      {icon:'🧠', title:'Educação sobre "movimento em bloco"', text:'Ensinar ao paciente a não tentar mobilizar o segmento fundido. Para se abaixar: agachar com joelhos dobrados, não curvar a coluna. Para girar: pivotar com os quadris, não torcer a coluna. Repetir em toda sessão.'},
+      {icon:'🏠', title:'Ergonomia de transição', text:'Ajustar ambiente de trabalho para o período de retorno parcial. Artrodese lombar: suporte lombar, monitor na altura dos olhos. Artrodese cervical: headset, elevar tela. Artrodese de punho: teclado ergonômico.'},
+    ],
+    f3:[
+      {icon:'💪', title:'Fortalecimento resistido progressivo', text:'Theraband e pesos leves para musculatura estabilizadora. Progredir 10% de carga por semana. Foco nas articulações vizinhas que compensarão o movimento perdido.'},
+      {icon:'🏋️', title:'Cadeia cinética fechada funcional', text:'Sentar e levantar da cadeira sem usar as mãos, step lateral, transferência de peso. Simular atividades do trabalho de forma controlada e progressiva.'},
+      {icon:'🖥️', title:'Ergonomia permanente do posto de trabalho', text:'A fusão é irreversível — as adaptações ergonômicas são permanentes. Articulações vizinhas sofrerão desgaste acelerado sem ergonomia adequada. Revisão formal com medicina do trabalho recomendada.'},
+      {icon:'🔄', title:'Fortalecimento compensatório das articulações adjacentes', text:'Prevenir desgaste a longo prazo das articulações que agora compensam o movimento perdido. Artrodese lombar: fortalecer quadril e joelhos. Artrodese de tornozelo: fortalecer quadril e joelho.'},
+    ],
+  };
+  document.getElementById('rConductList').innerHTML = (conducts[fase] || []).map(c => `
+    <div class="conduct-item">
+      <span class="conduct-icon">${c.icon}</span>
+      <div class="conduct-text"><strong>${c.title}</strong>${c.text}</div>
+    </div>`).join('');
+
+  // Alerts
+  let alerts = [];
+  if (riscos.includes('tabagismo')) alerts.push({type:'danger', text:'🚨 <strong>Tabagismo — Risco principal de pseudoartrose:</strong> A nicotina reduz o suprimento sanguíneo ao enxerto ósseo em até 50%. Alertar enfaticamente: cessação do tabagismo ANTES e DEPOIS da cirurgia é parte do tratamento. Taxa de pseudoartrose em tabagistas é 3-5x maior que em não-tabagistas.'});
+  if (riscos.includes('diabetes')) alerts.push({type:'warning', text:'⚠ <strong>Diabetes:</strong> Retarda a cicatrização óssea e aumenta risco de infecção. Monitorar glicemia rigorosamente. Progressão mais conservadora — não avançar fase sem RX de controle confirmando consolidação adequada.'});
+  if (riscos.includes('osteoporose')) alerts.push({type:'warning', text:'⚠ <strong>Osteoporose:</strong> Compromete a ancoragem dos implantes e qualidade do enxerto. Verificar se está em uso de bifosfonados (podem interferir na consolidação óssea). Evitar carga excessiva nas fases iniciais.'});
+  if (riscos.includes('multiníveis')) alerts.push({type:'info', text:'ℹ <strong>Artrodese de múltiplos níveis:</strong> Taxa de pseudoartrose e complicações é maior que em nível único. Tempo de imobilização geralmente mais longo. Não avançar fase sem confirmação radiográfica da consolidação em TODOS os níveis.'});
+  if (articulacao === 'coluna_lombar' && fase === 'f1') alerts.push({type:'danger', text:'🚨 <strong>Artrodese Lombar — Proibições absolutas na Fase 1:</strong> Flexão de coluna (curvar), extensão forçada, rotação de tronco. Usar técnica LOG ROLL para levantar da cama. Colete Putti/órtese em USO CONTÍNUO — só retirar para higiene.'});
+  if (articulacao === 'tornozelo' || articulacao === 'pe') alerts.push({type:'warning', text:'⚠ <strong>Artrodese de Tornozelo/Pé:</strong> Bota gessada ou robofoot em uso contínuo. Carga zero até liberação médica confirmada em RX. Risco de queda com bota em terreno irregular — sempre com muleta/andador.'});
+  if (articulacao === 'coluna_cervical') alerts.push({type:'warning', text:'⚠ <strong>Artrodese Cervical:</strong> Colar cervical em uso contínuo conforme prescrição. NUNCA girar ou inclinar o pescoço. Para olhar para os lados: girar com o corpo inteiro. Dirigir geralmente proibido na Fase 1.'});
+  document.getElementById('rAlertsArea').innerHTML = alerts.map(a => `<div class="alert-box ${a.type}">${a.text}</div>`).join('');
+
+  // Exercises
+  const exs = {
+    f0:[
+      {num:'p0c', tag:'p0t', tl:'Pré-Op — Força', name:'Fortalecimento de braços (preparo para muletas)', desc:'Supino, rosca bíceps e tríceps com theraband. 3 séries de 15 rep. Braços fortes facilitam muito a locomoção pós-op com muletas ou andador.'},
+      {num:'p0c', tag:'p0t', tl:'Pré-Op — Respiração', name:'Expansão pulmonar com incentivador respiratório', desc:'Inspiração profunda e sustentada pelo coach2 ou spirometria de incentivo. 10 repetições, 3-4x ao dia. Previne atelectasia pós-anestesia.'},
+      {num:'p0c', tag:'p0t', tl:'Pré-Op — Transferência', name:'Treino de log roll (coluna) ou apoio a 3 pontos (tornozelo)', desc:'Coluna: praticar rolar em bloco (ombros, quadril e joelhos giram juntos, sem torção). Tornozelo: praticar sentar e levantar com andador sem apoiar o pé operado.'},
+    ],
+    f1:[
+      {num:'g1c', tag:'g1t', tl:'Fase 1 — TVP', name:'Bomba da panturrilha ("acelerar o pé")', desc:'Flexão plantar e dorsiflexão do tornozelo: 30x a cada hora acordado. Principal prevenção de trombose. Mesmo dentro da bota gessada, contrair os músculos da panturrilha.'},
+      {num:'g1c', tag:'g1t', tl:'Fase 1 — Isometria', name:'Isometria submáxima do membro operado', desc:'Contrações estáticas sem movimento articular. Ex coluna: apertar umbigo para dentro (bracing). Ex tornozelo: pressionar o pé contra a bota sem mover. 5s, 10 rep, 3x ao dia.'},
+      {num:'g1c', tag:'g1t', tl:'Fase 1 — Vizinhas', name:'Mobilização ativa das articulações vizinhas', desc:'Conforme orientação específica do tipo de artrodese. 15-20 rep, 2-3x ao dia. Fundamental para prevenir rigidez e atrofia compensatória.'},
+    ],
+    f2:[
+      {num:'g2c', tag:'g2t', tl:'Fase 2 — Core', name:'Bracing abdominal (ativação do core estabilizador)', desc:'Recolher levemente o abdômen baixo sem prender a respiração. Manter 10s. 10 rep, 3x ao dia. Base para todos os exercícios de coluna artrodesada.'},
+      {num:'g2c', tag:'g2t', tl:'Fase 2 — Glúteos', name:'Ponte de glúteos isométrica', desc:'Deitado, elevar o quadril com contração glútea sem arquear a coluna. Manter 5s. 15 rep, 3 séries. Fundamental para artrodese lombar — glúteos fortes protegem a fusão.'},
+      {num:'g2c', tag:'g2t', tl:'Fase 2 — Marcha', name:'Treino de marcha com dispositivo — gesto correto', desc:'Progressão gradual com andador ou muletas. Atenção ao padrão: passos simétricos, postura ereta, sem compensar com o tronco. Regra de escadas: boa sobe, operada desce.'},
+      {num:'g2c', tag:'g2t', tl:'Fase 2 — ADM', name:'SLR — elevação de perna estendida (artrodese lombar)', desc:'Deitado, contrair quadríceps e elevar a perna a 45° sem fletir a coluna. 15 rep, 3 séries. Fortalece quadríceps e quadril sem sobrecarregar a artrodese.'},
+    ],
+    f3:[
+      {num:'g3c', tag:'g3t', tl:'Fase 3 — Força', name:'Agachamento isométrico na parede (mini-squat 30-45°)', desc:'Costas na parede, coluna neutra (artrodese lombar: manter curva fisiológica). 30s, 3-5 séries. Fortalece cadeia posterior sem sobrecarregar a fusão.'},
+      {num:'g3c', tag:'g3t', tl:'Fase 3 — Funcional', name:'Sentar e levantar da cadeira com técnica correta', desc:'Coluna ereta durante todo o movimento. Usar força de quadríceps e glúteos. NÃO curvar a coluna ao se abaixar. 15 rep, 3 séries.'},
+      {num:'g3c', tag:'g3t', tl:'Fase 3 — Propriocepção', name:'Apoio unipodal progressivo (artrodese de tornozelo/pé)', desc:'Ficar em um pé só próximo à parede. 30s, 3 rep por pé. Adaptação proprioceptiva com tornozelo fundido — usar movimento de joelho e quadril como compensadores.'},
+      {num:'g3c', tag:'g3t', tl:'Fase 3 — Compensatórios', name:'Fortalecimento das articulações adjacentes à fusão', desc:'Artrodese lombar: fortalecer extensores de quadril e joelhos. Artrodese de tornozelo: fortalecer joelho e quadril. Previne desgaste acelerado a longo prazo.'},
+    ],
+  };
+  document.getElementById('rExList').innerHTML = (exs[fase] || []).map((e,i) => `
+    <div class="exercise-item">
+      <div class="ex-num ${e.num}">${i+1}</div>
+      <p><span class="ex-tag ${e.tag}">${e.tl}</span><strong>${e.name}</strong>${e.desc}</p>
+    </div>`).join('');
+
+  // Functional limitation
+  const fd = FUNC_DATA[impacto];
+  const cssImp = { afastado:'fl-severa', retorno_parcial:'fl-moderada', quase_normal:'fl-leve' };
+  document.getElementById('rFuncHeader').className = 'func-header ' + cssImp[impacto];
+  document.getElementById('rFuncIcon').textContent  = fd.icon;
+  document.getElementById('rFuncLabel').textContent = fd.label;
+  document.getElementById('rFuncTitle').textContent = fd.title;
+  document.getElementById('rFuncLabel').className   = 'func-label';
+  document.getElementById('rFuncTitle').className   = 'func-title';
+  document.getElementById('rFuncBody').innerHTML =
+    fd.items.map(item => `
+      <div class="func-item">
+        <span class="func-item-icon">${item.icon}</span>
+        <div class="func-item-text"><strong>${item.title}</strong>${item.text}</div>
+      </div>`).join('')
+    + `<div class="func-reeval"><span>⏱</span><span>${fd.reeval}</span></div>`;
+
+  // Messages
+  const artLabel = document.getElementById('articulacao').options[document.getElementById('articulacao').selectedIndex].text;
+  currentMsgs = [
+    fase === 'f0'
+      ? `Olá! Vi que você tem uma cirurgia de artrodese de ${artLabel} agendada. Para prepararmos seu corpo e sua casa:\n\n1. Qual articulação será operada?\n2. Você já retirou tapetes soltos e adaptou a altura da cama e do vaso sanitário?\n3. Você sabe como deverá se levantar da cama nos primeiros dias sem forçar o local operado?\n\nVamos treinar as transferências seguras antes da cirurgia!`
+      : `Olá! Para iniciarmos sua reabilitação com segurança após a artrodese de ${artLabel}, preciso que responda Sim ou Não:\n\n1. A ferida está muito vermelha, quente, com pus ou você teve febre?\n2. Falta de ar repentina ou panturrilha dura, dolorida e muito inchada?\n3. Perda súbita de força, formigamento forte ou dormência na região operada?\n4. Sentiu algum estalo forte seguido de dor aguda e incapacitante no local dos parafusos?`,
+    fase === 'f0'
+      ? `Vamos preparar seu corpo para a cirurgia!\n\nRegra mais importante: a articulação que será fundida vai ficar parada permanentemente — e está certo assim! O objetivo da artrodese é eliminar o movimento para acabar com a dor.\n\nSua missão pré-op:\n1. Fortalecer os braços para usar muletas/andador com segurança\n2. Praticar a técnica de levantar da cama sem forçar a coluna/tornozelo\n3. Fazer os exercícios respiratórios com o incentivador para preparar os pulmões\n\nAmanhã me conta como foi!`
+      : `Que bom que a cirurgia foi bem! Nesta fase, a regra número 1 é:\n\nA articulação operada precisa ficar PARADA para o osso colar — mas o resto do corpo precisa se mover!\n\n${articulacao === 'coluna_lombar' || articulacao === 'coluna_cervical' ? '1. Use a órtese SEMPRE, só retire para higiene\n2. Para se levantar: technique log roll (rolar em bloco, não torcer)\n3. Movimente os pés: 30x a cada hora (previne trombose)' : '1. Mantenha a bota/imobilizador conforme o médico pediu\n2. "Acelere o pé" no ar: 30x a cada hora (previne trombose)\n3. Movimente joelho e quadril normalmente'}\n\nMe avise à noite como ficou o inchaço!`,
+    `Bom dia! Para acompanharmos sua recuperação:\n\nDe 0 a 10, qual a nota da sua dor hoje em repouso?\n${riscos.includes('tabagismo') ? '\n⚠ Lembrete importante: o cigarro é o maior inimigo da artrodese — a nicotina pode impedir o osso de colar. Este é o momento mais crítico para parar de fumar!\n' : ''}\nConseguiu fazer os movimentos de tornozelo/joelho para prevenir trombose?\n\nMe conta para ajustarmos o protocolo!`,
+    fase === 'f2'
+      ? `Excelente notícia sobre o seu Raio-X! Como o osso já começou a colar, vamos iniciar o fortalecimento muscular — sem forçar o movimento no local da fusão.\n\nEstou enviando exercícios isométricos (força sem movimento). Eles criarão um "cinturão de proteção" muscular ao redor da cirurgia.\n\nFaça devagar. É normal sentir o músculo cansar — isso é ótimo! Mas NÃO deve haver dor em pontada no local dos parafusos. Se sentir, pare e me avise imediatamente.`
+      : fase === 'f3'
+      ? `Ótima evolução! Com a consolidação confirmada, entramos na fase final: fortalecer os músculos e adaptar o trabalho para a nova biomecânica.\n\nLembre: a articulação fundida é permanente — as articulações vizinhas compensarão por toda a vida. Quanto mais fortes elas forem, menor o desgaste futuro.\n\nVamos juntos nessa última etapa!`
+      : `Continue com o protocolo atual. O sucesso da artrodese depende de respeitar o tempo biológico de consolidação óssea. Cada semana seguindo corretamente é um investimento no resultado definitivo.`,
+  ];
+  showMsg(0, document.querySelector('.msg-tab'));
+  rc.scrollIntoView({ behavior:'smooth', block:'start' });
+}
+
+function showMsg(idx, btn) {
+  document.querySelectorAll('.msg-tab').forEach(t => t.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  document.getElementById('rMsg').textContent = currentMsgs[idx] || '';
+  const bc = document.getElementById('btnCopy');
+  bc.textContent = '📋 Copiar para WhatsApp';
+  bc.classList.remove('copied');
+}
+function copiarMsg() {
+  navigator.clipboard.writeText(document.getElementById('rMsg').textContent).then(() => {
+    const btn = document.getElementById('btnCopy');
+    btn.textContent = '✅ Copiado!';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = '📋 Copiar para WhatsApp'; btn.classList.remove('copied'); }, 2200);
+  });
+}
+function reiniciar() {
+  document.getElementById('resultCard').style.display = 'none';
+  document.getElementById('emergencyCard').style.display = 'none';
+  document.getElementById('formCard').style.display = 'block';
+  Object.keys(rfState).forEach(k => delete rfState[k]);
+  if (window._rs) window._rs = {};
+  document.querySelectorAll('.yn-btn').forEach(b => b.classList.remove('sel-sim','sel-nao'));
+  document.querySelectorAll('.radio-opt').forEach(o => o.classList.remove('selected'));
+  document.querySelectorAll('.check-item').forEach(el => { el.classList.remove('checked'); el.querySelector('input').checked = false; });
+  document.getElementById('dorAtual').value = 5;
+  updateSlider(document.getElementById('dorAtual'), 'sliderDor');
+  document.getElementById('formCard').scrollIntoView({ behavior:'smooth', block:'start' });
+}
+</script>
+</body>
+</html>
